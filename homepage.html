@@ -39,41 +39,68 @@
 
 <!-- First Parallax Image with Logo Text -->
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
-  <div class="w3-display-middle" style="white-space:nowrap;">
-    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">APPLICATION <span class="w3-hide-small">GREP</span> MIAETNOA </span>
+  <div class="w3-display-middle w3-center" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-brown w3-xlarge w3-wide w3-animate-opacity"> APPLICATION MIAETNOA </span> </br></br>
+    <button class="button-74 w3-animate-opacity" role="button">C'est parti</button>
   </div>
 </div>
 
 <!-- Container (About Section) -->
-<div class="w3-content w3-container w3-padding-64" id="about">
-  <h3 class="w3-center">RECHERCHE</h3>
-  <p class="w3-center"><em>C'est ici que vous pourrez faire votre recherche</em></p>
+<div class="mapTitle" id="about">
+  <h1>Recherche</h1>
+</div>
 
+<div class="map-container1">
 
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lorem nisl, luctus scelerisque ultrices ut, vestibulum a elit.
-    Integer at faucibus augue, sed ultrices justo. Etiam hendrerit enim a justo convallis commodo. Praesent vel pellentesque odio.
-    Aliquam tempus felis a urna pellentesque porttitor. Mauris vel elit congue, laoreet lorem vel, tempus ex. Sed ultricies augue non sem pulvinar fermentum.
-    Fusce sodales sollicitudin orci, vel tempus nisl rhoncus in. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-    Nulla vulputate sapien vitae quam aliquet, a gravida lorem suscipit. Fusce auctor sem risus, non convallis dui porttitor non. Suspendisse potenti.
-    Sed tincidunt lacus at mauris dapibus, quis vehicula orci consequat. Nam ullamcorper nec arcu sit amet elementum.
-    Duis lobortis quam viverra pulvinar ultricies.</p>
+    <div class="forms">
 
-  <div class="w3-row">
+      <div class="forms-employes">
+        <p class="form-title1"> Nombre d'employés </p>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange">
+        </div>
+        <div class="slidecontainer2">
+          <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange">
+        </div>
+      </div>
 
-    <!--
-    <div class="w3-col m6 w3-center w3-padding-large">
-      <p><b><i class="fa fa-user w3-margin-right"></i>My Name</b></p><br>
-      <img src="/w3images/avatar_hat.jpg" class="w3-round w3-image w3-opacity w3-hover-opacity-off" alt="Photo of Me" width="500" height="333">
+      <div class="forms-age">
+        <p class="form-title2"> Âge moyen </p>
+        <div class="slidecontainer3">
+          <input type="range" min="1" max="100" value="10" class="slider" id="myRange">
+        </div>
+      </div>
+
+      <div class="forms-loyer">
+        <p class="form-title3"> Loyer moyen </p>
+        <div class="slidecontainer4">
+          <input type="range" min="1" max="5000" value="500" class="slider" id="myRange">
+        </div>
+      </div>
+
+      <div class="forms-secteur">
+        <p class="form-title4"> Secteur d'activité </p>
+        <div class="custom-select" style="width:200px;">
+          <select>
+            <option value="0">Secteur d'activité:</option>
+            <option value="1">Primaire</option>
+            <option value="2">Secondaire</option>
+            <option value="3">Tertiaire</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="forms-geolocalisation">
+        <p class="form-title5"> Zone de recherche </p>
+        <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliqez sur la carte pour placer un point. </p>
+        <button class="button-57" role="button"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
+        <p class="title5-explain"> Ensuite vous pouvez redimensionner la zone à l'aide </br> du slider ci-dessous. </p>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange">
+        </div>
+      </div>
+
     </div>
-
-    <!-- Hide this text on small devices -->
-    <!--
-    <div class="w3-col m6 w3-hide-small w3-padding-large">
-      <p>Welcome to my website. I am lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    -->
 
     <div id="map" class="map"></div>
 
@@ -99,8 +126,6 @@
   <div class="center-button">
     <button class="button-48" role="button"><span class="text">Lancer la recherche</span></button>
   </div>
-
-</div>
 
 <!-- banderole -->
 <div class="w3-row w3-center w3-dark-grey w3-padding-16">
@@ -240,6 +265,7 @@
 </footer>
 
 <script>
+
 // Modal Image Gallery
 function onClick(element) {
   document.getElementById("img01").src = element.src;
