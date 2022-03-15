@@ -93,32 +93,25 @@
       <div class="forms-geolocalisation">
         <p class="form-title5"> Zone de recherche </p>
         <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliqez sur la carte pour placer un point. </p>
-        <button class="button-57" role="button"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
+        <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
+        <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
         <p class="title5-explain"> Ensuite vous pouvez redimensionner la zone à l'aide </br> du slider ci-dessous. </p>
         <div class="slidecontainer">
-          <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange">
+          <input type="range" min="1" max="10000" value="1000" class="slider" id="sliderCircleOnMap">
         </div>
+      </div>
+
+      <div class="deleteCircleButton">
+        <button class="deleteCircleButton" type="button" onclick="deleteCircleOnMap()">Supprimer la zone</button>
+      </div>
+
+      <div class="testbutton">
+        <button class="testbutton" type="button" onclick="moveZoneDeRecherche()">test</button>
       </div>
 
     </div>
 
-    <div id="map" class="map"></div>
-
-    <script>
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([6.14234, 46.207]),
-          zoom: 12
-        })
-      });
-    </script>
-
+    <div tabindex = "1" id="map" class="map"></div>
 
   </div>
 
@@ -155,44 +148,44 @@
 </div>
 
 <!-- Container (Portfolio Section) -->
-<div class="w3-content w3-container w3-padding-64" id="portfolio">
+<div class="w3-content w3-container" id="portfolio">
   <h3 class="w3-center">Retrouvez tous les résultats de votre recherche ici</h3>
   <p class="w3-center"><em>Cliquez sur une image pour l'agrandir !</em></p><br>
 
   <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
   <div class="w3-row-padding w3-center">
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/rolex.webp" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Rolex">
+      <img src="images/rolex.webp" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Rolex">
     </div>
 
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/migros.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Migros">
+      <img src="images/migros.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Migros">
     </div>
 
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/sig.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les SIG">
+      <img src="images/sig.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les SIG">
     </div>
 
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/hug.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les HUG">
+      <img src="images/hug.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les HUG">
     </div>
   </div>
 
   <div class="w3-row-padding w3-center w3-section">
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/pictet.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Pictet">
+      <img src="images/pictet.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Pictet">
     </div>
 
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/sky.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Skyguide">
+      <img src="images/sky.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Skyguide">
     </div>
 
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/suisse.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Le Credit Suisse">
+      <img src="images/suisse.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Le Credit Suisse">
     </div>
 
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/cern.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur le Cern">
+      <img src="images/cern.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur le Cern">
     </div>
     <button class="w3-button w3-padding-large w3-light-grey" style="margin-top:64px">LOAD MORE</button>
   </div>
@@ -265,6 +258,114 @@
 </footer>
 
 <script>
+
+var cercleOnMap;
+
+var map = new ol.Map({
+  target: 'map',
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  view: new ol.View({
+    center: ol.proj.fromLonLat([6.14234, 46.207]),
+    zoom: 12
+  })
+});
+
+function clickOnMapON() {
+  tiago = true;
+  map.on('click', function(event) {
+
+    if (tiago) {
+
+      var coordsOnMap = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
+      var centerLongitudeLatitude2 = ol.proj.fromLonLat(coordsOnMap);
+      cercleOnMap = new ol.geom.Circle(centerLongitudeLatitude2, 500);
+      // console.log(coords);
+
+      var layer3 = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          projection: 'EPSG:4326',
+          features: [new ol.Feature(cercleOnMap)]
+        }),
+        style: [
+          new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'red',
+              width: 2
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(255, 0, 0, 0.1)'
+            })
+          })
+        ]
+      });
+      layer3.set('name', 'circle');
+      map.addLayer(layer3);
+      increaseCircleSize();
+      tiago = false;
+    }
+  })
+}
+
+function increaseCircleSize() {
+  // slider qui controle le radius du cercle
+  var sliderCircle = document.getElementById("sliderCircleOnMap");
+  //var output = document.getElementById("demo");
+  //output.innerHTML = slider.value;
+
+  // Update le slider
+  sliderCircle.oninput = function() {
+    //output.innerHTML = this.value;
+    cercleOnMap.setRadius(parseInt(this.value));
+  }
+}
+
+function deleteCircleOnMap() {
+  map.getLayers().forEach(layer => {
+    if (layer && layer.get('name') === 'circle') {
+      map.removeLayer(layer);
+    }
+  });
+  console.log("yousk2");
+  tiago = false;
+}
+
+// systeme de fleches pour deplacer le cercle ?
+function moveZoneDeRecherche() {
+  getRadiusInMeter();
+}
+
+function getRadiusInMeter() {
+  var centerCircle = cercleOnMap.getCenter();
+  var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
+  var coordExte = ol.proj.transform(cercleOnMap.getLastCoordinate(), 'EPSG:3857', 'EPSG:4326');
+  console.log(getDistanceInMeters(coordCenter[1], coordCenter[0], coordExte[1], coordExte[0], "K"));
+}
+
+function getDistanceInMeters(lat1, lon1, lat2, lon2, unit) {
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+		var radlat1 = Math.PI * lat1/180;
+		var radlat2 = Math.PI * lat2/180;
+		var theta = lon1-lon2;
+		var radtheta = Math.PI * theta/180;
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+		}
+		dist = Math.acos(dist);
+		dist = dist * 180/Math.PI;
+		dist = dist * 60 * 1.1515;
+		if (unit=="K") { dist = dist * 1.609344 * 1000 }
+		if (unit=="N") { dist = dist * 0.8684 }
+		return dist;
+	}
+}
 
 // Modal Image Gallery
 function onClick(element) {
