@@ -13,7 +13,11 @@
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - N A V B A R - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <div class="w3-top">
   <div class="w3-bar" id="myNavbar">
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
@@ -28,7 +32,7 @@
     </a>
   </div>
 
-  <!-- Navbar small screens -->
+  <!-- Navbar sur petits eccrans -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
     <a href="#about" class="w3-bar-item w3-button" onclick="toggleFunction()">MAP</a>
     <a href="#portfolio" class="w3-bar-item w3-button" onclick="toggleFunction()">RESULTS</a>
@@ -37,62 +41,106 @@
   </div>
 </div>
 
-<!-- First Parallax Image with Logo Text -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - H O M E P A G E - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
-  <div class="w3-display-middle" style="white-space:nowrap;">
-    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">APPLICATION <span class="w3-hide-small">GREP</span> MIAETNOA </span>
+  <div class="w3-display-middle w3-center" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-brown w3-xlarge w3-wide w3-animate-opacity"> APPLICATION MIAETNOA </span> </br></br>
+    <button class="button-74 w3-animate-opacity" role="button">C'est parti</button>
   </div>
 </div>
 
-<!-- Container (About Section) -->
-<div class="w3-content w3-container w3-padding-64" id="about">
-  <h3 class="w3-center">RECHERCHE</h3>
-  <p class="w3-center"><em>C'est ici que vous pourrez faire votre recherche</em></p>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - P A R A M E T R E S - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<div class="mapTitle" id="about">
+  <h1>Recherche</h1>
+</div>
 
+<div class="map-container1">
 
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lorem nisl, luctus scelerisque ultrices ut, vestibulum a elit.
-    Integer at faucibus augue, sed ultrices justo. Etiam hendrerit enim a justo convallis commodo. Praesent vel pellentesque odio.
-    Aliquam tempus felis a urna pellentesque porttitor. Mauris vel elit congue, laoreet lorem vel, tempus ex. Sed ultricies augue non sem pulvinar fermentum.
-    Fusce sodales sollicitudin orci, vel tempus nisl rhoncus in. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-    Nulla vulputate sapien vitae quam aliquet, a gravida lorem suscipit. Fusce auctor sem risus, non convallis dui porttitor non. Suspendisse potenti.
-    Sed tincidunt lacus at mauris dapibus, quis vehicula orci consequat. Nam ullamcorper nec arcu sit amet elementum.
-    Duis lobortis quam viverra pulvinar ultricies.</p>
+    <div class="forms">
 
-  <div class="w3-row">
+      <div class="forms-employes">
+        <p class="form-title1"> Nombre d'employés </p>
+        <div class="slidecontainer">
+          <div class="sliderinnercontainer">
+            <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange1">
+          </div>
+          <div class="slidervalue1">
+            <span id="valueemploye1">1000</span>
+          </div>
+        </div>
 
-    <!--
-    <div class="w3-col m6 w3-center w3-padding-large">
-      <p><b><i class="fa fa-user w3-margin-right"></i>My Name</b></p><br>
-      <img src="/w3images/avatar_hat.jpg" class="w3-round w3-image w3-opacity w3-hover-opacity-off" alt="Photo of Me" width="500" height="333">
+        <div class="slidecontainer2">
+          <div class="sliderinnercontainer2">
+            <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange2">
+          </div>
+          <div class="slidervalue2">
+            <span id="valueemploye2">1000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="forms-age">
+        <p class="form-title2"> Âge moyen </p>
+        <div class="slidecontainer3">
+          <div class="sliderinnercontainer3">
+            <input type="range" min="1" max="100" value="10" class="slider" id="myRange3">
+          </div>
+          <div class="slidervalue3">
+            <span id="valueage">10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="forms-loyer">
+        <p class="form-title3"> Loyer moyen </p>
+        <div class="slidecontainer4">
+          <div class="sliderinnercontainer4">
+            <input type="range" min="1" max="5000" value="500" class="slider" id="myRange4">
+          </div>
+          <div class="slidervalue4">
+            <span id="valueloyer">500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="forms-secteur">
+        <p class="form-title4"> Secteur d'activité </p>
+        <div class="custom-select" style="width:200px;">
+          <select>
+            <option value="0">Secteur d'activité:</option>
+            <option value="1">Primaire</option>
+            <option value="2">Secondaire</option>
+            <option value="3">Tertiaire</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="forms-geolocalisation">
+        <p class="form-title5"> Zone de recherche </p>
+        <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliqez sur la carte pour placer un point. </p>
+        <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
+        <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
+        <p class="title5-explain"> Ensuite vous pouvez redimensionner la zone à l'aide </br> du slider ci-dessous. </p>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="10000" value="1000" class="slider" id="sliderCircleOnMap">
+        </div>
+      </div>
+      <div class="deleteCircleButton">
+        <button class="deleteCircleButton" type="button" onclick="deleteCircleOnMap()">Supprimer la zone</button>
+      </div>
+      <div class="testbutton">
+        <button class="testbutton" type="button" onclick="moveZoneDeRecherche()">test</button>
+      </div>
     </div>
-
-    <!-- Hide this text on small devices -->
-    <!--
-    <div class="w3-col m6 w3-hide-small w3-padding-large">
-      <p>Welcome to my website. I am lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    -->
-
-    <div id="map" class="map"></div>
-
-    <script>
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([6.14234, 46.207]),
-          zoom: 12
-        })
-      });
-    </script>
-
-
+    <div tabindex = "1" id="map" class="map"></div>
   </div>
 
   <p class="w3-large w3-center w3-padding-16">Une fois tous les champs complétés, vous pouvez lancer votre recherche</p>
@@ -100,9 +148,11 @@
     <button class="button-48" role="button"><span class="text">Lancer la recherche</span></button>
   </div>
 
-</div>
-
-<!-- banderole -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - B A N D E R O L E - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <div class="w3-row w3-center w3-dark-grey w3-padding-16">
   <div class="w3-quarter w3-section">
     <span class="w3-xlarge">Andi</span><br>
@@ -122,58 +172,56 @@
   </div>
 </div>
 
-<!-- Second Parallax Image with Portfolio Text -->
+<!-- deuxieme image parralax -->
 <div class="bgimg-2 w3-display-container w3-opacity-min">
   <div class="w3-display-middle">
     <span class="w3-xxlarge w3-text-black w3-wide">RESULTS</span>
   </div>
 </div>
 
-<!-- Container (Portfolio Section) -->
-<div class="w3-content w3-container w3-padding-64" id="portfolio">
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - R E S U L T A T S - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<div class="w3-content w3-container" id="portfolio">
   <h3 class="w3-center">Retrouvez tous les résultats de votre recherche ici</h3>
   <p class="w3-center"><em>Cliquez sur une image pour l'agrandir !</em></p><br>
 
-  <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
+  <!-- Grille avec images des resultats / stack sur mobile et petit ecran -->
   <div class="w3-row-padding w3-center">
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/rolex.webp" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Rolex">
+      <img src="images/rolex.webp" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Rolex">
     </div>
-
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/migros.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Migros">
+      <img src="images/migros.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Migros">
     </div>
-
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/sig.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les SIG">
+      <img src="images/sig.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les SIG">
     </div>
-
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/hug.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les HUG">
+      <img src="images/hug.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les HUG">
     </div>
   </div>
 
   <div class="w3-row-padding w3-center w3-section">
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/pictet.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Pictet">
+      <img src="images/pictet.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Pictet">
     </div>
-
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/sky.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Skyguide">
+      <img src="images/sky.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Skyguide">
     </div>
-
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/suisse.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Le Credit Suisse">
+      <img src="images/suisse.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Le Credit Suisse">
     </div>
-
     <div class="w3-col m3">
-      <img src="/GREP/GREP_Frontend/images/cern.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur le Cern">
+      <img src="images/cern.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur le Cern">
     </div>
     <button class="w3-button w3-padding-large w3-light-grey" style="margin-top:64px">LOAD MORE</button>
   </div>
 </div>
 
-<!-- Modal for full size images on click-->
+<!-- partie des images en full size-->
 <div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
   <span class="w3-button w3-large w3-black w3-display-topright" title="Close Modal Image"><i class="fa fa-remove"></i></span>
   <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
@@ -182,50 +230,18 @@
   </div>
 </div>
 
-<!-- Third Parallax Image with Portfolio Text -->
+<!-- troisieme image parralax contact -->
 <div class="bgimg-3 w3-display-container w3-opacity-min">
   <div class="w3-display-middle">
-     <span class="w3-xxlarge w3-text-white w3-wide">CONTACT</span>
+     <span class="w3-xxlarge w3-text-black w3-wide">CONTACT</span>
   </div>
 </div>
 
-<!-- Container (Contact Section) -->
-<!--
-<div class="w3-content w3-container w3-padding-64" id="contact">
-  <h3 class="w3-center">WHERE I WORK</h3>
-  <p class="w3-center"><em>I'd love your feedback!</em></p>
-
-  <div class="w3-row w3-padding-32 w3-section">
-    <div class="w3-col m4 w3-container">
-      <img src="/w3images/map.jpg" class="w3-image w3-round" style="width:100%">
-    </div>
-    <div class="w3-col m8 w3-panel">
-      <div class="w3-large w3-margin-bottom">
-        <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Chicago, US<br>
-        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: +00 151515<br>
-        <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: mail@mail.com<br>
-      </div>
-      <p>Swing by for a cup of <i class="fa fa-coffee"></i>, or leave me a note:</p>
-      <form action="/action_page.php" target="_blank">
-        <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-          <div class="w3-half">
-            <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
-          </div>
-          <div class="w3-half">
-            <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
-          </div>
-        </div>
-        <input class="w3-input w3-border" type="text" placeholder="Message" required name="Message">
-        <button class="w3-button w3-black w3-right w3-section" type="submit">
-          <i class="fa fa-paper-plane"></i> SEND MESSAGE
-        </button>
-      </form>
-    </div>
-  </div>
-</div>
---!>
-
-<!-- Footer -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - F O O T E R - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
   <div class="w3-xlarge w3-section">
@@ -239,36 +255,7 @@
   <p>L'équipe GREP <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">5head</a></p>
 </footer>
 
-<script>
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-
-// Change style of navbar on scroll
-window.onscroll = function() {myFunction()};
-function myFunction() {
-    var navbar = document.getElementById("myNavbar");
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        navbar.className = "w3-bar" + " w3-card" + " w3-animate-top" + " w3-white";
-    } else {
-        navbar.className = navbar.className.replace(" w3-card w3-animate-top w3-white", "");
-    }
-}
-
-// Used to toggle the menu on small screens when clicking on the menu button
-function toggleFunction() {
-    var x = document.getElementById("navDemo");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-    } else {
-        x.className = x.className.replace(" w3-show", "");
-    }
-}
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>
