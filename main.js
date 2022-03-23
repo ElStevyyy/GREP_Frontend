@@ -1,3 +1,38 @@
+
+// test avec VueJs3 et Axios
+
+const api = "https://api.coindesk.com/v1/bpi/currentprice.json"
+const api2 = "https://randomuser.me/api/?results=10"
+const apiBars = "http://172.105.245.5:8000/api/bars"
+
+const myVueComponent = {
+  data() {
+    return {
+      bars : ""
+    }
+  },
+  methods : {
+      testApiRequest() {
+        axios.get(apiBars)
+        .then((response) => {
+
+          for (var i = 0; i < response.data.length; i++) {
+            console.log(response.data[i]);
+            var barCoords = [response.data[i].Longitude,response.data[i].Latitude]
+            placeBarOnMap(barCoords);
+          }
+        })
+        .catch((error) => {
+          console.log("yousk2");
+        })
+      }
+  }
+}
+
+const myApp = Vue.createApp(myVueComponent).mount("#appVue")
+
+
+// local variables
 var cercleOnMap;
 var allowToPlaceZone = true;
 
@@ -14,6 +49,34 @@ var map = new ol.Map({
   })
 });
 
+// fonction qui placent les bars existants sur la carte
+function placeBarOnMap(barCoords) {
+
+  var centerLongitudeLatitudeBars = ol.proj.fromLonLat(barCoords);
+  barOnMap = new ol.geom.Circle(centerLongitudeLatitudeBars, 50000);
+
+  var layerBar = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      projection: 'EPSG:4326',
+      features: [new ol.Feature(barOnMap)]
+    }),
+    style: [
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'black',
+          width: 2
+        }),
+        fill: new ol.style.Fill({
+          color: 'rgba(255, 0, 0, 0.1)'
+        })
+      })
+    ]
+  });
+  layerBar.set('name', 'bar');
+  map.addLayer(layerBar);
+
+}
+
 //  fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
 function clickOnMapON() {
 
@@ -22,8 +85,11 @@ function clickOnMapON() {
     if (allowToPlaceZone) {
 
       var coordsOnMap = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
+      console.log(coordsOnMap);
       var centerLongitudeLatitude2 = ol.proj.fromLonLat(coordsOnMap);
+      console.log(centerLongitudeLatitude2);
       cercleOnMap = new ol.geom.Circle(centerLongitudeLatitude2, 500);
+      console.log(cercleOnMap);
       // console.log(coords);
 
       var layer3 = new ol.layer.Vector({
@@ -148,3 +214,8 @@ function toggleFunction() {
         x.className = x.className.replace(" w3-show", "");
     }
 }
+
+
+
+
+// test api fetch

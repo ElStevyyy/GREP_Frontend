@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.13.0/build/ol.js"></script>
 </head>
 <body>
+<div id="appVue">
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -139,6 +140,12 @@
       <div class="testbutton">
         <button class="testbutton" type="button" onclick="moveZoneDeRecherche()">test</button>
       </div>
+      <div class="testbutton2">
+        <button class="testbutton2" type="button" @click="testApiRequest()">API</button>
+      </div>
+      <div id="testVueAxios">
+        {{bars}}
+      </div>
     </div>
     <div tabindex = "1" id="map" class="map"></div>
   </div>
@@ -255,7 +262,12 @@
   <p>L'équipe GREP <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">5head</a></p>
 </footer>
 
+</div>
+</body>
+
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="main.js"></script>
 
-</body>
 </html>
