@@ -1,13 +1,16 @@
 
-// test avec VueJs3 et Axios
+// test GET avec VueJs3 et Axios
 
 const api = "https://api.coindesk.com/v1/bpi/currentprice.json"
 const api2 = "https://randomuser.me/api/?results=10"
 const apiBars = "http://172.105.245.5:8000/api/bars"
+const jsonBar = JSON.stringify({ Longitude: 66.666,Latitude: 77.777 });
+console.log(jsonBar);
 
 const myVueComponent = {
   data() {
     return {
+      postBar: JSON.stringify({Longitude: 66.666,Latitude: 77.777}),
       bars : ""
     }
   },
@@ -15,7 +18,6 @@ const myVueComponent = {
       testApiRequest() {
         axios.get(apiBars)
         .then((response) => {
-
           for (var i = 0; i < response.data.length; i++) {
             console.log(response.data[i]);
             var barCoords = [response.data[i].Longitude,response.data[i].Latitude]
@@ -25,7 +27,18 @@ const myVueComponent = {
         .catch((error) => {
           console.log("yousk2");
         })
-      }
+      },
+
+      testPostNow() {
+        axios({
+          method: 'post',
+          url: apiBars,
+          data: {
+            Latitude: 66.666,
+            Longitude: 77.777
+          },
+        });
+    },
   }
 }
 
