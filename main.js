@@ -4,8 +4,9 @@
 const api = "https://api.coindesk.com/v1/bpi/currentprice.json"
 const api2 = "https://randomuser.me/api/?results=10"
 const apiBars = "http://172.105.245.5:8000/api/bars"
+const urlNoga = "http://172.105.245.5:8000/api/nogas"
+const urlJuridique = "http://172.105.245.5:8000/api/juridiques"
 const jsonBar = JSON.stringify({ Longitude: 66.666,Latitude: 77.777 });
-console.log(jsonBar);
 
 const myVueComponent = {
   data() {
@@ -25,7 +26,7 @@ const myVueComponent = {
           }
         })
         .catch((error) => {
-          console.log("yousk2");
+          console.log("bars error" + error);
         })
       },
 
@@ -39,6 +40,35 @@ const myVueComponent = {
           },
         });
     },
+  },
+  mounted() {
+    // recupere les natures juridiques pour les mettre dans une liste deroulante
+    axios.get(urlJuridique)
+    .then((response) => {
+      //console.log(response);
+      naturejuridique = "";
+      for (var i = 1; i < response.data.length; i++) {
+        naturejuridique += "<option value=" + i + ">" + response.data[i].natureJuridique + "</option>"
+      }
+      document.getElementById("select-naturejuridique").innerHTML = naturejuridique;
+    })
+    .catch((error) => {
+      console.log("erreur code noga" + error);
+    }),
+
+    // recupere les code noga pour les mettre dans une liste deroulante
+    axios.get(urlNoga)
+    .then((response) => {
+      //console.log(response);
+      noga = "";
+      for (var i = 0; i < response.data.length; i++) {
+        noga += "<option value=" + i + ">" + response.data[i].nom + "</option>"
+      }
+      document.getElementById("select-code-noga").innerHTML = noga;
+    })
+    .catch((error) => {
+      console.log("erreur code noga" + error);
+    })
   }
 }
 
@@ -66,7 +96,7 @@ var map = new ol.Map({
 function placeBarOnMap(barCoords) {
 
   var centerLongitudeLatitudeBars = ol.proj.fromLonLat(barCoords);
-  barOnMap = new ol.geom.Circle(centerLongitudeLatitudeBars, 50000);
+  barOnMap = new ol.geom.Circle(centerLongitudeLatitudeBars, 100);
 
   var layerBar = new ol.layer.Vector({
     source: new ol.source.Vector({
@@ -186,18 +216,15 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2, unit) {
 	}
 }
 
-var slider1 = document.getElementById("myRange1");
-var slider2 = document.getElementById("myRange2");
-var slider3 = document.getElementById("myRange3");
-var slider4 = document.getElementById("myRange4");
-var value1 = document.getElementById("valueemploye1");
-var value2 = document.getElementById("valueemploye2");
-var value3 = document.getElementById("valueage");
-var value4 = document.getElementById("valueloyer");
-slider1.onchange = function() {value1.innerHTML = this.value;}
-slider2.onchange = function() {value2.innerHTML = this.value;}
-slider3.onchange = function() {value3.innerHTML = this.value;}
-slider4.onchange = function() {value4.innerHTML = this.value;}
+// change la valeur a cote des sliders dans les parametres
+var slider_taille = document.getElementById("range-taille");
+var value_taille = document.getElementById("value-taille");
+slider_taille.onchange = function() {value_taille.innerHTML = this.value;}
+
+var slider_zoneexclu = document.getElementById("range-zoneexclu");
+var value_zoneexclu = document.getElementById("value-zoneexclu");
+slider_zoneexclu.onchange = function() {value_zoneexclu.innerHTML = this.value;}
+
 
 // Modal Image Gallery
 function onClick(element) {

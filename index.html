@@ -68,65 +68,50 @@
 
       <div class="forms">
 
-        <div class="forms-employes">
-          <p class="form-title1"> Nombre d'employés </p>
-          <div class="slidecontainer">
-            <div class="sliderinnercontainer">
-              <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange1">
-            </div>
-            <div class="slidervalue1">
-              <span id="valueemploye1">1000</span>
-            </div>
-          </div>
-
-          <div class="slidecontainer2">
-            <div class="sliderinnercontainer2">
-              <input type="range" min="1" max="10000" value="1000" class="slider" id="myRange2">
-            </div>
-            <div class="slidervalue2">
-              <span id="valueemploye2">1000</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="forms-age">
-          <p class="form-title2"> Âge moyen </p>
-          <div class="slidecontainer3">
-            <div class="sliderinnercontainer3">
-              <input type="range" min="1" max="100" value="10" class="slider" id="myRange3">
-            </div>
-            <div class="slidervalue3">
-              <span id="valueage">10</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="forms-loyer">
-          <p class="form-title3"> Loyer moyen </p>
-          <div class="slidecontainer4">
-            <div class="sliderinnercontainer4">
-              <input type="range" min="1" max="5000" value="500" class="slider" id="myRange4">
-            </div>
-            <div class="slidervalue4">
-              <span id="valueloyer">500</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="forms-secteur">
-          <p class="form-title4"> Secteur d'activité </p>
-          <div class="custom-select" style="width:200px;">
-            <select>
-              <option value="0">Secteur d'activité:</option>
-              <option value="1">Primaire</option>
-              <option value="2">Secondaire</option>
-              <option value="3">Tertiaire</option>
+        <div class="forms-noga">
+          <p class="form-title-noga"> Code Noga </p>
+          <div class="code-noga">
+            <select id="select-code-noga" v-model="selected">
+              <option disabled value="">Choisissez un code Noga</option>
             </select>
           </div>
         </div>
 
+        <div class="forms-naturejuridique">
+          <p class="form-title-naturejuridique"> Nature juridique </p>
+          <div class="nature-juridique">
+            <select id="select-naturejuridique" v-model="selected">
+              <option disabled value="">Choisissez une nature ju.</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="forms-taille">
+          <p class="form-title-taille"> Taille de l'entreprise </p>
+          <div class="slidecontainer-taille">
+            <div class="sliderinnercontainer-taille">
+              <input type="range" min="10" max="2000" value="200" class="slider" id="range-taille">
+            </div>
+            <div class="slidervalue-taille">
+              <span id="value-taille">200</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="forms-zone-exclusion">
+          <p class="form-title-zoneexclu"> Zone d'exclusion </p>
+          <div class="slidecontainer-zoneexclu">
+            <div class="sliderinnercontainer-zoneexclu">
+              <input type="range" min="10" max="2000" value="200" class="slider" id="range-zoneexclu">
+            </div>
+            <div class="slidervalue-zoneexclu">
+              <span id="value-zoneexclu">200</span>
+            </div>
+          </div>
+        </div>
+
         <div class="forms-geolocalisation">
-          <p class="form-title5"> Zone de recherche </p>
+          <p class="form-title-localisation"> Zone de recherche </p>
           <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliqez sur la carte pour placer un point. </p>
           <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
           <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
@@ -135,16 +120,16 @@
             <input type="range" min="1" max="10000" value="1000" class="slider" id="sliderCircleOnMap">
           </div>
         </div>
-        <div class="deleteCircleButton">
+        <div class="boutondetest">
           <button class="deleteCircleButton" type="button" onclick="deleteCircleOnMap()">Supprimer la zone</button>
         </div>
-        <div class="testbutton">
+        <div class="boutondetest">
           <button class="testbutton" type="button" onclick="moveZoneDeRecherche()">test</button>
         </div>
-        <div class="testbutton2">
-          <button class="testbutton2" type="button" @click="testApiRequest()">GET</button>
+        <div class="boutondetest">
+          <button class="testbutton2" type="button" @click="testApiRequest()">BARS</button>
         </div>
-        <div class="testbutton3">
+        <div class="boutondetest">
           <button class="testbutton3" type="button" @click="testPostNow()">POST</button>
         </div>
       </div>

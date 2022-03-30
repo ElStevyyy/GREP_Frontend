@@ -18,25 +18,37 @@
   text-align: center;
 }
 
+.boutondetest {
+  margin-left: 10%;
+  margin-top: 1%;
+}
 
-.forms-employes {
+.forms-noga {
   margin-left: 10%;
 }
 
-.forms-age {
+#select-code-noga {
+  width: 62%;
+}
+
+#select-naturejuridique {
+  width: 62%;
+}
+
+.forms-taille {
   margin-left: 10%;
 }
 
-.forms-loyer {
+.forms-naturejuridique {
   margin-left: 10%;
 }
 
-.forms-secteur {
+.forms-zone-exclusion {
   margin-left: 10%;
 }
 
 .forms-geolocalisation {
-  margin-top: 20%;
+  margin-top: 2%;
   margin-left: 10%;
 }
 
@@ -44,23 +56,23 @@
   font-size: x-small;
 }
 
-.form-title1 {
+.form-title-noga {
   font-size: large;
 }
 
-.form-title2 {
+.form-title-localisation {
   font-size: large;
 }
 
-.form-title3 {
+.form-title-taille {
   font-size: large;
 }
 
-.form-title4 {
+.form-title-naturejuridique {
   font-size: large;
 }
 
-.form-title5 {
+.form-title-zoneexclu {
   font-size: large;
 }
 
@@ -69,34 +81,33 @@
   display: flex;
 }
 
-.slidervalue1 {
+.slidervalue-taille {
   margin-left: 5%;
 }
 
-.slidecontainer2 {
+.slidervalue-zoneexclu {
+  margin-left: 5%;
+}
+
+.slidecontainer-taille {
   width: 85%;
   display: flex;
 }
 
-.slidervalue2 {
-  margin-left: 5%;
+.sliderinnercontainer-taille {
+  width: 73%;
 }
 
-.slidecontainer3 {
+.sliderinnercontainer-zoneexclu {
+  width: 73%;
+}
+
+.slidecontainer-zoneexclu {
   width: 85%;
   display: flex;
 }
 
-.slidervalue3 {
-  margin-left: 5%;
-}
-
-.slidecontainer4 {
-  width: 85%;
-  display: flex;
-}
-
-.slidervalue4 {
+.slidervalue-zoneexclu {
   margin-left: 5%;
 }
 
