@@ -1,12 +1,12 @@
 
 // test GET avec VueJs3 et Axios
 
-const api = "https://api.coindesk.com/v1/bpi/currentprice.json"
-const api2 = "https://randomuser.me/api/?results=10"
 const apiBars = "http://172.105.245.5:8000/api/bars"
 const urlNoga = "http://172.105.245.5:8000/api/nogas"
 const urlJuridique = "http://172.105.245.5:8000/api/juridiques"
-const jsonBar = JSON.stringify({ Longitude: 66.666,Latitude: 77.777 });
+const urlParams = "http://172.105.245.5:8000/api/search"
+const apiTaille = "http://172.105.245.5:8000/api/tailles"
+var infoEntreprise = "";
 
 const myVueComponent = {
   data() {
@@ -16,6 +16,7 @@ const myVueComponent = {
     }
   },
   methods : {
+      // recuperation des bars avec une requete GET
       testApiRequest() {
         axios.get(apiBars)
         .then((response) => {
@@ -30,6 +31,7 @@ const myVueComponent = {
         })
       },
 
+      // fonction de test avec une requete POST
       testPostNow() {
         axios({
           method: 'post',
@@ -39,16 +41,72 @@ const myVueComponent = {
             Longitude: 77.777
           },
         });
-    },
+      },
+
+      // fonction d'envoi des parametres
+      envoieParametres() {
+
+        // bons parametres, ne pas supprimer
+        /*
+        var taille = document.getElementById("select-taille").value;
+        var zoneexclu = document.getElementById("value-zoneexclu").innerHTML;
+        var codenoga = document.getElementById("select-code-noga").value;
+        var natjur = document.getElementById("select-naturejuridique").value;
+        var longitude = getLocaLong();
+        var latitude = getLocaLat();
+        var radius = getRadiusInMeter();
+        */
+
+        //var taille = "2";
+        var zoneexclu = "200";
+        var codenoga = "9496";
+        var natjur = "4";
+        var longitude = 6.140833290040641;
+        var latitude = 46.2005701220817;
+        var radius = 6913.282075607314;
+
+        axios.get(urlParams, {
+          params: {
+            //taille: taille,
+            zoneExclusion: zoneexclu,
+            //noga: codenoga,
+            //natureJuridique: natjur,
+            longitude: longitude,
+            latitude: latitude,
+            radius: radius
+          }
+        })
+        .then((response) => {
+          console.log("bien pris");
+          infoEntreprise = response.data;
+          console.log(infoEntreprise);
+        })
+        .catch((error) => {
+          console.log("c'est mort " + error);
+        })
+      },
+
+      getTaille() {
+        axios.get(apiTaille)
+        .then((response) => {
+          for (var i = 0; i < response.data.length; i++) {
+            console.log(response.data[i]);
+          }
+        })
+        .catch((error) => {
+          console.log("taille error" + error);
+        })
+      }
   },
   mounted() {
+
     // recupere les natures juridiques pour les mettre dans une liste deroulante
     axios.get(urlJuridique)
     .then((response) => {
       //console.log(response);
       naturejuridique = "";
       for (var i = 1; i < response.data.length; i++) {
-        naturejuridique += "<option value=" + i + ">" + response.data[i].natureJuridique + "</option>"
+        naturejuridique += "<option value=" + response.data[i].idJuridique + ">" + response.data[i].natureJuridique + "</option>"
       }
       document.getElementById("select-naturejuridique").innerHTML = naturejuridique;
     })
@@ -62,12 +120,22 @@ const myVueComponent = {
       //console.log(response);
       noga = "";
       for (var i = 0; i < response.data.length; i++) {
-        noga += "<option value=" + i + ">" + response.data[i].nom + "</option>"
+        noga += "<option value=" + response.data[i].code + ">" + response.data[i].nom + "</option>"
       }
       document.getElementById("select-code-noga").innerHTML = noga;
     })
     .catch((error) => {
       console.log("erreur code noga" + error);
+    }),
+
+    // recupere les tailles pour les mettre dans une liste deroulante
+    axios.get(apiTaille)
+    .then((response) => {
+      taille = "";
+      for (var i = 1; i < response.data.length; i++) {
+        taille += "<option value=" + response.data[i].idTaille + ">" + response.data[i].taille + "</option>"
+      }
+      document.getElementById("select-taille").innerHTML = taille;
     })
   }
 }
@@ -79,6 +147,7 @@ const myApp = Vue.createApp(myVueComponent).mount("#appVue")
 var cercleOnMap;
 var allowToPlaceZone = true;
 
+// creation de la premiere carte au niveau des parametres
 var map = new ol.Map({
   target: 'map',
   layers: [
@@ -91,6 +160,272 @@ var map = new ol.Map({
     zoom: 12
   })
 });
+
+// creation de la seconde carte au niveau des resultats
+var map2 = new ol.Map({
+  target: 'map2',
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  view: new ol.View({
+    center: ol.proj.fromLonLat([6.14234, 46.207]),
+    zoom: 12
+  })
+});
+
+var listeCodeNoga = [];
+
+// function de creation du panier de code noga (mutiple selections)
+function getSelectedNoga() {
+
+  var selectNoga = document.getElementById("select-code-noga");
+  var selectedValue = selectNoga.options[selectNoga.selectedIndex].value;
+  var selectedText = selectNoga.options[selectNoga.selectedIndex].text;
+  var substring = selectedText.substring(0, 34);
+
+  listeCodeNoga.push(selectedValue);
+  console.log(listeCodeNoga.join(","));
+
+  var parent = document.createElement("div");
+  parent.classList.add("noga-parent");
+
+  var nogaName = document.createElement("div");
+  nogaName.classList.add("noga-name");
+  nogaName.appendChild(document.createTextNode(substring));
+
+  var nogaDelete = document.createElement("div");
+  nogaDelete.classList.add("noga-delete");
+  var iconeCroix = document.createElement("img");
+  iconeCroix.src = "images/croix.png"
+  nogaDelete.appendChild(iconeCroix);
+
+  nogaDelete.addEventListener('click', function (event) {
+    this.parentNode.remove();
+  })
+
+  parent.appendChild(nogaName);
+  parent.appendChild(nogaDelete);
+
+  document.getElementById("nogaBucket").appendChild(parent);
+
+  document.getElementById("select-code-noga").options[document.getElementById("select-code-noga").selectedIndex].disabled = true;
+
+}
+
+var listeNatjur = [];
+
+// function de creation du panier de nature juridique (mutiple selections)
+function getSelectedNatjur() {
+
+  var selectNatjur = document.getElementById("select-naturejuridique");
+  var selectedValue = selectNatjur.options[selectNatjur.selectedIndex].value;
+  var selectedText = selectNatjur.options[selectNatjur.selectedIndex].text;
+  var substring = selectedText.substring(0, 34);
+
+  listeNatjur.push(selectedValue);
+  console.log(listeNatjur.join(","));
+
+  var parent = document.createElement("div");
+  parent.classList.add("natjur-parent");
+
+  var natjurName = document.createElement("div");
+  natjurName.classList.add("natjur-name");
+  natjurName.appendChild(document.createTextNode(substring));
+
+  var natjurDelete = document.createElement("div");
+  natjurDelete.classList.add("natjur-delete");
+  natjurDelete.setAttribute('id', selectNatjur.options[selectNatjur.selectedIndex].value);
+  var iconeCroix = document.createElement("img");
+  iconeCroix.src = "images/croix.png";
+  natjurDelete.appendChild(iconeCroix);
+
+  natjurDelete.addEventListener('click', function (event) {
+    this.parentNode.remove();
+  })
+
+  parent.appendChild(natjurName);
+  parent.appendChild(natjurDelete);
+
+  document.getElementById("natjurBucket").appendChild(parent);
+
+  document.getElementById("select-naturejuridique").options[document.getElementById("select-naturejuridique").selectedIndex].disabled = true;
+
+}
+
+// fonction qui recupere les informations des entites, cree les div et les ajoute
+function getInfoEntreprise() {
+
+  // TODO:
+  // faire une div parent qui contiendra toutes les div enfants avec les differentes entreprises
+  // faire un model de div enfant avec toutes les informations de l'entreprises
+  // (a voir) bloquer le nombre à x resulats et loader les suivants en scrollant/autre options
+  // faire un bouton de suppression rapide d'une entité
+  // faire en sorte qu'un clic sur une entité la mette en surbrillance sur la carte
+  // faire en sorte de derouler la vignette avec toutes les informations
+  // s'occuper de l'export en csv
+
+  //console.log(infoEntreprise);
+  //console.log(infoEntreprise.length);
+
+  var infoToExtract = infoEntreprise;
+
+  for (var i = 0; i < infoEntreprise.length; i++) {
+    //console.log(infoEntreprise[i].nom);
+
+    var parent = document.createElement("div");
+    parent.classList.add("entites");
+    parent.setAttribute("id", i);
+
+    var div1 = document.createElement("div");
+    div1.classList.add("div1");
+    div1.appendChild(document.createTextNode(infoEntreprise[i].nom));
+
+    var coordSurbrillance;
+
+    div1.addEventListener('click', (event) => {
+      replaceSurbrillance(coordSurbrillance);
+      coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
+      placeSurbrillancePointsOnMap(coordSurbrillance);
+      console.log(infoEntreprise[event.target.parentElement.id]);
+    });
+
+    var div2 = document.createElement("div");
+    div2.classList.add("div2");
+    div2.appendChild(document.createTextNode(infoEntreprise[i].branche));
+
+    var div3 = document.createElement("div");
+    div3.classList.add("div3");
+
+    if (infoEntreprise[i].taille !== null) {
+      div3.appendChild(document.createTextNode(infoEntreprise[i].taille));
+    }
+    else {
+      div3.appendChild(document.createTextNode("Taille non renseignée"));
+    }
+
+    var div4 = document.createElement("div");
+    div4.classList.add("div4");
+    if (infoEntreprise[i].siteInternet !== null) {
+      var a = document.createElement("a");
+      var link = document.createTextNode(infoEntreprise[i].siteInternet);
+      a.appendChild(link);
+      a.href = infoEntreprise[i].siteInternet.toString();
+      a.target = "_blank";
+      div4.appendChild(a);
+    }
+    else {
+      div4.appendChild(document.createTextNode("Site web non renseigné"));
+    }
+
+    var div5 = document.createElement("div");
+    div5.classList.add("div5");
+    var iconePoubelle = document.createElement("img");
+    iconePoubelle.src = "images/poub.png"
+    div5.appendChild(iconePoubelle);
+
+    div5.addEventListener('click', function (event) {
+      this.parentNode.remove();
+      var id;
+
+      if (event.target.parentElement.id == "") {
+        id = event.target.parentElement.parentElement.id;
+      }
+      else {
+        id = event.target.parentElement.id;
+      }
+      console.log(id);
+      infoEntreprise[id] = null;
+    })
+
+    parent.appendChild(div1);
+    parent.appendChild(div2);
+    parent.appendChild(div3);
+    parent.appendChild(div4);
+    parent.appendChild(div5);
+
+    //parent.appendChild(document.createTextNode(infoEntreprise[i].nom));
+    document.getElementById("liste-resultats").appendChild(parent);
+
+    var pointCoords = [infoEntreprise[i].longitude,infoEntreprise[i].latitude]
+    placePointsOnMap(pointCoords);
+
+  }
+}
+
+// fonction qui place un point sur la carte en fonction des coordonnees de l'entite
+function placePointsOnMap(entityCoords) {
+
+  var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
+  pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
+
+  var layerPoint = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      projection: 'EPSG:4326',
+      features: [new ol.Feature(pointOnMap)]
+    }),
+    style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({color: 'red'})
+          })
+      })
+  });
+  layerPoint.set('name', 'point');
+  map2.addLayer(layerPoint);
+
+}
+
+// function qui place un point d'une autre couleur sur la carte (surbrillance)
+function placeSurbrillancePointsOnMap(entityCoords) {
+
+  var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
+  pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
+
+  var layerPoint = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      projection: 'EPSG:4326',
+      features: [new ol.Feature(pointOnMap)]
+    }),
+    style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({color: 'yellow'})
+          })
+      })
+  });
+  layerPoint.set('name', 'pointSurbrillance');
+  map2.addLayer(layerPoint);
+
+}
+
+// fonction qui remet en couleur normal une entite
+function replaceSurbrillance(entityCoords) {
+
+  if (entityCoords == null) {
+    console.log("yousk2");
+  }
+  else {
+    var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
+    pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
+
+    var layerPoint = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        projection: 'EPSG:4326',
+        features: [new ol.Feature(pointOnMap)]
+      }),
+      style: new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: 6,
+              fill: new ol.style.Fill({color: 'red'})
+            })
+        })
+    });
+    layerPoint.set('name', 'pointSurbrillance');
+    map2.addLayer(layerPoint);
+  }
+}
 
 // fonction qui placent les bars existants sur la carte
 function placeBarOnMap(barCoords) {
@@ -128,11 +463,11 @@ function clickOnMapON() {
     if (allowToPlaceZone) {
 
       var coordsOnMap = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
-      console.log(coordsOnMap);
+      //console.log(coordsOnMap);
       var centerLongitudeLatitude2 = ol.proj.fromLonLat(coordsOnMap);
-      console.log(centerLongitudeLatitude2);
+      //console.log(centerLongitudeLatitude2);
       cercleOnMap = new ol.geom.Circle(centerLongitudeLatitude2, 500);
-      console.log(cercleOnMap);
+      //console.log(cercleOnMap);
       // console.log(coords);
 
       var layer3 = new ol.layer.Vector({
@@ -185,12 +520,30 @@ function moveZoneDeRecherche() {
   getRadiusInMeter();
 }
 
+function getLocaLat() {
+  var centerCircle = cercleOnMap.getCenter();
+  var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
+  var latitude = coordCenter[1];
+  //console.log(latitude);
+  return latitude;
+}
+
+function getLocaLong() {
+  var centerCircle = cercleOnMap.getCenter();
+  var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
+  var longitude = coordCenter[0];
+  //console.log(longitude);
+  return longitude;
+}
+
 // fonction qui recupere le rayon du cercle
 function getRadiusInMeter() {
   var centerCircle = cercleOnMap.getCenter();
   var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
   var coordExte = ol.proj.transform(cercleOnMap.getLastCoordinate(), 'EPSG:3857', 'EPSG:4326');
-  console.log(getDistanceInMeters(coordCenter[1], coordCenter[0], coordExte[1], coordExte[0], "K"));
+  var radius = getDistanceInMeters(coordCenter[1], coordCenter[0], coordExte[1], coordExte[0], "K")
+  //console.log(radius);
+  return radius;
 }
 
 // fonction qui translate le rayon en metre
@@ -216,15 +569,9 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2, unit) {
 	}
 }
 
-// change la valeur a cote des sliders dans les parametres
-var slider_taille = document.getElementById("range-taille");
-var value_taille = document.getElementById("value-taille");
-slider_taille.onchange = function() {value_taille.innerHTML = this.value;}
-
 var slider_zoneexclu = document.getElementById("range-zoneexclu");
 var value_zoneexclu = document.getElementById("value-zoneexclu");
 slider_zoneexclu.onchange = function() {value_zoneexclu.innerHTML = this.value;}
-
 
 // Modal Image Gallery
 function onClick(element) {
@@ -254,8 +601,3 @@ function toggleFunction() {
         x.className = x.className.replace(" w3-show", "");
     }
 }
-
-
-
-
-// test api fetch

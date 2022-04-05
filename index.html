@@ -71,30 +71,31 @@
         <div class="forms-noga">
           <p class="form-title-noga"> Code Noga </p>
           <div class="code-noga">
-            <select id="select-code-noga" v-model="selected">
+            <select id="select-code-noga" onchange="getSelectedNoga()" v-model="selected">
               <option disabled value="">Choisissez un code Noga</option>
             </select>
           </div>
+
+          <div class="nogaBucket" id="nogaBucket"></div>
         </div>
 
         <div class="forms-naturejuridique">
           <p class="form-title-naturejuridique"> Nature juridique </p>
           <div class="nature-juridique">
-            <select id="select-naturejuridique" v-model="selected">
+            <select id="select-naturejuridique" onchange="getSelectedNatjur()" v-model="selected">
               <option disabled value="">Choisissez une nature ju.</option>
             </select>
           </div>
+
+          <div class="natjurBucket" id="natjurBucket"></div>
         </div>
 
         <div class="forms-taille">
           <p class="form-title-taille"> Taille de l'entreprise </p>
-          <div class="slidecontainer-taille">
-            <div class="sliderinnercontainer-taille">
-              <input type="range" min="10" max="2000" value="200" class="slider" id="range-taille">
-            </div>
-            <div class="slidervalue-taille">
-              <span id="value-taille">200</span>
-            </div>
+          <div class="taille-entreprise">
+            <select id="select-taille" v-model="selected">
+              <option disabled value="">Choisissez une taille</option>
+            </select>
           </div>
         </div>
 
@@ -124,13 +125,16 @@
           <button class="deleteCircleButton" type="button" onclick="deleteCircleOnMap()">Supprimer la zone</button>
         </div>
         <div class="boutondetest">
-          <button class="testbutton" type="button" onclick="moveZoneDeRecherche()">test</button>
-        </div>
-        <div class="boutondetest">
           <button class="testbutton2" type="button" @click="testApiRequest()">BARS</button>
         </div>
         <div class="boutondetest">
-          <button class="testbutton3" type="button" @click="testPostNow()">POST</button>
+          <button class="testbutton3" type="button" @click="getTaille()">taille</button>
+        </div>
+        <div class="boutondetest">
+          <button class="testbutton4" type="button" @click="envoieParametres()">test</button>
+        </div>
+        <div class="boutondetest">
+          <button class="testbutton" type="button" onclick="getInfoEntreprise()">test2</button>
         </div>
       </div>
       <div tabindex = "1" id="map" class="map"></div>
@@ -177,41 +181,23 @@
 <!-- - - - - - - - - - - - - - - - R E S U L T A T S - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<div class="w3-content w3-container" id="portfolio">
-  <h3 class="w3-center">Retrouvez tous les résultats de votre recherche ici</h3>
-  <p class="w3-center"><em>Cliquez sur une image pour l'agrandir !</em></p><br>
+<div class="resultats" id="portfolio">
 
-  <!-- Grille avec images des resultats / stack sur mobile et petit ecran -->
-  <div class="w3-row-padding w3-center">
-    <div class="w3-col m3">
-      <img src="images/rolex.webp" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Rolex">
-    </div>
-    <div class="w3-col m3">
-      <img src="images/migros.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Migros">
-    </div>
-    <div class="w3-col m3">
-      <img src="images/sig.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les SIG">
-    </div>
-    <div class="w3-col m3">
-      <img src="images/hug.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur les HUG">
+  <div class="resultats-title">
+    <h1>Résultats</h1>
+  </div>
+
+  <div class="resultats-container">
+    <div class="map2-container1">
+      <div class="entreprise-resultats" id="liste-resultats"></div>
+      <div tabindex = "1" id="map2" class="map2"></div>
     </div>
   </div>
 
-  <div class="w3-row-padding w3-center w3-section">
-    <div class="w3-col m3">
-      <img src="images/pictet.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Pictet">
-    </div>
-    <div class="w3-col m3">
-      <img src="images/sky.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Skyguide">
-    </div>
-    <div class="w3-col m3">
-      <img src="images/suisse.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur Le Credit Suisse">
-    </div>
-    <div class="w3-col m3">
-      <img src="images/cern.jfif" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Infos sur le Cern">
-    </div>
-    <button class="w3-button w3-padding-large w3-light-grey" style="margin-top:64px">LOAD MORE</button>
+  <div class="resulats-export">
+    <h3>Exporter les résultats</h3>
   </div>
+
 </div>
 
 <!-- partie des images en full size-->

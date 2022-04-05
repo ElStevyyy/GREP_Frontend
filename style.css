@@ -27,11 +27,71 @@
   margin-left: 10%;
 }
 
+.nogaBucket {
+  margin-top: 3%;
+  width: 90%;
+  font-size: 10px;
+}
+
+.noga-parent {
+  display: grid;
+  grid-template-columns: 2.2fr 0.3fr;
+  grid-template-rows: 0.3fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "noga-name noga-delete";
+}
+
+.noga-name {
+  grid-area: noga-name;
+}
+
+.noga-delete {
+  grid-area: noga-delete;
+}
+
+.noga-delete img {
+  width: 12px;
+  height: 12px;
+}
+
+.natjurBucket {
+  margin-top: 3%;
+  width: 90%;
+  font-size: 10px;
+}
+
+.natjur-parent {
+  display: grid;
+  grid-template-columns: 2.2fr 0.3fr;
+  grid-template-rows: 0.3fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "noga-name noga-delete";
+}
+
+.natjur-name {
+  grid-area: noga-name;
+}
+
+.natjur-delete {
+  grid-area: noga-delete;
+}
+
+.natjur-delete img {
+  width: 12px;
+  height: 12px;
+}
+
 #select-code-noga {
   width: 62%;
 }
 
 #select-naturejuridique {
+  width: 62%;
+}
+
+#select-taille {
   width: 62%;
 }
 
@@ -216,6 +276,89 @@
 }
 
 
+
+
+
+
+.resultats-title {
+  text-align: center;
+  margin-top: 5%;
+}
+
+.entreprise-resultats {
+  width: 20%;
+  height: 650px;
+  overflow: scroll;
+}
+
+.map2-container1 {
+  display: flex;
+}
+
+.map2 {
+  height: 650px;
+  width: 80%;
+  border: 3px solid #96763b;
+}
+
+.resultats-container {
+  width: 100%;
+}
+
+.resulats-export {
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.entites {
+  border: 2px solid #96763b;
+  margin: 1%;
+  width: 100;
+
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 0.5fr;
+  grid-template-rows: 0.2fr 0.2fr 0.2fr 0.2fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "div1 div1 div1"
+    "div2 div2 div2"
+    "div3 div3 div3"
+    "div4 div4 div5";
+}
+
+.div1 {
+  grid-area: div1;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.div2 {
+  grid-area: div2;
+}
+
+.div3 {
+  grid-area: div3;
+ }
+
+.div4 {
+  grid-area: div4;
+ }
+
+.div5 {
+  grid-area: div5;
+  cursor: pointer;
+  margin-bottom: 5%;
+}
+.div5 img {
+  width: 25px;
+  height: 25px;
+  margin-bottom: 5%;
+}
+
+.info-bonus {
+
+}
 
 
 
