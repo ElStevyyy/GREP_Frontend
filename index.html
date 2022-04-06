@@ -134,15 +134,6 @@
         <div class="boutondetest">
           <button class="deleteCircleButton" type="button" onclick="deleteCircleOnMap()">Supprimer la zone</button>
         </div>
-        <div class="boutondetest">
-          <button class="testbutton3" type="button" @click="afficherListeBars()">bars</button>
-        </div>
-        <div class="boutondetest">
-          <button class="testbutton4" type="button" @click="envoieParametres()">test</button>
-        </div>
-        <div class="boutondetest">
-          <button class="testbutton" type="button" onclick="getInfoEntreprise()">test2</button>
-        </div>
       </div>
       <div tabindex = "1" id="map" class="map"></div>
       <div id="popup" class="ol-popup">
@@ -153,7 +144,7 @@
 
     <p class="w3-large w3-center w3-padding-16">Une fois tous les champs complétés, vous pouvez lancer votre recherche</p>
     <div class="center-button">
-      <button class="button-48" role="button"><span class="text">Lancer la recherche</span></button>
+      <button class="button-48" role="button" @click="envoieParametres()"><span class="text">Lancer la recherche</span></button>
     </div>
 </div>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

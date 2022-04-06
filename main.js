@@ -34,43 +34,49 @@ const myVueComponent = {
       envoieParametres() {
 
         // bons parametres, ne pas supprimer
-        /*
-        var taille = document.getElementById("select-taille").value;
-        var zoneexclu = document.getElementById("value-zoneexclu").innerHTML;
-        var codenoga = document.getElementById("select-code-noga").value;
-        var natjur = document.getElementById("select-naturejuridique").value;
+        
+        var taille = getSelectedTailleListe().join(",");
+        //var zoneexclu = document.getElementById("value-zoneexclu").innerHTML;
+        var codenoga = getSelectedNogaListe().join(",");
+        var natjur = getSelectedNatjurListe().join(",");
         var longitude = getLocaLong();
         var latitude = getLocaLat();
         var radius = getRadiusInMeter();
-        */
+
+        //console.log(codenoga);
+
 
         //var taille = "2";
+        /*
         var zoneexclu = "200";
         var codenoga = "9496";
         var natjur = "4";
         var longitude = 6.140833290040641;
         var latitude = 46.2005701220817;
         var radius = 6913.282075607314;
-
+        */
+        
         axios.get(urlParams, {
           params: {
-            //taille: taille,
-            zoneExclusion: zoneexclu,
-            //noga: codenoga,
-            //natureJuridique: natjur,
+            taille: taille,
+            //zoneExclusion: zoneexclu,
+            noga: codenoga,
+            natureJuridique: natjur,
             longitude: longitude,
             latitude: latitude,
             radius: radius
           }
         })
         .then((response) => {
-          console.log("bien pris");
+          //console.log("bien pris");
           infoEntreprise = response.data;
-          console.log(infoEntreprise);
+          //console.log(infoEntreprise);
+          getInfoEntreprise();
         })
         .catch((error) => {
           console.log("c'est mort " + error);
         })
+        
       },
 
       getTaille() {
@@ -275,6 +281,10 @@ function getSelectedNoga() {
 
 }
 
+function getSelectedNogaListe() {
+  return listeCodeNoga;
+}
+
 
 var listeNatjur = [];
 
@@ -333,6 +343,10 @@ function getSelectedNatjur() {
 
 }
 
+function getSelectedNatjurListe() {
+  return listeNatjur;
+}
+
 var listeTaille = [];
 
 function getSelectedTaille() {
@@ -387,6 +401,10 @@ function getSelectedTaille() {
 
   document.getElementById("select-taille").options[document.getElementById("select-taille").selectedIndex].disabled = true;
 
+}
+
+function getSelectedTailleListe() {
+  return listeTaille;
 }
 
 function afficherListeBars() {
@@ -502,15 +520,13 @@ function getInfoEntreprise() {
     var pointCoords = [infoEntreprise[i].longitude,infoEntreprise[i].latitude]
 
     if (checkLatLong(listeLatLong, pointCoords)) {
-      console.log("already in array listeLatLong");
+      //console.log("already in array listeLatLong");
     }
     else {
       listeLatLong.push(pointCoords);
       placePointsOnMap(pointCoords);
-    }
-    
+    } 
   }
-  console.log(listeLatLong);
 }
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
