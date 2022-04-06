@@ -402,6 +402,8 @@ function getInfoEntreprise() {
       }
       console.log(id);
       infoEntreprise[id] = null;
+      //infoEntreprise.splice(infoEntreprise.indexOf(id), 1);
+      //infoEntreprise = infoEntreprise.filter(item=>item.id !=id);
     })
 
     parent.appendChild(div1);
@@ -689,6 +691,9 @@ function toggleFunction() {
 
       //   //recup tous les json dans une seule même liste et dans le bon format
       infoEntreprise.forEach((item) => {
+        if(item==null){
+          return
+        }
           itemsFormatted.push({
               nom: item.nom,
               raisonSocial: item.raisonSocial,
