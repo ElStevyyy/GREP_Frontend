@@ -67,21 +67,53 @@
   grid-template-rows: 0.3fr;
   gap: 0px 0px;
   grid-template-areas:
-    "noga-name noga-delete";
+    "natjur-name natjur-delete";
 }
 
 .natjur-name {
-  grid-area: noga-name;
+  grid-area: natjur-name;
 }
 
 .natjur-delete {
-  grid-area: noga-delete;
+  grid-area: natjur-delete;
 }
 
 .natjur-delete img {
   width: 12px;
   height: 12px;
 }
+
+
+
+.tailleBucket {
+  margin-top: 3%;
+  width: 90%;
+  font-size: 10px;
+}
+
+.taille-parent {
+  display: grid;
+  grid-template-columns: 2.2fr 0.3fr;
+  grid-template-rows: 0.3fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "taille-name taille-delete";
+}
+
+.taille-name {
+  grid-area: taille-name;
+}
+
+.taille-delete {
+  grid-area: taille-delete;
+}
+
+.taille-delete img {
+  width: 12px;
+  height: 12px;
+}
+
+
 
 #select-code-noga {
   width: 62%;
@@ -176,6 +208,62 @@
   margin-right: 5%;
   width: 100%;
 }
+
+
+
+
+
+
+
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  min-width: 280px;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
+
+
+
+
+
+
+
+
 
 /* The slider itself */
 .slider {

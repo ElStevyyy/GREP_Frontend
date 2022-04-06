@@ -183,19 +183,41 @@ var map = new ol.Map({
   })
 });
 
+const container = document.getElementById('popup');
+const content = document.getElementById('popup-content');
+const closer = document.getElementById('popup-closer');
+
+const overlay = new ol.Overlay({
+  element: container,
+  autoPan: {
+    animation: {
+      duration: 250,
+    },
+  },
+});
+
+closer.onclick = function () {
+  overlay.setPosition(undefined);
+  closer.blur();
+  return false;
+};
+
 // creation de la seconde carte au niveau des resultats
 var map2 = new ol.Map({
-  target: 'map2',
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
     })
   ],
+  overlays: [overlay],
+  target: 'map2',
   view: new ol.View({
     center: ol.proj.fromLonLat([6.14234, 46.207]),
     zoom: 12
   })
 });
+
+
 
 var listeCodeNoga = [];
 
@@ -311,6 +333,62 @@ function getSelectedNatjur() {
 
 }
 
+var listeTaille = [];
+
+function getSelectedTaille() {
+
+  var selectTaille = document.getElementById("select-taille");
+  var selectedValue = selectTaille.options[selectTaille.selectedIndex].value;
+  var selectedText = selectTaille.options[selectTaille.selectedIndex].text;
+  var substring = selectedText.substring(0, 34);
+
+  listeTaille.push(selectedValue);
+  console.log(listeTaille.join(","));
+
+  var parent = document.createElement("div");
+  parent.classList.add("taille-parent");
+
+  var tailleName = document.createElement("div");
+  tailleName.classList.add("taille-name");
+  tailleName.appendChild(document.createTextNode(substring));
+
+  var tailleDelete = document.createElement("div");
+  tailleDelete.classList.add("taille-delete");
+  tailleDelete.setAttribute('id', selectTaille.options[selectTaille.selectedIndex].value);
+  var iconeCroix = document.createElement("img");
+  iconeCroix.id = selectedValue;
+  iconeCroix.src = "images/croix.png";
+  tailleDelete.appendChild(iconeCroix);
+
+  tailleDelete.addEventListener('click', function (event) {
+    this.parentNode.remove();
+
+    var collection = document.getElementById("select-taille").children;
+      for (let i = 0; i < collection.length; i++) {
+        var id;
+        if(event.target.id == "") {
+          id = event.target.firstChild.id
+        }else{
+          id = event.target.id;
+        }
+        if (collection[i].value == id) {
+          collection[i].removeAttribute('disabled')
+          document.getElementById("select-taille").selectedIndex = "-1"; 
+          listeTaille.splice(listeTaille.indexOf(id), 1);
+          console.log(listeTaille.join(","));
+        }
+      }
+  })
+
+  parent.appendChild(tailleName);
+  parent.appendChild(tailleDelete);
+
+  document.getElementById("tailleBucket").appendChild(parent);
+
+  document.getElementById("select-taille").options[document.getElementById("select-taille").selectedIndex].disabled = true;
+
+}
+
 function afficherListeBars() {
 
   for (var i = 0; i < listeBars.length; i++) {
@@ -352,7 +430,13 @@ function getInfoEntreprise() {
     div1.addEventListener('click', (event) => {
       replaceSurbrillance(coordSurbrillance);
       coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
-      placeSurbrillancePointsOnMap(coordSurbrillance);
+      var nom = infoEntreprise[event.target.parentElement.id].nom;
+      var npa = infoEntreprise[event.target.parentElement.id].npa;
+      var adresse = infoEntreprise[event.target.parentElement.id].adresse;
+      var telPrincipal = infoEntreprise[event.target.parentElement.id].telPrincipal;
+      var telSecondaire = infoEntreprise[event.target.parentElement.id].telSecondaire;
+      var email = infoEntreprise[event.target.parentElement.id].email;
+      placeSurbrillancePointsOnMap(coordSurbrillance, nom, npa, adresse, telPrincipal, telSecondaire, email);
       console.log(infoEntreprise[event.target.parentElement.id]);
     });
 
@@ -414,6 +498,7 @@ function getInfoEntreprise() {
     document.getElementById("liste-resultats").appendChild(parent);
 
     var pointCoords = [infoEntreprise[i].longitude,infoEntreprise[i].latitude]
+
     placePointsOnMap(pointCoords);
 
   }
@@ -443,7 +528,7 @@ function placePointsOnMap(entityCoords) {
 }
 
 // function qui place un point d'une autre couleur sur la carte (surbrillance)
-function placeSurbrillancePointsOnMap(entityCoords) {
+function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrincipal, telSecondaire, email) {
 
   var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
   pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
@@ -463,13 +548,18 @@ function placeSurbrillancePointsOnMap(entityCoords) {
   layerPoint.set('name', 'pointSurbrillance');
   map2.addLayer(layerPoint);
 
+
+  overlay.setPosition(centerLongitudeLatitudePoint);
+  content.innerHTML = nom + "\n" + adresse + ", " + npa + "\n" + "Téléphone princip. : " + telPrincipal + "\n" + "Tél. Second. : " + telSecondaire + "\n" + "Email : " + email;
+  console.log("yousk2");
+
 }
 
 // fonction qui remet en couleur normal une entite
 function replaceSurbrillance(entityCoords) {
 
   if (entityCoords == null) {
-    console.log("yousk2");
+    //console.log("yousk2");
   }
   else {
     var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
@@ -628,9 +718,11 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2, unit) {
 	}
 }
 
+/* parametre non pris en compte pour le moment
 var slider_zoneexclu = document.getElementById("range-zoneexclu");
 var value_zoneexclu = document.getElementById("value-zoneexclu");
 slider_zoneexclu.onchange = function() {value_zoneexclu.innerHTML = this.value;}
+*/
 
 // Modal Image Gallery
 function onClick(element) {
