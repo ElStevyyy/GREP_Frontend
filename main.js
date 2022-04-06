@@ -6,7 +6,7 @@ const urlNoga = "http://172.105.245.5/api/nogas"
 const urlJuridique = "http://172.105.245.5/api/juridiques"
 const urlParams = "http://172.105.245.5/api/search"
 const apiTaille = "http://172.105.245.5/api/tailles"
-var infoEntreprise = "";
+var infoEntreprise = [];
 var listeBars = [];
 
 const myVueComponent = {
@@ -660,3 +660,106 @@ function toggleFunction() {
         x.className = x.className.replace(" w3-show", "");
     }
 }
+
+// Export JSON to CSV
+  function jsonToCsv(){
+    //infoEntreprise.forEach(element => console.log(element));
+    console.log("export debut");
+    var headers = {
+      nom: "Nom de l'entreprise",
+      raisonSocial: "Raison social",
+      raisonSocialParent: "Raison social parent",
+      branche: "Domaine de l'entreprise",
+      natureJuridique: "Nature juridique",
+      taille: "Taille (en nombre de personnes)",
+      typeLocal: "Type de local",
+      codeNoga: "code noga",
+      immaDt: "Date de création de l'entreprise",
+      adresse: "Adresse",
+      npa: "Npa",
+      latitude: "latitude",
+      longitude: "longitude",
+      email: "email de contact",
+      telPrincipal: "Numero de téléphone",
+      telSecondaire: "Numero de téléphone secondaire",
+      siteInternet: "Site internet de l'entreprise"
+  };
+
+    var itemsFormatted = [];
+
+      //   //recup tous les json dans une seule même liste et dans le bon format
+      infoEntreprise.forEach((item) => {
+          itemsFormatted.push({
+              nom: item.nom,
+              raisonSocial: item.raisonSocial,
+              raisonSocialParent: item.raisonSocialParent,
+              branche: item.branche,
+              natureJuridique: item.natureJuridique,
+              taille: item.taille,
+              typeLocal: item.typeLocal,
+              codeNoga: item.codeNoga,
+              immaDt: item.immaDt,
+              adresse: item.adresse,
+              npa: item.npa,
+              latitude: item.latitude,
+              longitude: item.longitude,
+              email: item.email,
+              telPrincipal: item.telPrincipal,
+              telSecondaire: item.telSecondaire,
+              siteInternet: item.siteInternet
+          });
+      });
+
+      var fileTitle = 'resultatsExport'; // or 'my-unique-title'
+      exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
+
+  }
+
+  function convertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = "\uFEFF";
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if (line != '') line += ';'
+
+            line += array[i][index];
+            }
+
+        str += line + '\r\n';
+    }
+
+    return str;
+}
+
+function exportCSVFile(headers, items, fileTitle) {
+  if (headers) {
+      items.unshift(headers);
+  }
+
+  // Convert Object to JSON
+  var jsonObject = JSON.stringify(items);
+
+  var csv = this.convertToCSV(jsonObject);
+
+  var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) { // IE 10+
+      navigator.msSaveBlob(blob, exportedFilenmae);
+  } else {
+      var link = document.createElement("a");
+      if (link.download !== undefined) { // feature detection
+          // Browsers that support HTML5 download attribute
+          var url = URL.createObjectURL(blob);
+          link.setAttribute("href", url);
+          link.setAttribute("download", exportedFilenmae);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+  }
+}
+
