@@ -259,7 +259,7 @@ function getSelectedNoga() {
         }
         if (collection[i].value == id) {
           collection[i].removeAttribute('disabled')
-          document.getElementById("select-code-noga").selectedIndex = "-1"; 
+          document.getElementById("select-code-noga").selectedIndex = "-1";
           listeCodeNoga.splice(listeCodeNoga.indexOf(id), 1);
           console.log(listeCodeNoga.join(","));
         }
@@ -317,7 +317,7 @@ function getSelectedNatjur() {
         }
         if (collection[i].value == id) {
           collection[i].removeAttribute('disabled')
-          document.getElementById("select-naturejuridique").selectedIndex = "-1"; 
+          document.getElementById("select-naturejuridique").selectedIndex = "-1";
           listeNatjur.splice(listeNatjur.indexOf(id), 1);
           console.log(listeNatjur.join(","));
         }
@@ -373,7 +373,7 @@ function getSelectedTaille() {
         }
         if (collection[i].value == id) {
           collection[i].removeAttribute('disabled')
-          document.getElementById("select-taille").selectedIndex = "-1"; 
+          document.getElementById("select-taille").selectedIndex = "-1";
           listeTaille.splice(listeTaille.indexOf(id), 1);
           console.log(listeTaille.join(","));
         }
@@ -397,25 +397,24 @@ function afficherListeBars() {
 
 }
 
+function checkLatLong(list, coord){
+  var res = false;
+  list.forEach(item => {
+    if(item[0]==coord[0] && item[1]==coord[1]){
+      res = true;
+    }
+  });
+  return res;
+}
+
+var listeLatLong = [];
+
 // fonction qui recupere les informations des entites, cree les div et les ajoute
 function getInfoEntreprise() {
 
-  // TODO:
-  // faire une div parent qui contiendra toutes les div enfants avec les differentes entreprises
-  // faire un model de div enfant avec toutes les informations de l'entreprises
-  // (a voir) bloquer le nombre à x resulats et loader les suivants en scrollant/autre options
-  // faire un bouton de suppression rapide d'une entité
-  // faire en sorte qu'un clic sur une entité la mette en surbrillance sur la carte
-  // faire en sorte de derouler la vignette avec toutes les informations
-  // s'occuper de l'export en csv
-
-  //console.log(infoEntreprise);
-  //console.log(infoEntreprise.length);
-
-  var infoToExtract = infoEntreprise;
+  //var infoToExtract = infoEntreprise;
 
   for (var i = 0; i < infoEntreprise.length; i++) {
-    //console.log(infoEntreprise[i].nom);
 
     var parent = document.createElement("div");
     parent.classList.add("entites");
@@ -436,8 +435,9 @@ function getInfoEntreprise() {
       var telPrincipal = infoEntreprise[event.target.parentElement.id].telPrincipal;
       var telSecondaire = infoEntreprise[event.target.parentElement.id].telSecondaire;
       var email = infoEntreprise[event.target.parentElement.id].email;
+
       placeSurbrillancePointsOnMap(coordSurbrillance, nom, npa, adresse, telPrincipal, telSecondaire, email);
-      console.log(infoEntreprise[event.target.parentElement.id]);
+      //console.log(infoEntreprise[event.target.parentElement.id]);
     });
 
     var div2 = document.createElement("div");
@@ -499,9 +499,16 @@ function getInfoEntreprise() {
 
     var pointCoords = [infoEntreprise[i].longitude,infoEntreprise[i].latitude]
 
-    placePointsOnMap(pointCoords);
-
+    if (checkLatLong(listeLatLong, pointCoords)) {
+      console.log("already in array listeLatLong");
+    }
+    else {
+      listeLatLong.push(pointCoords);
+      placePointsOnMap(pointCoords);
+    }
+    
   }
+  console.log(listeLatLong);
 }
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
@@ -550,8 +557,8 @@ function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrinci
 
 
   overlay.setPosition(centerLongitudeLatitudePoint);
-  content.innerHTML = nom + "\n" + adresse + ", " + npa + "\n" + "Téléphone princip. : " + telPrincipal + "\n" + "Tél. Second. : " + telSecondaire + "\n" + "Email : " + email;
-  console.log("yousk2");
+  content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : "
+                      + telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email;
 
 }
 
