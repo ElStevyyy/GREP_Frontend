@@ -171,6 +171,12 @@
   margin-left: 5%;
 }
 
+.labelBars {
+  font-size: 10px;
+  margin-right: 5%;
+  width: 100%;
+}
+
 /* The slider itself */
 .slider {
   -webkit-appearance: none;  /* Override default CSS styles */

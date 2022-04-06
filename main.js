@@ -1,12 +1,13 @@
 
 // test GET avec VueJs3 et Axios
 
-const apiBars = "http://172.105.245.5:8000/api/bars"
-const urlNoga = "http://172.105.245.5:8000/api/nogas"
-const urlJuridique = "http://172.105.245.5:8000/api/juridiques"
-const urlParams = "http://172.105.245.5:8000/api/search"
-const apiTaille = "http://172.105.245.5:8000/api/tailles"
+const apiBars = "http://172.105.245.5/api/bars"
+const urlNoga = "http://172.105.245.5/api/nogas"
+const urlJuridique = "http://172.105.245.5/api/juridiques"
+const urlParams = "http://172.105.245.5/api/search"
+const apiTaille = "http://172.105.245.5/api/tailles"
 var infoEntreprise = "";
+var listeBars = [];
 
 const myVueComponent = {
   data() {
@@ -16,20 +17,6 @@ const myVueComponent = {
     }
   },
   methods : {
-      // recuperation des bars avec une requete GET
-      testApiRequest() {
-        axios.get(apiBars)
-        .then((response) => {
-          for (var i = 0; i < response.data.length; i++) {
-            console.log(response.data[i]);
-            var barCoords = [response.data[i].Longitude,response.data[i].Latitude]
-            placeBarOnMap(barCoords);
-          }
-        })
-        .catch((error) => {
-          console.log("bars error" + error);
-        })
-      },
 
       // fonction de test avec une requete POST
       testPostNow() {
@@ -96,9 +83,44 @@ const myVueComponent = {
         .catch((error) => {
           console.log("taille error" + error);
         })
+      },
+
+      afficherListeBars() {
+
+        for (var i = 0; i < listeBars.length; i++) {
+          console.log(listeBars[i].adress.adresse);
+
+          var label = document.createElement("label");
+          label.classList.add("labelBars");
+          label.htmlFor = i;
+          label.appendChild(document.createTextNode(listeBars[i].adress.adresse));
+
+          var parent = document.getElementById("listeBars");
+          var child = document.createElement("INPUT");
+          child.setAttribute("type", "checkbox");
+          child.setAttribute("id", i);
+
+          parent.appendChild(label);
+          parent.appendChild(child);
+
+        }
       }
   },
   mounted() {
+
+    // recuperation des bars avec une requete GET
+    axios.get(apiBars)
+    .then((response) => {
+      for (var i = 0; i < response.data.length; i++) {
+        //console.log(response.data[i]);
+        var barCoords = [response.data[i].adress.longitude,response.data[i].adress.latitude]
+        listeBars.push(response.data[i]);
+        placeBarOnMap(barCoords);
+      }
+    })
+    .catch((error) => {
+      console.log("bars error" + error);
+    }),
 
     // recupere les natures juridiques pour les mettre dans une liste deroulante
     axios.get(urlJuridique)
@@ -198,11 +220,28 @@ function getSelectedNoga() {
   var nogaDelete = document.createElement("div");
   nogaDelete.classList.add("noga-delete");
   var iconeCroix = document.createElement("img");
+  iconeCroix.id = selectedValue;
   iconeCroix.src = "images/croix.png"
   nogaDelete.appendChild(iconeCroix);
 
   nogaDelete.addEventListener('click', function (event) {
     this.parentNode.remove();
+
+    var collection = document.getElementById("select-code-noga").children;
+      for (let i = 0; i < collection.length; i++) {
+        var id;
+        if(event.target.id == "") {
+          id = event.target.firstChild.id
+        }else{
+          id = event.target.id;
+        }
+        if (collection[i].value == id) {
+          collection[i].removeAttribute('disabled')
+          document.getElementById("select-code-noga").selectedIndex = "-1"; 
+          listeCodeNoga.splice(listeCodeNoga.indexOf(id), 1);
+          console.log(listeCodeNoga.join(","));
+        }
+      }
   })
 
   parent.appendChild(nogaName);
@@ -213,6 +252,7 @@ function getSelectedNoga() {
   document.getElementById("select-code-noga").options[document.getElementById("select-code-noga").selectedIndex].disabled = true;
 
 }
+
 
 var listeNatjur = [];
 
@@ -238,11 +278,28 @@ function getSelectedNatjur() {
   natjurDelete.classList.add("natjur-delete");
   natjurDelete.setAttribute('id', selectNatjur.options[selectNatjur.selectedIndex].value);
   var iconeCroix = document.createElement("img");
+  iconeCroix.id = selectedValue;
   iconeCroix.src = "images/croix.png";
   natjurDelete.appendChild(iconeCroix);
 
   natjurDelete.addEventListener('click', function (event) {
     this.parentNode.remove();
+
+    var collection = document.getElementById("select-naturejuridique").children;
+      for (let i = 0; i < collection.length; i++) {
+        var id;
+        if(event.target.id == "") {
+          id = event.target.firstChild.id
+        }else{
+          id = event.target.id;
+        }
+        if (collection[i].value == id) {
+          collection[i].removeAttribute('disabled')
+          document.getElementById("select-naturejuridique").selectedIndex = "-1"; 
+          listeNatjur.splice(listeNatjur.indexOf(id), 1);
+          console.log(listeNatjur.join(","));
+        }
+      }
   })
 
   parent.appendChild(natjurName);
@@ -251,6 +308,14 @@ function getSelectedNatjur() {
   document.getElementById("natjurBucket").appendChild(parent);
 
   document.getElementById("select-naturejuridique").options[document.getElementById("select-naturejuridique").selectedIndex].disabled = true;
+
+}
+
+function afficherListeBars() {
+
+  for (var i = 0; i < listeBars.length; i++) {
+    console.log(listeBars[i]);
+  }
 
 }
 
@@ -431,28 +496,22 @@ function replaceSurbrillance(entityCoords) {
 function placeBarOnMap(barCoords) {
 
   var centerLongitudeLatitudeBars = ol.proj.fromLonLat(barCoords);
-  barOnMap = new ol.geom.Circle(centerLongitudeLatitudeBars, 100);
+  barOnMap = new ol.geom.Point(centerLongitudeLatitudeBars);
 
   var layerBar = new ol.layer.Vector({
     source: new ol.source.Vector({
       projection: 'EPSG:4326',
       features: [new ol.Feature(barOnMap)]
     }),
-    style: [
-      new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: 'black',
-          width: 2
-        }),
-        fill: new ol.style.Fill({
-          color: 'rgba(255, 0, 0, 0.1)'
-        })
+    style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({color: 'black'})
+          })
       })
-    ]
   });
   layerBar.set('name', 'bar');
   map.addLayer(layerBar);
-
 }
 
 //  fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
