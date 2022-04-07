@@ -780,6 +780,7 @@ function toggleFunction() {
 
 // Export JSON to CSV
   function jsonToCsv(){
+    if(infoEntreprise.length != 0){
     //infoEntreprise.forEach(element => console.log(element));
     console.log("export debut");
     var headers = {
@@ -832,7 +833,7 @@ function toggleFunction() {
 
       var fileTitle = 'resultatsExport'; // or 'my-unique-title'
       exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
-
+    }
   }
 
   function convertToCSV(objArray) {
