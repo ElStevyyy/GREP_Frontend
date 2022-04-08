@@ -68,15 +68,20 @@ const myVueComponent = {
           }
         })
         .then((response) => {
-          //console.log("bien pris");
           infoEntreprise = response.data;
-          //console.log(infoEntreprise);
-          getInfoEntreprise();
+
+          if (infoEntreprise.length != 0) {
+            clearResultsListe();
+            clearResultsMap();
+            getInfoEntreprise();
+            document.querySelector("#resultsScroll").scrollIntoView();
+          } else {
+            alert("Aucun resultat trouvé avec ces paramètres...\nVeuillez modifier vos critères de recherche");
+          }
         })
         .catch((error) => {
           console.log("c'est mort " + error);
         })
-        
       },
 
       getTaille() {
@@ -137,6 +142,7 @@ const myVueComponent = {
         naturejuridique += "<option value=" + response.data[i].idJuridique + ">" + response.data[i].natureJuridique + "</option>"
       }
       document.getElementById("select-naturejuridique").innerHTML = naturejuridique;
+      document.getElementById("select-naturejuridique").selectedIndex = "-1";
     })
     .catch((error) => {
       console.log("erreur code noga" + error);
@@ -151,6 +157,7 @@ const myVueComponent = {
         noga += "<option value=" + response.data[i].code + ">" + response.data[i].nom + "</option>"
       }
       document.getElementById("select-code-noga").innerHTML = noga;
+      document.getElementById("select-code-noga").selectedIndex = "-1";
     })
     .catch((error) => {
       console.log("erreur code noga" + error);
@@ -164,6 +171,7 @@ const myVueComponent = {
         taille += "<option value=" + response.data[i].idTaille + ">" + response.data[i].taille + "</option>"
       }
       document.getElementById("select-taille").innerHTML = taille;
+      document.getElementById("select-taille").selectedIndex = "-1";
     })
   }
 }
@@ -223,7 +231,9 @@ var map2 = new ol.Map({
   })
 });
 
-
+function scrollTo(hash) {
+  location.hash = "#" + hash;
+}
 
 var listeCodeNoga = [];
 
@@ -425,7 +435,20 @@ function checkLatLong(list, coord){
   return res;
 }
 
-var listeLatLong = [];
+function clearResultsListe() {
+  var node = document.getElementById("liste-resultats");
+  while (node.hasChildNodes()) { 
+    node.removeChild(node.lastChild); 
+  }
+}
+
+function clearResultsMap() {
+  map2.getLayers().getArray()
+  .filter(layer => layer.get('name') === 'point')
+  .forEach(layer => map2.removeLayer(layer));
+}
+
+var listeLatLong = new Map();
 
 // fonction qui recupere les informations des entites, cree les div et les ajoute
 function getInfoEntreprise() {
@@ -492,6 +515,9 @@ function getInfoEntreprise() {
     iconePoubelle.src = "images/poub.png"
     div5.appendChild(iconePoubelle);
 
+
+    var entityCoords = infoEntreprise[i].longitude.toString() + "," + infoEntreprise[i].latitude.toString();
+
     div5.addEventListener('click', function (event) {
       this.parentNode.remove();
       var id;
@@ -502,10 +528,12 @@ function getInfoEntreprise() {
       else {
         id = event.target.parentElement.id;
       }
-      console.log(id);
+      //console.log(id);
       infoEntreprise[id] = null;
       //infoEntreprise.splice(infoEntreprise.indexOf(id), 1);
       //infoEntreprise = infoEntreprise.filter(item=>item.id !=id);
+
+
     })
 
     parent.appendChild(div1);
@@ -518,15 +546,18 @@ function getInfoEntreprise() {
     document.getElementById("liste-resultats").appendChild(parent);
 
     var pointCoords = [infoEntreprise[i].longitude,infoEntreprise[i].latitude]
+    var pointComparaison = infoEntreprise[i].longitude.toString() + "," + infoEntreprise[i].latitude.toString();
 
-    if (checkLatLong(listeLatLong, pointCoords)) {
+    if (listeLatLong.has(pointComparaison)) {
       //console.log("already in array listeLatLong");
+      listeLatLong.set(pointComparaison, listeLatLong.get(pointComparaison) + 1);
     }
     else {
-      listeLatLong.push(pointCoords);
+      listeLatLong.set(pointComparaison, 1);
       placePointsOnMap(pointCoords);
     } 
   }
+  console.log(listeLatLong);
 }
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
@@ -780,30 +811,31 @@ function toggleFunction() {
 
 // Export JSON to CSV
   function jsonToCsv(){
-    if(infoEntreprise.length != 0){
-    //infoEntreprise.forEach(element => console.log(element));
-    console.log("export debut");
-    var headers = {
-      nom: "Nom de l'entreprise",
-      raisonSocial: "Raison social",
-      raisonSocialParent: "Raison social parent",
-      branche: "Domaine de l'entreprise",
-      natureJuridique: "Nature juridique",
-      taille: "Taille (en nombre de personnes)",
-      typeLocal: "Type de local",
-      codeNoga: "code noga",
-      immaDt: "Date de création de l'entreprise",
-      adresse: "Adresse",
-      npa: "Npa",
-      latitude: "latitude",
-      longitude: "longitude",
-      email: "email de contact",
-      telPrincipal: "Numero de téléphone",
-      telSecondaire: "Numero de téléphone secondaire",
-      siteInternet: "Site internet de l'entreprise"
-  };
+    var listeEntrepriseRemovedNull = infoEntreprise.filter(function(val) { return val !== null; });
+    if(listeEntrepriseRemovedNull.length != 0){
+      //infoEntreprise.forEach(element => console.log(element));
+      console.log("export debut");
+      var headers = {
+        nom: "Nom de l'entreprise",
+        raisonSocial: "Raison social",
+        raisonSocialParent: "Raison social parent",
+        branche: "Domaine de l'entreprise",
+        natureJuridique: "Nature juridique",
+        taille: "Taille (en nombre de personnes)",
+        typeLocal: "Type de local",
+        codeNoga: "code noga",
+        immaDt: "Date de création de l'entreprise",
+        adresse: "Adresse",
+        npa: "Npa",
+        latitude: "latitude",
+        longitude: "longitude",
+        email: "email de contact",
+        telPrincipal: "Numero de téléphone",
+        telSecondaire: "Numero de téléphone secondaire",
+        siteInternet: "Site internet de l'entreprise"
+      };
 
-    var itemsFormatted = [];
+      var itemsFormatted = [];
 
       //   //recup tous les json dans une seule même liste et dans le bon format
       infoEntreprise.forEach((item) => {
@@ -833,6 +865,8 @@ function toggleFunction() {
 
       var fileTitle = 'resultatsExport'; // or 'my-unique-title'
       exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
+    } else {
+      alert("Aucune donnée à exporter");
     }
   }
 

@@ -1,9 +1,13 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .forms {
   flex: 1;
 }
 
 .map {
-  height: 750px;
+  height: 600px;
   width: 80%;
   border: 3px solid #96763b;
 }
@@ -18,9 +22,9 @@
   text-align: center;
 }
 
-.boutondetest {
+.bouton-suppression {
   margin-left: 10%;
-  margin-top: 1%;
+  margin-top: 5%;
 }
 
 .forms-noga {
@@ -400,6 +404,7 @@
 }
 
 .resulats-export {
+  margin-top: 2%;
   text-align: center;
   margin-bottom: 5%;
 }
@@ -478,17 +483,19 @@
   align-items: center;
 }
 
-
-/* bouton recherche */
 .center-button {
+  z-index: 10;
+  margin-top: 3%;
   text-align: center;
   margin-bottom: 5%;
 }
 
+
 .button-48 {
   appearance: none;
   background-color: #FFFFFF;
-  border-width: 0;
+  border-width: 1;
+  border-color: #96763b;
   box-sizing: border-box;
   color: #000000;
   cursor: pointer;
