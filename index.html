@@ -25,18 +25,17 @@
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
       <i class="fa fa-bars"></i>
     </a>
-    <a href="#home" class="w3-bar-item w3-button">HOME</a>
-    <a href="#mapScroll" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> MAP</a>
-    <a href="#resultsScroll" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> RESULTS</a>
+    <a href="#home" class="w3-bar-item w3-button">ACCUEIL</a>
+    <a href="#mapScroll" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> CARTE</a>
+    <a href="#resultsScroll" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> RÉSULTATS</a>
     <!--<a href="#contact" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-envelope"></i> CONTACT</a>--->
 
   </div>
 
   <!-- Navbar sur petits eccrans -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
-    <a href="#mapScroll" class="w3-bar-item w3-button" onclick="toggleFunction()">MAP</a>
-    <a href="#resultsScroll" class="w3-bar-item w3-button" onclick="toggleFunction()">RESULTS</a>
-    <a href="#" class="w3-bar-item w3-button">SEARCH</a>
+    <a href="#mapScroll" class="w3-bar-item w3-button" onclick="toggleFunction()">CARTE</a>
+    <a href="#resultsScroll" class="w3-bar-item w3-button" onclick="toggleFunction()">RÉSULTATS</a>
   </div>
 </div>
 
@@ -121,18 +120,17 @@
 
         <div class="forms-geolocalisation">
           <p class="form-title-localisation"> Zone de recherche </p>
-          <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliqez sur la carte pour placer un point. </p>
+          <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliquez sur la carte pour placer un point. </br>
+          Pour replacer un point, cliquez à nouveau </br> sur le bouton puis sur la carte.</p>
           <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
           <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
           <p class="title5-explain"> Ensuite vous pouvez redimensionner la zone à l'aide </br> du slider ci-dessous. </p>
-          <div class="slidecontainer">
+          <div class="slidecontainer" id="slidercontainerr">
             <input type="range" min="1" max="10000" value="1000" class="slider" id="sliderCircleOnMap">
           </div>
         </div>
 
-        <div class="bouton-suppression">
-          <button class="button-48" type="button" onclick="deleteCircleOnMap()"><span class="text">Supprimer la zone</span></button>
-        </div>
+        
 
       </div>
 
@@ -181,7 +179,7 @@
 <!-- deuxieme image parralax -->
 <div class="bgimg-2 w3-display-container w3-opacity-min">
   <div class="w3-display-middle">
-    <span class="w3-xxlarge w3-text-black w3-wide">RESULTS</span>
+    <span class="w3-xxlarge w3-text-black w3-wide">RÉSULTATS</span>
   </div>
 </div>
 
@@ -195,7 +193,7 @@
 <div class="resultats" id="portfolio">
 
   <div class="resultats-title">
-    <h1>Résultats</h1>
+
   </div>
 
   <div class="resultats-container">
@@ -234,8 +232,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
-  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a></br></br>
+<footer class="w3-center w3-black w3-padding-64 w3-opacity">
+  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>Vers le haut</a></br></br>
   <a href="https://www.miaetnoa.ch" target="_blank" class="w3-button w3-light-grey"><i class="fa w3-margin-right"></i>www.miaetnoa.ch</a>
   <!--
   <div class="w3-xlarge w3-section">

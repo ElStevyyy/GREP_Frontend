@@ -172,6 +172,10 @@ html {
   font-size: large;
 }
 
+#sliderCircleOnMap {
+  width: 72%;
+}
+
 .slidecontainer {
   width: 85%;
   display: flex;

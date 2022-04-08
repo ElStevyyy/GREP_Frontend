@@ -8,6 +8,7 @@ const urlParams = "http://172.105.245.5/api/search"
 const apiTaille = "http://172.105.245.5/api/tailles"
 var infoEntreprise = [];
 var listeBars = [];
+var listeLatLong = new Map();
 
 const myVueComponent = {
   data() {
@@ -68,20 +69,19 @@ const myVueComponent = {
           }
         })
         .then((response) => {
-          infoEntreprise = response.data;
-
-          if (infoEntreprise.length != 0) {
+        
+          if (response.data.length != 0) {
+            infoEntreprise = response.data;
             clearResultsListe();
             clearResultsMap();
+            console.log(infoEntreprise);
             getInfoEntreprise();
             document.querySelector("#resultsScroll").scrollIntoView();
           } else {
             alert("Aucun resultat trouvé avec ces paramètres...\nVeuillez modifier vos critères de recherche");
           }
         })
-        .catch((error) => {
-          console.log("c'est mort " + error);
-        })
+
       },
 
       getTaille() {
@@ -443,12 +443,18 @@ function clearResultsListe() {
 }
 
 function clearResultsMap() {
-  map2.getLayers().getArray()
-  .filter(layer => layer.get('name') === 'point')
-  .forEach(layer => map2.removeLayer(layer));
+
+  listeLatLong.forEach (function(value, key) { 
+    map2.getLayers().getArray()
+      .filter(layer => layer.get('name') === key)
+      .forEach(layer => map2.removeLayer(layer));
+  });
+
+  listeLatLong = new Map();
+  console.log(listeLatLong);
 }
 
-var listeLatLong = new Map();
+
 
 // fonction qui recupere les informations des entites, cree les div et les ajoute
 function getInfoEntreprise() {
@@ -468,7 +474,7 @@ function getInfoEntreprise() {
     var coordSurbrillance;
 
     div1.addEventListener('click', (event) => {
-      replaceSurbrillance(coordSurbrillance);
+
       coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
       var nom = infoEntreprise[event.target.parentElement.id].nom;
       var npa = infoEntreprise[event.target.parentElement.id].npa;
@@ -515,13 +521,10 @@ function getInfoEntreprise() {
     iconePoubelle.src = "images/poub.png"
     div5.appendChild(iconePoubelle);
 
-
-    var entityCoords = infoEntreprise[i].longitude.toString() + "," + infoEntreprise[i].latitude.toString();
-
     div5.addEventListener('click', function (event) {
       this.parentNode.remove();
       var id;
-
+      
       if (event.target.parentElement.id == "") {
         id = event.target.parentElement.parentElement.id;
       }
@@ -529,9 +532,34 @@ function getInfoEntreprise() {
         id = event.target.parentElement.id;
       }
       //console.log(id);
+      var entityCoords = infoEntreprise[id].longitude.toString() + "," + infoEntreprise[id].latitude.toString();
       infoEntreprise[id] = null;
       //infoEntreprise.splice(infoEntreprise.indexOf(id), 1);
       //infoEntreprise = infoEntreprise.filter(item=>item.id !=id);
+
+      console.log(entityCoords);
+
+      if (listeLatLong.has(entityCoords)) {
+        if (listeLatLong.get(entityCoords) <= 1) {
+          console.log("suppression du point sur la carte");
+          listeLatLong.delete(entityCoords);
+          overlay.setPosition(undefined);
+          
+          map2.getLayers().getArray()
+          .filter(layer => layer.get('name') === entityCoords)
+          .forEach(layer => map2.removeLayer(layer));
+
+          console.log(listeLatLong);
+        }
+        else {
+          console.log("coordonnée - 1");
+          listeLatLong.set(entityCoords, listeLatLong.get(entityCoords) - 1);
+          console.log(listeLatLong);
+        }
+      }
+      else {
+        console.log("yousk2");
+      }
 
 
     })
@@ -547,12 +575,14 @@ function getInfoEntreprise() {
 
     var pointCoords = [infoEntreprise[i].longitude,infoEntreprise[i].latitude]
     var pointComparaison = infoEntreprise[i].longitude.toString() + "," + infoEntreprise[i].latitude.toString();
+    
 
     if (listeLatLong.has(pointComparaison)) {
       //console.log("already in array listeLatLong");
       listeLatLong.set(pointComparaison, listeLatLong.get(pointComparaison) + 1);
     }
     else {
+
       listeLatLong.set(pointComparaison, 1);
       placePointsOnMap(pointCoords);
     } 
@@ -562,6 +592,8 @@ function getInfoEntreprise() {
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
 function placePointsOnMap(entityCoords) {
+
+  var name = entityCoords[0].toString() + "," + entityCoords[1].toString();
 
   var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
   pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
@@ -578,64 +610,42 @@ function placePointsOnMap(entityCoords) {
           })
       })
   });
-  layerPoint.set('name', 'point');
+  layerPoint.set('name', name);
   map2.addLayer(layerPoint);
 
 }
+
+var pointSurbrillance = null;
 
 // function qui place un point d'une autre couleur sur la carte (surbrillance)
 function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrincipal, telSecondaire, email) {
 
   var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
-  pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
 
-  var layerPoint = new ol.layer.Vector({
-    source: new ol.source.Vector({
-      projection: 'EPSG:4326',
-      features: [new ol.Feature(pointOnMap)]
-    }),
-    style: new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({color: 'yellow'})
-          })
+  if (pointSurbrillance != null) {
+    map2.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 6,
+        fill: new ol.style.Fill({color: 'red'})
       })
-  });
-  layerPoint.set('name', 'pointSurbrillance');
-  map2.addLayer(layerPoint);
+    }));}});
+  }
+
+  pointSurbrillance = entityCoords[0].toString() + "," + entityCoords[1].toString();
+  map2.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: 6,
+      fill: new ol.style.Fill({color: 'yellow'})
+    })
+  }));}});
+
+  map2.getLayers().get(pointSurbrillance)
 
 
   overlay.setPosition(centerLongitudeLatitudePoint);
   content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : "
                       + telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email;
 
-}
-
-// fonction qui remet en couleur normal une entite
-function replaceSurbrillance(entityCoords) {
-
-  if (entityCoords == null) {
-    //console.log("yousk2");
-  }
-  else {
-    var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
-    pointOnMap = new ol.geom.Point(centerLongitudeLatitudePoint);
-
-    var layerPoint = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        projection: 'EPSG:4326',
-        features: [new ol.Feature(pointOnMap)]
-      }),
-      style: new ol.style.Style({
-            image: new ol.style.Circle({
-              radius: 6,
-              fill: new ol.style.Fill({color: 'red'})
-            })
-        })
-    });
-    layerPoint.set('name', 'pointSurbrillance');
-    map2.addLayer(layerPoint);
-  }
 }
 
 // fonction qui placent les bars existants sur la carte
@@ -663,6 +673,8 @@ function placeBarOnMap(barCoords) {
 //  fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
 function clickOnMapON() {
 
+  deleteCircleOnMap();
+
   map.on('click', function(event) {
 
     if (allowToPlaceZone) {
@@ -671,9 +683,10 @@ function clickOnMapON() {
       //console.log(coordsOnMap);
       var centerLongitudeLatitude2 = ol.proj.fromLonLat(coordsOnMap);
       //console.log(centerLongitudeLatitude2);
-      cercleOnMap = new ol.geom.Circle(centerLongitudeLatitude2, 500);
+      var radius = document.getElementById("sliderCircleOnMap").value;
+      cercleOnMap = new ol.geom.Circle(centerLongitudeLatitude2, parseInt(radius));
       //console.log(cercleOnMap);
-      // console.log(coords);
+      //console.log(coords);
 
       var layer3 = new ol.layer.Vector({
         source: new ol.source.Vector({
@@ -722,7 +735,6 @@ function deleteCircleOnMap() {
 
 // systeme de fleches pour deplacer le cercle ?
 function moveZoneDeRecherche() {
-  getRadiusInMeter();
 }
 
 function getLocaLat() {
