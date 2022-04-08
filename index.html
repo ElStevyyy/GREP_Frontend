@@ -25,9 +25,9 @@
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
       <i class="fa fa-bars"></i>
     </a>
-    <a href="#home" class="w3-bar-item w3-button">ACCUEIL</a>
-    <a href="#mapScroll" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> CARTE</a>
-    <a href="#resultsScroll" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> RÉSULTATS</a>
+    <a href="#home" class="w3-bar-item w3-button miaBold">ACCUEIL</a>
+    <a href="#mapScroll" class="w3-bar-item w3-button w3-hide-small miaBold"><i class="fa fa-user"></i> CARTE</a>
+    <a href="#resultsScroll" class="w3-bar-item w3-button w3-hide-small miaBold"><i class="fa fa-th"></i> RÉSULTATS</a>
     <!--<a href="#contact" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-envelope"></i> CONTACT</a>--->
 
   </div>
@@ -44,10 +44,11 @@
 <!-- - - - - - - - - - - - - - - - - H O M E P A G E - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
   <div class="w3-display-middle w3-center" style="white-space:nowrap;">
-    <span class="w3-center w3-padding-large w3-brown w3-xlarge w3-wide w3-animate-opacity"> APPLICATION MIAETNOA </span> </br></br>
-    <a href="#mapScroll"><button class="button-74 w3-animate-opacity" role="button">C'est parti</button></a>
+    <span class="w3-center w3-padding-large w3-brown w3-xlarge w3-wide w3-animate-opacity miaFat"> APPLICATION MIAETNOA </span> </br></br>
+    <a href="#mapScroll"><button class="button-74 w3-animate-opacity miaBold" role="button">C'est parti</button></a>
   </div>
 </div>
 
@@ -56,10 +57,20 @@
 <!-- - - - - - - - - - - - - - - - P A R A M E T R E S - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <div id="mapScroll"></div>
 <div id="appVue">
+
   <div class="mapTitle" id="about">
-    <h1>Recherche</h1>
+
+    <div id="miaImg">
+
+    </div>
+
+    <div id="recherche">
+      <h1 class="miaFat">Recherche</h1>
+    </div>
+
   </div>
 
   <div class="map-container1">
@@ -67,6 +78,7 @@
       <div class="forms">
 
         <div class="forms-noga">
+          <p class="miaLight" id="infoSelect">Ne rien seléctionner dans les listes déroulantes prendra en compte toutes les options</p>
           <p class="form-title-noga"> Code Noga </p>
           <div class="code-noga">
             <select id="select-code-noga" onchange="getSelectedNoga()" v-model="selected">
@@ -123,7 +135,7 @@
           <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" </br> puis cliquez sur la carte pour placer un point. </br>
           Pour replacer un point, cliquez à nouveau </br> sur le bouton puis sur la carte.</p>
           <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
-          <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Placer la zone de recherche</span><span>Cliquez sur la carte</span></button>
+          <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Cliquez pour placer la zone de recherche</span><span>Cliquez maintenant sur la carte</span></button>
           <p class="title5-explain"> Ensuite vous pouvez redimensionner la zone à l'aide </br> du slider ci-dessous. </p>
           <div class="slidecontainer" id="slidercontainerr">
             <input type="range" min="1" max="10000" value="1000" class="slider" id="sliderCircleOnMap">
@@ -179,7 +191,7 @@
 <!-- deuxieme image parralax -->
 <div class="bgimg-2 w3-display-container w3-opacity-min">
   <div class="w3-display-middle">
-    <span class="w3-xxlarge w3-text-black w3-wide">RÉSULTATS</span>
+    <span class="w3-xxlarge w3-text-black w3-wide miaBold">RÉSULTATS</span>
   </div>
 </div>
 
@@ -192,13 +204,13 @@
 <div id="resultsScroll"></div>
 <div class="resultats" id="portfolio">
 
-  <div class="resultats-title">
-
+  <div class="resultats-title miaBold">
+    <h1>Voici les résultats de votre recherche</h1>
   </div>
 
   <div class="resultats-container">
     <div class="map2-container1">
-      <div class="entreprise-resultats" id="liste-resultats"></div>
+      <div class="entreprise-resultats miaReg" id="liste-resultats"></div>
       <div tabindex = "1" id="map2" class="map2"></div>
     </div>
   </div>
@@ -232,9 +244,9 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<footer class="w3-center w3-black w3-padding-64 w3-opacity">
-  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>Vers le haut</a></br></br>
-  <a href="https://www.miaetnoa.ch" target="_blank" class="w3-button w3-light-grey"><i class="fa w3-margin-right"></i>www.miaetnoa.ch</a>
+<footer class="w3-center w3-black w3-padding-64 w3-opacity footerImg">
+  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right miaReg"></i>Vers le haut</a></br></br>
+  <a href="https://www.miaetnoa.ch" target="_blank" class="w3-button w3-light-grey miaReg"><i class="fa w3-margin-right"></i>www.miaetnoa.ch</a>
   <!--
   <div class="w3-xlarge w3-section">
     <i class="fa fa-facebook-official w3-hover-opacity"></i>
@@ -245,7 +257,7 @@
     <i class="fa fa-linkedin w3-hover-opacity"></i>
   </div>
   -->
-  <p>Steven Vaglio, Tiago Gerard, Andi Ramiqi, Raphaël Lopes</p>
+  <p class="miaReg">Steven Vaglio, Tiago Gerard, Andi Ramiqi, Raphaël Lopes</p>
 </footer>
 
 </body>

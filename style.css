@@ -1,5 +1,57 @@
+@font-face {
+  font-family: miaReg;
+  src: url(miaetnoa/Nunito/NunitoPolice/Nunito-Regular.ttf);
+}
+
+@font-face {
+  font-family: miaFat;
+  src: url(miaetnoa/Nunito/NunitoPolice/Nunito-ExtraBold.ttf);
+}
+
+@font-face {
+  font-family: miaBold;
+  src: url(miaetnoa/Nunito/NunitoPolice/Nunito-Bold.ttf);
+}
+
+@font-face {
+  font-family: miaLight;
+  src: url(miaetnoa/Nunito/NunitoPolice/Nunito-Light.ttf);
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+.miaReg {
+  font-family: miaReg;
+}
+
+.miaFat {
+  font-family: miaFat;
+}
+
+.miaBold {
+  font-family: miaBold;
+}
+
+.miaLight {
+  font-family: miaLight;
+}
+
+#miaReg {
+  font-family: miaReg;
+}
+
+#miaFat {
+  font-family: miaFat;
+}
+
+#miaBold {
+  font-family: miaBold;
+}
+
+#miaLight {
+  font-family: miaLight;
 }
 
 .forms {
@@ -12,6 +64,8 @@ html {
   border: 3px solid #96763b;
 }
 
+
+
 .map-container1 {
   margin-top: 2%;
   display: flex;
@@ -20,6 +74,20 @@ html {
 .mapTitle {
   margin-top: 5%;
   text-align: center;
+  display: flex;
+}
+
+#miaImg {
+  width: 43%;
+  margin-left: 2%;
+  background-image: url(miaetnoa/Logo_slogan.png);
+  background-size: auto;
+  background-repeat: no-repeat;
+}
+
+#infoSelect {
+  font-size: x-small;
+  width: 62%;
 }
 
 .bouton-suppression {
@@ -57,6 +125,7 @@ html {
 .noga-delete img {
   width: 12px;
   height: 12px;
+  cursor: pointer;
 }
 
 .natjurBucket {
@@ -85,6 +154,7 @@ html {
 .natjur-delete img {
   width: 12px;
   height: 12px;
+  cursor: pointer;
 }
 
 
@@ -115,20 +185,24 @@ html {
 .taille-delete img {
   width: 12px;
   height: 12px;
+  cursor: pointer;
 }
 
 
 
 #select-code-noga {
   width: 62%;
+  font-family: miaLight;
 }
 
 #select-naturejuridique {
   width: 62%;
+  font-family: miaLight;
 }
 
 #select-taille {
   width: 62%;
+  font-family: miaLight;
 }
 
 .forms-taille {
@@ -150,26 +224,33 @@ html {
 
 .title5-explain {
   font-size: x-small;
+  font-family: miaLight;
+  width: 62%;
 }
 
 .form-title-noga {
   font-size: large;
+  font-family: miaBold;
 }
 
 .form-title-localisation {
   font-size: large;
+  font-family: miaBold;
 }
 
 .form-title-taille {
   font-size: large;
+  font-family: miaBold;
 }
 
 .form-title-naturejuridique {
   font-size: large;
+  font-family: miaBold;
 }
 
 .form-title-zoneexclu {
   font-size: large;
+  font-family: miaBold;
 }
 
 #sliderCircleOnMap {
@@ -310,12 +391,14 @@ html {
 
 
 .button-57 {
+  width: 62%;
   position: relative;
   overflow: hidden;
   border: 1px solid #96763b;
   color: #18181a;
   display: inline-block;
   font-size: 15px;
+  font-family: miaLight;
   line-height: 15px;
   padding: 18px 18px 17px;
   text-decoration: none;
@@ -414,7 +497,7 @@ html {
 }
 
 .entites {
-  border: 2px solid #96763b;
+  border: 3px solid #96763b;
   margin: 1%;
   width: 100;
 
@@ -434,21 +517,26 @@ html {
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
+  margin-left: 2%;
 }
 
 .div2 {
   grid-area: div2;
+  margin-left: 2%;
 }
 
 .div3 {
   grid-area: div3;
+  margin-left: 2%;
  }
 
 .div4 {
   grid-area: div4;
+  margin-left: 2%;
  }
 
 .div5 {
+  margin-left: 5%;
   grid-area: div5;
   cursor: pointer;
   margin-bottom: 5%;
@@ -458,13 +546,6 @@ html {
   height: 25px;
   margin-bottom: 5%;
 }
-
-.info-bonus {
-
-}
-
-
-
 
 .home-title {
   margin: auto;
@@ -477,8 +558,10 @@ html {
   width: 50%;
 }
 
-.home-app {
-
+.footerImg {
+  background-image: url(miaetnoa/responsability.jpg);
+  background-position: center;
+  background-size: cover;
 }
 
 .home-button {
@@ -504,7 +587,7 @@ html {
   color: #000000;
   cursor: pointer;
   display: inline-block;
-  font-family: Clarkson,Helvetica,sans-serif;
+  font-family: miaLight;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0;
