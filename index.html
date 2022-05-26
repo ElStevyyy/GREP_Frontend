@@ -71,6 +71,11 @@
       <h1 class="miaFat" id="title-recherche">Où pourrais-je installer mon prochain bar ?</h1>
     </div>
 
+    <div id="searchAdress">
+      <input name="adress" id="adressValue">
+      <button class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
+    </div>
+
   </div>
 
   <div class="map-container1">
@@ -155,7 +160,10 @@
 
       </div>
 
-      <div class="entreprise-resultats miaReg" id="liste-resultats"></div>
+      <div class="entreprise-resultats miaReg" id="liste-resultats">
+        
+      </div>
+
 
       <div tabindex = "1" id="map" class="map"></div>
 
@@ -165,6 +173,9 @@
       </div>
 
   </div>
+
+  <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
+
 
   <div class="switch-button">
     <button id="switchbutton" role="button" onclick="replaceResultsByParans()"><span class="text">Je veux refaire une recherche</span></button>
