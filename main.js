@@ -79,7 +79,7 @@ const myVueComponent = {
             clearResultsListe();
             clearResultsMap();
             console.log(infoEntreprise.length);
-            getInfoEntreprise();
+            getInfoEntreprise(infoEntreprise);
             document.querySelector("#resultsScroll").scrollIntoView();
           } else {
             alert("Aucun resultat trouvé avec ces paramètres...\nVeuillez modifier vos critères de recherche");
@@ -485,7 +485,7 @@ function clearResultsMap() {
 
 
 // fonction qui recupere les informations des entites, cree les div et les ajoute
-function getInfoEntreprise() {
+function getInfoEntreprise(infoEntreprise) {
 
   //var infoToExtract = infoEntreprise;
 
@@ -633,6 +633,33 @@ function getInfoEntreprise() {
   }
   console.log(infoEntreprise);
   console.log(listeLatLong);
+}
+
+
+//Bar de recherche pour les résultats
+function searchEntreprises() {
+
+  var input = document.getElementById('searchResults').value
+  input = input.toLowerCase();
+  if(!input){
+    getInfoEntreprise(infoEntreprise);
+  }
+  var newInfoEntreprise = []
+
+  for (i = 0; i < infoEntreprise.length; i++) {
+    var obj = infoEntreprise[i];
+    
+
+    if (obj.nom.toLowerCase().includes(input)) {
+      newInfoEntreprise.push(obj);
+    }
+  }
+  clearResultsListe();
+  clearResultsMap();
+  getInfoEntreprise(newInfoEntreprise);
+  console.log("coucou");
+  
+
 }
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
