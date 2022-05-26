@@ -182,6 +182,30 @@ const myVueComponent = {
 
 const myApp = Vue.createApp(myVueComponent).mount("#appVue")
 
+// Recherche d'une adresse précise pour la map
+var adressPositions = []
+function searchAdress(adress){
+  console.log(adress)
+  $.ajax({
+    url: 'http://api.positionstack.com/v1/forward',
+    data: {
+      access_key: '126f753997e754bae2f5b143c053b9ac',
+      query: adress.toString(),
+      region: 'Geneva',
+      fields: 'results.longitude, results.latitude',
+      output: 'json',
+      limit: 1
+    }
+  }).done(function(data) {
+    console.log(data);
+    adressPositions.push(data['data'][0]['latitude'])
+    adressPositions.push(data['data'][0]['longitude'])
+    console.log(adressPositions);
+
+
+  });
+}
+
 
 // local variables
 var cercleOnMap;

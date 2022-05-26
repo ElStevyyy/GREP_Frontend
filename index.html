@@ -58,6 +58,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+
+
 <div id="mapScroll"></div>
 <div id="appVue">
 
@@ -69,6 +71,11 @@
 
     <div id="recherche">
       <h1 class="miaFat" id="title-recherche">Où pourrais-je installer mon prochain bar ?</h1>
+    </div>
+
+    <div id="searchAdress">
+      <input name="adress" id="adressValue">
+      <button class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
     </div>
 
   </div>
