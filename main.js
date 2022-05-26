@@ -41,9 +41,15 @@ const myVueComponent = {
         var radius = getRadiusInMeter();
         var distinct = document.getElementById("distinct");
         var distinctValue;
+        var onlyMails = document.getElementById("onlyMails");
+        var onlyMailsValue;
 
         if (distinct.checked) {
           distinctValue = "true";
+        } 
+
+        if (onlyMails.checked) {
+          onlyMailsValue = "true";
         } 
 
         console.log(distinctValue);
@@ -69,7 +75,8 @@ const myVueComponent = {
             longitude: longitude,
             latitude: latitude,
             radius: radius,
-            distinct: distinctValue
+            distinct: distinctValue,
+            onlyMails: onlyMailsValue
           }
         })
         .then((response) => {
@@ -79,8 +86,8 @@ const myVueComponent = {
             clearResultsListe();
             clearResultsMap();
             console.log(infoEntreprise.length);
-            getInfoEntreprise(infoEntreprise);
-            document.querySelector("#resultsScroll").scrollIntoView();
+            getInfoEntreprise();
+            // document.querySelector("#resultsScroll").scrollIntoView();
           } else {
             alert("Aucun resultat trouvé avec ces paramètres...\nVeuillez modifier vos critères de recherche");
           }
@@ -182,48 +189,10 @@ const myVueComponent = {
 
 const myApp = Vue.createApp(myVueComponent).mount("#appVue")
 
-// Recherche d'une adresse précise pour la map
-var adressPositions = []
-function searchAdress(adress){
-  console.log(adress)
-  $.ajax({
-    url: 'http://api.positionstack.com/v1/forward',
-    data: {
-      access_key: '126f753997e754bae2f5b143c053b9ac',
-      query: adress.toString(),
-      region: 'Geneva',
-      fields: 'results.longitude, results.latitude',
-      output: 'json',
-      limit: 1
-    }
-  }).done(function(data) {
-    console.log(data);
-    adressPositions.push(data['data'][0]['latitude'])
-    adressPositions.push(data['data'][0]['longitude'])
-    console.log(adressPositions);
-
-
-  });
-}
-
 
 // local variables
 var cercleOnMap;
 var allowToPlaceZone = true;
-
-// creation de la premiere carte au niveau des parametres
-var map = new ol.Map({
-  target: 'map',
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  view: new ol.View({
-    center: ol.proj.fromLonLat([6.14234, 46.207]),
-    zoom: 12
-  })
-});
 
 const container = document.getElementById('popup');
 const content = document.getElementById('popup-content');
@@ -244,20 +213,22 @@ closer.onclick = function () {
   return false;
 };
 
-// creation de la seconde carte au niveau des resultats
-var map2 = new ol.Map({
+// creation de la premiere carte au niveau des parametres
+var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
     })
   ],
   overlays: [overlay],
-  target: 'map2',
+  target: 'map',
   view: new ol.View({
     center: ol.proj.fromLonLat([6.14234, 46.207]),
     zoom: 12
   })
 });
+
+
 
 function scrollTo(hash) {
   location.hash = "#" + hash;
@@ -473,9 +444,9 @@ function clearResultsListe() {
 function clearResultsMap() {
 
   listeLatLong.forEach (function(value, key) { 
-    map2.getLayers().getArray()
+    map.getLayers().getArray()
       .filter(layer => layer.get('name') === key)
-      .forEach(layer => map2.removeLayer(layer));
+      .forEach(layer => map.removeLayer(layer));
   });
 
   listeLatLong = new Map();
@@ -485,7 +456,9 @@ function clearResultsMap() {
 
 
 // fonction qui recupere les informations des entites, cree les div et les ajoute
-function getInfoEntreprise(infoEntreprise) {
+function getInfoEntreprise() {
+
+  deleteCircleOnMap();
 
   //var infoToExtract = infoEntreprise;
 
@@ -502,7 +475,6 @@ function getInfoEntreprise(infoEntreprise) {
     var coordSurbrillance;
 
     div1.addEventListener('click', (event) => {
-
       coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
       var nom = infoEntreprise[event.target.parentElement.id].nom;
       var npa = infoEntreprise[event.target.parentElement.id].npa;
@@ -589,9 +561,9 @@ function getInfoEntreprise(infoEntreprise) {
           listeLatLong.delete(entityCoords);
           overlay.setPosition(undefined);
           
-          map2.getLayers().getArray()
+          map.getLayers().getArray()
           .filter(layer => layer.get('name') === entityCoords)
-          .forEach(layer => map2.removeLayer(layer));
+          .forEach(layer => map.removeLayer(layer));
 
           console.log(listeLatLong);
         }
@@ -604,8 +576,6 @@ function getInfoEntreprise(infoEntreprise) {
       else {
         console.log("yousk2");
       }
-
-
     })
 
     parent.appendChild(div1);
@@ -626,40 +596,30 @@ function getInfoEntreprise(infoEntreprise) {
       listeLatLong.set(pointComparaison, listeLatLong.get(pointComparaison) + 1);
     }
     else {
-
       listeLatLong.set(pointComparaison, 1);
       placePointsOnMap(pointCoords);
     } 
   }
-  console.log(infoEntreprise);
   console.log(listeLatLong);
+
+  replaceParamsByResults();
 }
 
+function replaceParamsByResults() {
+  var divParam = document.getElementById("formsid");
+  var divResults = document.getElementById("liste-resultats");
 
-//Bar de recherche pour les résultats
-function searchEntreprises() {
-
-  var input = document.getElementById('searchResults').value
-  input = input.toLowerCase();
-  if(!input){
-    getInfoEntreprise(infoEntreprise);
-  }
-  var newInfoEntreprise = []
-
-  for (i = 0; i < infoEntreprise.length; i++) {
-    var obj = infoEntreprise[i];
-    
-
-    if (obj.nom.toLowerCase().includes(input)) {
-      newInfoEntreprise.push(obj);
-    }
-  }
-  clearResultsListe();
-  clearResultsMap();
-  getInfoEntreprise(newInfoEntreprise);
-  console.log("coucou");
+  divParam.style.display = "none";
+  divResults.style.display = "block";
   
+}
 
+function replaceResultsByParans() {
+  var divParam = document.getElementById("formsid");
+  var divResults = document.getElementById("liste-resultats");
+
+  divParam.style.display = "block";
+  divResults.style.display = "none";
 }
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
@@ -683,7 +643,7 @@ function placePointsOnMap(entityCoords) {
       })
   });
   layerPoint.set('name', name);
-  map2.addLayer(layerPoint);
+  map.addLayer(layerPoint);
 
 }
 
@@ -695,7 +655,7 @@ function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrinci
   var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
 
   if (pointSurbrillance != null) {
-    map2.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
+    map.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
       image: new ol.style.Circle({
         radius: 6,
         fill: new ol.style.Fill({color: 'red'})
@@ -704,14 +664,14 @@ function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrinci
   }
 
   pointSurbrillance = entityCoords[0].toString() + "," + entityCoords[1].toString();
-  map2.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
+  map.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
     image: new ol.style.Circle({
       radius: 6,
       fill: new ol.style.Fill({color: 'yellow'})
     })
   }));}});
 
-  map2.getLayers().get(pointSurbrillance)
+  map.getLayers().get(pointSurbrillance);
 
   overlay.setPosition(centerLongitudeLatitudePoint);
   content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : "
@@ -741,10 +701,21 @@ function placeBarOnMap(barCoords) {
   map.addLayer(layerBar);
 }
 
+// fonction qui supprime le cercle place sur la carte
+function deleteCircleOnMap() {
+  map.getLayers().forEach(layer => {
+    if (layer && layer.get('name') === 'circle') {
+      map.removeLayer(layer);
+    }
+  });
+  // console.log("yousk2");
+}
+
 //  fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
 function clickOnMapON() {
 
   deleteCircleOnMap();
+  allowToPlaceZone = true;
 
   map.on('click', function(event) {
 
@@ -791,17 +762,6 @@ function increaseCircleSize() {
   sliderCircle.oninput = function() {
     cercleOnMap.setRadius(parseInt(this.value));
   }
-}
-
-// fonction qui supprime le cercle place sur la carte
-function deleteCircleOnMap() {
-  map.getLayers().forEach(layer => {
-    if (layer && layer.get('name') === 'circle') {
-      map.removeLayer(layer);
-    }
-  });
-  console.log("yousk2");
-  allowToPlaceZone = true;
 }
 
 // systeme de fleches pour deplacer le cercle ?

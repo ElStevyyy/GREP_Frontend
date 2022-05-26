@@ -56,11 +56,16 @@ html {
 
 .forms {
   flex: 1;
+  width: 50%;
+  margin-right: 1%;
+  height: 500px;
+  overflow: scroll;
 }
 
 .map {
-  height: 600px;
-  width: 80%;
+  height: 500px;
+  width: 70%;
+  margin-right: 2%;
   border: 3px solid #96763b;
 }
 
@@ -76,7 +81,7 @@ html {
 }
 
 #title-recherche {
-  margin-left: -75%;
+  margin-left: -35%;
 }
 
 #homepage-title {
@@ -304,6 +309,11 @@ html {
   width: 100%;
 }
 
+#switchbutton {
+  margin-top: 1%;
+  margin-left: 1%;
+}
+
 
 
 
@@ -467,6 +477,10 @@ html {
 }
 
 
+
+
+
+
 .resultats-title {
   text-align: center;
   margin-top: 5%;
@@ -482,15 +496,19 @@ html {
   display: flex;
 }
 
-.map2 {
-  height: 650px;
-  width: 80%;
-  border: 3px solid #96763b;
-}
-
 .resultats-container {
   width: 100%;
 }
+
+#liste-resultats {
+  display: none;
+  flex: 1;
+  width: 50%;
+  margin-right: 1%;
+  height: 500px;
+  overflow: scroll;
+}
+
 
 .resulats-export {
   margin-top: 2%;
@@ -499,7 +517,7 @@ html {
 }
 
 .entites {
-  border: 3px solid #96763b;
+  border: 1px solid #96763b;
   margin: 1%;
   width: 100;
 
@@ -574,8 +592,8 @@ html {
 
 .center-button {
   z-index: 10;
-  margin-top: 3%;
   text-align: center;
+  margin-top: 5%;
   margin-bottom: 5%;
 }
 

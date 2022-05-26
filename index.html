@@ -58,8 +58,6 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-
-
 <div id="mapScroll"></div>
 <div id="appVue">
 
@@ -73,23 +71,17 @@
       <h1 class="miaFat" id="title-recherche">Où pourrais-je installer mon prochain bar ?</h1>
     </div>
 
-    <div id="searchAdress">
-      <input name="adress" id="adressValue">
-      <button class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
-    </div>
-
   </div>
 
   <div class="map-container1">
 
-      <div class="forms">
+      <div class="forms" id="formsid">
 
         <div class="forms-noga">
-          <p class="miaLight" id="infoSelect">Ne rien seléctionner dans les listes déroulantes prendra en compte toutes les options</p>
           <p class="form-title-noga"> Domaine d'activité </p>
           <div class="code-noga">
-            <select id="select-code-noga" onchange="getSelectedNoga()" v-model="selected">
-              <option disabled value="">Choisissez un code Noga</option>
+            <select id="select-code-noga" onchange="getSelectedNoga()">
+              <option value="" disabled selected hidden></option>
             </select>
           </div>
 
@@ -152,13 +144,18 @@
           <br>
 
           <input type="checkbox" id="distinct" name="distinct" value="distinct">
-          <label for="distinct"> Afficher les doublons</label><br>
+          <label for="distinct"> Ne pas afficher les doublons</label><br>
+
+          <input type="checkbox" id="onlyMails" name="onlyMails" value="onlyMails">
+          <label for="onlyMails"> Uniquement avec emails</label><br>
 
         </div>
 
         
 
       </div>
+
+      <div class="entreprise-resultats miaReg" id="liste-resultats"></div>
 
       <div tabindex = "1" id="map" class="map"></div>
 
@@ -167,6 +164,10 @@
         <div id="popup-content"></div>
       </div>
 
+  </div>
+
+  <div class="switch-button">
+    <button id="switchbutton" role="button" onclick="replaceResultsByParans()"><span class="text">Je veux refaire une recherche</span></button>
   </div>
 
   <div class="center-button">
@@ -218,22 +219,16 @@
 <div id="resultsScroll"></div>
 <div class="resultats" id="portfolio">
 
-  <div class="resultats-title miaBold">
-    <h1>Tous ces emplacements pour moi ?</h1>
+<div class="resultats-container">
+  <div class="map2-container1">
+    <div tabindex = "1" id="map2" class="map2"></div>
   </div>
-  <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
+</div>
 
-  <div class="resultats-container">
-    <div class="map2-container1">
-      <div class="entreprise-resultats miaReg" id="liste-resultats"></div>
-      <div tabindex = "1" id="map2" class="map2"></div>
-    </div>
-  </div>
 
-  <div class="resulats-export">
-    <button class="button-48" role="button" onclick="jsonToCsv()"><span class="text">Exporter les résultats</span></button>
-  </div>
 
+<div class="resulats-export">
+  <button class="button-48" role="button" onclick="jsonToCsv()"><span class="text">Exporter les résultats</span></button>
 </div>
 
 <!-- partie des images en full size-->
