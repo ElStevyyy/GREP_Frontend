@@ -11,16 +11,12 @@ var listeBars = [];
 var listeLatLong = new Map();
 
 const myVueComponent = {
-  data() {
-    return {
-      postBar: JSON.stringify({Longitude: 66.666,Latitude: 77.777}),
-      bars : ""
-    }
-  },
+  data() {},
+
   methods : {
 
-      // fonction de test avec une requete POST
-      testPostNow() {
+      // test avec une requete POST
+      testPost() {
         axios({
           method: 'post',
           url: apiBars,
@@ -43,9 +39,16 @@ const myVueComponent = {
         var longitude = getLocaLong();
         var latitude = getLocaLat();
         var radius = getRadiusInMeter();
+        var distinct = document.getElementById("distinct");
+        var distinctValue;
+
+        if (distinct.checked) {
+          distinctValue = "true";
+        } 
+
+        console.log(distinctValue);
 
         //console.log(codenoga);
-
 
         //var taille = "2";
         /*
@@ -65,7 +68,8 @@ const myVueComponent = {
             natureJuridique: natjur,
             longitude: longitude,
             latitude: latitude,
-            radius: radius
+            radius: radius,
+            distinct: distinctValue
           }
         })
         .then((response) => {
@@ -74,7 +78,7 @@ const myVueComponent = {
             infoEntreprise = response.data;
             clearResultsListe();
             clearResultsMap();
-            console.log(infoEntreprise);
+            console.log(infoEntreprise.length);
             getInfoEntreprise();
             document.querySelector("#resultsScroll").scrollIntoView();
           } else {
@@ -479,12 +483,30 @@ function getInfoEntreprise() {
       var nom = infoEntreprise[event.target.parentElement.id].nom;
       var npa = infoEntreprise[event.target.parentElement.id].npa;
       var adresse = infoEntreprise[event.target.parentElement.id].adresse;
-      var telPrincipal = infoEntreprise[event.target.parentElement.id].telPrincipal;
-      var telSecondaire = infoEntreprise[event.target.parentElement.id].telSecondaire;
+      var telPrincipal = parseInt(infoEntreprise[event.target.parentElement.id].telPrincipal);
+      var telSecondaire = parseInt(infoEntreprise[event.target.parentElement.id].telSecondaire);
       var email = infoEntreprise[event.target.parentElement.id].email;
 
+      if (isNaN(telPrincipal)) {
+        telPrincipal = "Non renseigné";
+      } else {
+        telPrincipal = "+" + telPrincipal.toString().substring(0, 2) + " " + telPrincipal.toString().substring(2, 4) + " " + telPrincipal.toString().substring(4, 7) + " " + telPrincipal.toString().substring(7, 9) + " " + telPrincipal.toString().substring(9, 11);
+      }
+
+      if (isNaN(telSecondaire)) {
+        telSecondaire = "Non renseigné";
+      } else {
+        telSecondaire = "+" + telSecondaire.toString().substring(0, 2) + " " + telSecondaire.toString().substring(2, 4) + " " + telSecondaire.toString().substring(4, 7) + " " + telSecondaire.toString().substring(7, 9) + " " + telSecondaire.toString().substring(9, 11);
+      }
+
+      if (email == null) {
+        email = "Non renseigné";
+      }
+      
+      //console.log("type of tel = " + typeof telPrincipal);
       placeSurbrillancePointsOnMap(coordSurbrillance, nom, npa, adresse, telPrincipal, telSecondaire, email);
       //console.log(infoEntreprise[event.target.parentElement.id]);
+      
     });
 
     var div2 = document.createElement("div");
@@ -531,11 +553,9 @@ function getInfoEntreprise() {
       else {
         id = event.target.parentElement.id;
       }
-      //console.log(id);
+      
       var entityCoords = infoEntreprise[id].longitude.toString() + "," + infoEntreprise[id].latitude.toString();
       infoEntreprise[id] = null;
-      //infoEntreprise.splice(infoEntreprise.indexOf(id), 1);
-      //infoEntreprise = infoEntreprise.filter(item=>item.id !=id);
 
       console.log(entityCoords);
 
@@ -640,7 +660,6 @@ function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrinci
   }));}});
 
   map2.getLayers().get(pointSurbrillance)
-
 
   overlay.setPosition(centerLongitudeLatitudePoint);
   content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : "
@@ -849,19 +868,45 @@ function toggleFunction() {
 
       var itemsFormatted = [];
 
-      //   //recup tous les json dans une seule même liste et dans le bon format
+      // recup tous les json dans une seule même liste et dans le bon format
       infoEntreprise.forEach((item) => {
-        if(item==null){
-          return
+        console.log(item);
+        /*
+        var telPrincipalFormatted = item.telPrincipal;
+        var telSecondaireFormatted = item.telSecondaire;
+        var raisonSocialFormatted = item.raisonSocial;
+        var natureJuridiqueFormatted = item.natureJuridique;
+        var tailleFormatted = item.taille;
+        var typeLocalFormatted = item.typeLocal;
+        var codeNogaFormatted = item.codeNoga;
+        */
+
+        if (item == null) {
+          return;
         }
+
+        /*
+        if (item.telPrincipal != null) {
+          telPrincipalFormatted = "+" + item.telPrincipal.toString().substring(0, 2) + " " + item.telPrincipal.toString().substring(2, 4) + " " + item.telPrincipal.toString().substring(4, 7) + " " + item.telPrincipal.toString().substring(7, 9) + " " + item.telPrincipal.toString().substring(9, 11);
+        } else {
+          telPrincipalFormatted = "Non renseigné";
+        }
+
+        if (item.telSecondaire != null) {
+          telSecondaireFormatted = "+" + item.telSecondaire.toString().substring(0, 2) + " " + item.telSecondaire.toString().substring(2, 4) + " " + item.telSecondaire.toString().substring(4, 7) + " " + item.telSecondaire.toString().substring(7, 9) + " " + item.telSecondaire.toString().substring(9, 11);
+        } else {
+          telSecondaireFormatted = "Non renseigné";
+        }
+        */
+
           itemsFormatted.push({
-              nom: item.nom,
-              raisonSocial: item.raisonSocial,
-              raisonSocialParent: item.raisonSocialParent,
-              branche: item.branche,
-              natureJuridique: item.natureJuridique,
+              nom: item.nom.replace(/;/g, ''),
+              raisonSocial: item.raisonSocial.replace(/;/g, ''),
+              raisonSocialParent: item.raisonSocialParent.replace(/;/g, ''),
+              branche: item.branche.replace(/;/g, ','),
+              natureJuridique: item.natureJuridique.replace(/;/g, ''),
               taille: item.taille,
-              typeLocal: item.typeLocal,
+              typeLocal: item.typeLocal.replace(/;/g, ''),
               codeNoga: item.codeNoga,
               immaDt: item.immaDt,
               adresse: item.adresse,
@@ -869,7 +914,7 @@ function toggleFunction() {
               latitude: item.latitude,
               longitude: item.longitude,
               email: item.email,
-              telPrincipal: item.telPrincipal,
+              telPrincipal: item.telPrincipal,              
               telSecondaire: item.telSecondaire,
               siteInternet: item.siteInternet
           });
