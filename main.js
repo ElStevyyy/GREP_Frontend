@@ -631,6 +631,7 @@ function getInfoEntreprise() {
       placePointsOnMap(pointCoords);
     } 
   }
+  console.log(infoEntreprise);
   console.log(listeLatLong);
 }
 
