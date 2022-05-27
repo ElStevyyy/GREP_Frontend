@@ -71,7 +71,6 @@ const myVueComponent = {
             latitude: latitude,
             radius: radius,
             distinct: distinctValue,
-            limit : 5
           }
         })
         .then((response) => {
