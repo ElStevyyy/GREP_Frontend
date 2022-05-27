@@ -6,6 +6,7 @@ const urlNoga = "http://172.105.245.5/api/nogas"
 const urlJuridique = "http://172.105.245.5/api/juridiques"
 const urlParams = "http://172.105.245.5/api/search"
 const apiTaille = "http://172.105.245.5/api/tailles"
+const apiCalculerDistance = "http://172.105.245.5/api/calculerDistance"
 var infoEntreprise = [];
 var listeBars = [];
 var listeLatLong = new Map();
@@ -76,8 +77,11 @@ const myVueComponent = {
             latitude: latitude,
             radius: radius,
             distinct: distinctValue,
+<<<<<<< HEAD
             emailNotNull: emailNotNullValue,
             limit: limites
+=======
+>>>>>>> origin/CalculateDistance
           }
         })
         .then((response) => {
@@ -525,7 +529,7 @@ function getInfoEntreprise(infoEntreprise) {
       }
       
       //console.log("type of tel = " + typeof telPrincipal);
-      placeSurbrillancePointsOnMap(coordSurbrillance, nom, npa, adresse, telPrincipal, telSecondaire, email);
+      placeSurbrillancePointsOnMap(coordSurbrillance,event.target.parentElement.id, nom, npa, adresse, telPrincipal, telSecondaire, email);
       //console.log(infoEntreprise[event.target.parentElement.id]);
       
     });
@@ -700,7 +704,7 @@ function placePointsOnMap(entityCoords) {
 var pointSurbrillance = null;
 
 // function qui place un point d'une autre couleur sur la carte (surbrillance)
-function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrincipal, telSecondaire, email) {
+async function placeSurbrillancePointsOnMap(entityCoords,id, nom, npa, adresse, telPrincipal, telSecondaire, email) {
 
   var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
 
@@ -723,10 +727,68 @@ function placeSurbrillancePointsOnMap(entityCoords, nom, npa, adresse, telPrinci
 
   map.getLayers().get(pointSurbrillance);
 
+  if (infoEntreprise[id].distanceCalculated == undefined) {
+    await FindClosestBar(infoEntreprise[id]);
+  }else{
+    console.log(infoEntreprise[id].distanceCalculated + " M")
+  }
+
   overlay.setPosition(centerLongitudeLatitudePoint);
   content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : "
-                      + telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email;
+                      + telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email +"<br>" + "en : " + infoEntreprise[id].distanceCalculated[0] + " minutes de " + infoEntreprise[id].distanceCalculated[1];
+  //Add to infoEntreprise the distance between the closest bar and the entity
+  //check if the entity is undifined
 
+ 
+}
+async function FindClosestBar(entity) {
+  var closer = [];
+  const promise = new Promise((resolve, reject) => {
+    listeBars.forEach(bar => {
+      //calulate the closest bar by lattitude and longitude
+      //if closer is undefined, set it to the first bar
+      if (closer.length == 0) {
+        var distance = calculateDistance(entity.latitude,entity.longitude, bar.adress.latitude, bar.adress.longitude);
+        closer = [distance, bar.adress.adresse, bar.adress.latitude, bar.adress.longitude];
+        console.log(distance);
+      }else {
+        var distance = calculateDistance(entity.latitude,entity.longitude, bar.adress.latitude, bar.adress.longitude);
+        if(closer[0] > distance) {
+          closer = [distance, bar.adress.adresse, bar.adress.latitude, bar.adress.longitude];
+        }
+      }
+    });
+    $.ajax({
+      url : apiCalculerDistance,
+      data : {
+        depart : entity.latitude + "," + entity.longitude,
+        arriver : closer[2]+","+closer[3],
+      }
+    }).done(function(data) {
+      //transorm the time in seconds to minutes
+      var time = data.travelDuration.resourceSets[0].resources[0].travelDuration / 60;
+      //round the time to 2 decimals
+      time = Math.round(time * 100) / 100;
+      entity.distanceCalculated = [time, closer[1]];
+      resolve(entity.distanceCalculated);
+    })
+  });
+  await promise;
+  return promise;
+  
+}
+//calculate the distance between two points
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371; // km
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  
+  return d;
 }
 
 // fonction qui placent les bars existants sur la carte
@@ -903,7 +965,7 @@ function toggleFunction() {
 }
 
 // Export JSON to CSV
-  function jsonToCsv(){
+async function jsonToCsv(){
     var listeEntrepriseRemovedNull = infoEntreprise.filter(function(val) { return val !== null; });
     if(listeEntrepriseRemovedNull.length != 0){
       //infoEntreprise.forEach(element => console.log(element));
@@ -925,14 +987,13 @@ function toggleFunction() {
         email: "email de contact",
         telPrincipal: "Numero de téléphone",
         telSecondaire: "Numero de téléphone secondaire",
-        siteInternet: "Site internet de l'entreprise"
+        siteInternet: "Site internet de l'entreprise",
+        distanceCalculated : "Temps entre l'entreprise et le bar",
       };
 
       var itemsFormatted = [];
-
+      for (var i = 0; i < infoEntreprise.length; i++) {
       // recup tous les json dans une seule même liste et dans le bon format
-      infoEntreprise.forEach((item) => {
-        console.log(item);
         /*
         var telPrincipalFormatted = item.telPrincipal;
         var telSecondaireFormatted = item.telSecondaire;
@@ -943,8 +1004,8 @@ function toggleFunction() {
         var codeNogaFormatted = item.codeNoga;
         */
 
-        if (item == null) {
-          return;
+        if (infoEntreprise[i] == null) {
+          continue;
         }
 
         /*
@@ -961,26 +1022,31 @@ function toggleFunction() {
         }
         */
 
+        if (infoEntreprise[i].distanceCalculated == undefined) {
+          await FindClosestBar(infoEntreprise[i]);
+        }
+        console.log(infoEntreprise[i].distanceCalculated);
           itemsFormatted.push({
-              nom: item.nom.replace(/;/g, ''),
-              raisonSocial: item.raisonSocial.replace(/;/g, ''),
-              raisonSocialParent: item.raisonSocialParent.replace(/;/g, ''),
-              branche: item.branche.replace(/;/g, ','),
-              natureJuridique: item.natureJuridique.replace(/;/g, ''),
-              taille: item.taille,
-              typeLocal: item.typeLocal.replace(/;/g, ''),
-              codeNoga: item.codeNoga,
-              immaDt: item.immaDt,
-              adresse: item.adresse,
-              npa: item.npa,
-              latitude: item.latitude,
-              longitude: item.longitude,
-              email: item.email,
-              telPrincipal: item.telPrincipal,              
-              telSecondaire: item.telSecondaire,
-              siteInternet: item.siteInternet
+              nom: String(infoEntreprise[i].nom).replace(/;/g, ''),
+              raisonSocial: String(infoEntreprise[i].raisonSocial).replace(/;/g, ''),
+              raisonSocialParent: String(infoEntreprise[i].raisonSocialParent).replace(/;/g, ''),
+              branche: String(infoEntreprise[i].branche).replace(/;/g, ','),
+              natureJuridique: String(infoEntreprise[i].natureJuridique).replace(/;/g, ''),
+              taille: infoEntreprise[i].taille,
+              typeLocal: String(infoEntreprise[i].typeLocal).replace(/;/g, ''),
+              codeNoga: infoEntreprise[i].codeNoga,
+              immaDt: infoEntreprise[i].immaDt,
+              adresse: infoEntreprise[i].adresse,
+              npa: infoEntreprise[i].npa,
+              latitude: infoEntreprise[i].latitude,
+              longitude: infoEntreprise[i].longitude,
+              email: infoEntreprise[i].email,
+              telPrincipal: infoEntreprise[i].telPrincipal,              
+              telSecondaire: infoEntreprise[i].telSecondaire,
+              siteInternet: infoEntreprise[i].siteInternet,
+              distanceCalculated : infoEntreprise[i].distanceCalculated[0] + " Minutes de " + infoEntreprise[i].distanceCalculated[1]
           });
-      });
+      };
 
       var fileTitle = 'resultatsExport'; // or 'my-unique-title'
       exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
