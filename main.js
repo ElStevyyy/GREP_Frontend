@@ -730,12 +730,14 @@ async function placeSurbrillancePointsOnMap(entityCoords,id, nom, npa, adresse, 
 
   overlay.setPosition(centerLongitudeLatitudePoint);
   content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : "
-                      + telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email +"<br>" + "en : " + infoEntreprise[id].distanceCalculated[0] + " minutes de " + infoEntreprise[id].distanceCalculated[1];
+                      + telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email 
+                      + "<br> <br>" + "L'entité se trouve à " + infoEntreprise[id].distanceCalculated[0] 
+                      + " minutes de " + infoEntreprise[id].distanceCalculated[1] + " en voiture";
+
   //Add to infoEntreprise the distance between the closest bar and the entity
   //check if the entity is undifined
-
- 
 }
+
 async function FindClosestBar(entity) {
   var closer = [];
   const promise = new Promise((resolve, reject) => {
