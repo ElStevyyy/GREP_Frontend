@@ -77,11 +77,8 @@ const myVueComponent = {
             latitude: latitude,
             radius: radius,
             distinct: distinctValue,
-<<<<<<< HEAD
             emailNotNull: emailNotNullValue,
             limit: limites
-=======
->>>>>>> origin/CalculateDistance
           }
         })
         .then((response) => {
@@ -729,8 +726,6 @@ async function placeSurbrillancePointsOnMap(entityCoords,id, nom, npa, adresse, 
 
   if (infoEntreprise[id].distanceCalculated == undefined) {
     await FindClosestBar(infoEntreprise[id]);
-  }else{
-    console.log(infoEntreprise[id].distanceCalculated + " M")
   }
 
   overlay.setPosition(centerLongitudeLatitudePoint);
@@ -766,9 +761,8 @@ async function FindClosestBar(entity) {
       }
     }).done(function(data) {
       //transorm the time in seconds to minutes
-      var time = data.travelDuration.resourceSets[0].resources[0].travelDuration / 60;
       //round the time to 2 decimals
-      time = Math.round(time * 100) / 100;
+      time = Math.floor(data.travelDuration.resourceSets[0].resources[0].travelDuration / 60) + ":"+ data.travelDuration.resourceSets[0].resources[0].travelDuration % 60  ;
       entity.distanceCalculated = [time, closer[1]];
       resolve(entity.distanceCalculated);
     })
@@ -966,6 +960,8 @@ function toggleFunction() {
 
 // Export JSON to CSV
 async function jsonToCsv(){
+    const button = document.getElementById('export')
+    button.disabled = true
     var listeEntrepriseRemovedNull = infoEntreprise.filter(function(val) { return val !== null; });
     if(listeEntrepriseRemovedNull.length != 0){
       //infoEntreprise.forEach(element => console.log(element));
@@ -1025,7 +1021,6 @@ async function jsonToCsv(){
         if (infoEntreprise[i].distanceCalculated == undefined) {
           await FindClosestBar(infoEntreprise[i]);
         }
-        console.log(infoEntreprise[i].distanceCalculated);
           itemsFormatted.push({
               nom: String(infoEntreprise[i].nom).replace(/;/g, ''),
               raisonSocial: String(infoEntreprise[i].raisonSocial).replace(/;/g, ''),
@@ -1050,6 +1045,7 @@ async function jsonToCsv(){
 
       var fileTitle = 'resultatsExport'; // or 'my-unique-title'
       exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
+      button.disabled = false 
     } else {
       alert("Aucune donnée à exporter");
     }
