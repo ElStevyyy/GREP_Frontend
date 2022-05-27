@@ -33,7 +33,7 @@ const myVueComponent = {
         // bons parametres, ne pas supprimer
         
         var taille = getSelectedTailleListe().join(",");
-        //var zoneexclu = document.getElementById("value-zoneexclu").innerHTML;
+        var limites = document.getElementById("limits-input").value;
         var codenoga = getSelectedNogaListe().join(",");
         var natjur = getSelectedNatjurListe().join(",");
         var longitude = getLocaLong();
@@ -41,15 +41,15 @@ const myVueComponent = {
         var radius = getRadiusInMeter();
         var distinct = document.getElementById("distinct");
         var distinctValue;
-        var onlyMails = document.getElementById("onlyMails");
-        var onlyMailsValue;
+        var emailNotNull = document.getElementById("onlyMails");
+        var emailNotNullValue;
 
         if (distinct.checked) {
           distinctValue = "true";
         }
 
-        if (onlyMails.checked) {
-          onlyMailsValue = "true";
+        if (emailNotNull.checked) {
+          emailNotNullValue = "true";
         }
 
         console.log(distinctValue);
@@ -64,19 +64,20 @@ const myVueComponent = {
         var longitude = 6.140833290040641;
         var latitude = 46.2005701220817;
         var radius = 6913.282075607314;
+        http://172.105.245.5/api/search?taille=&noga=&natureJuridique=&longitude=6.132008130874633&latitude=46.17154187792602&radius=691.6933934788481&limits=50
         */
         
         axios.get(urlParams, {
           params: {
             taille: taille,
-            //zoneExclusion: zoneexclu,
             noga: codenoga,
             natureJuridique: natjur,
             longitude: longitude,
             latitude: latitude,
             radius: radius,
             distinct: distinctValue,
-            onlyMails: onlyMailsValue
+            emailNotNull: emailNotNullValue,
+            limit: limites
           }
         })
         .then((response) => {

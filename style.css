@@ -22,6 +22,10 @@ html {
   scroll-behavior: smooth;
 }
 
+#navbar {
+  z-index: 100;
+}
+
 .miaReg {
   font-family: miaReg;
 }
@@ -58,15 +62,20 @@ html {
   flex: 1;
   width: 50%;
   margin-right: 1%;
-  height: 500px;
-  overflow: scroll;
+  height: 650px;
 }
 
 .map {
+  margin-top: 2%;
   height: 500px;
   width: 70%;
   margin-right: 2%;
-  border: 3px solid #96763b;
+}
+
+#searchAdress {
+  position: absolute;
+  right: 3%;
+  z-index: 1;
 }
 
 .map-container1 {
@@ -224,8 +233,18 @@ html {
   margin-left: 10%;
 }
 
-.forms-zone-exclusion {
+.forms-limits {
   margin-left: 10%;
+  margin-top: 2%;
+  font-family: miaBold;
+  font-size: large;
+}
+
+#limits-input {
+  margin-top: 2%;
+  font-family: miaReg;
+  font-size: small;
+  width: 62%;
 }
 
 .forms-geolocalisation {
@@ -234,8 +253,8 @@ html {
 }
 
 .title5-explain {
-  font-size: x-small;
-  font-family: miaLight;
+  font-size: large;
+  font-family: miaBold;
   width: 62%;
 }
 
@@ -489,11 +508,8 @@ html {
 .entreprise-resultats {
   width: 20%;
   height: 650px;
-  overflow: scroll;
-}
-
-.map2-container1 {
-  display: flex;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .resultats-container {
@@ -505,10 +521,17 @@ html {
   flex: 1;
   width: 50%;
   margin-right: 1%;
-  height: 500px;
-  overflow: scroll;
+  margin-left: 1%;
+  height: 650px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
+#searchResults {
+  margin-left: 1.2%;
+  margin-bottom: -5%;
+  margin-top: 3%;
+}
 
 .resulats-export {
   margin-top: 2%;
@@ -734,6 +757,11 @@ body, html {
 
 .w3-wide {letter-spacing: 10px;}
 .w3-hover-opacity {cursor: pointer;}
+
+.w3-top {
+  position: absolute;
+  z-index: 5;
+}
 
 /* Turn off parallax scrolling for tablets and phones */
 @media only screen and (max-device-width: 1600px) {

@@ -20,14 +20,13 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<div class="w3-top">
+<div class="w3-top" id="navbar">
   <div class="w3-bar" id="myNavbar">
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
       <i class="fa fa-bars"></i>
     </a>
     <a href="#home" class="w3-bar-item w3-button miaBold">ACCUEIL</a>
     <a href="#mapScroll" class="w3-bar-item w3-button w3-hide-small miaBold"><i class="fa fa-user"></i> CARTE</a>
-    <a href="#resultsScroll" class="w3-bar-item w3-button w3-hide-small miaBold"><i class="fa fa-th"></i> RÉSULTATS</a>
     <!--<a href="#contact" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-envelope"></i> CONTACT</a>--->
 
   </div>
@@ -71,12 +70,9 @@
       <h1 class="miaFat" id="title-recherche">Où pourrais-je installer mon prochain bar ?</h1>
     </div>
 
-    <div id="searchAdress">
-      <input name="adress" id="adressValue">
-      <button class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
-    </div>
-
   </div>
+
+  <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
 
   <div class="map-container1">
 
@@ -114,33 +110,21 @@
 
           <div class="tailleBucket" id="tailleBucket"></div>
         </div>
-        
-        <!-- ---------- Parametre non pris en compte pour le moment ---------- -->
-        <!--
-        <div class="forms-zone-exclusion">
-          <p class="form-title-zoneexclu"> Zone d'exclusion </p>
-          <div class="slidecontainer-zoneexclu">
-            <div class="sliderinnercontainer-zoneexclu">
-              <input type="range" min="10" max="2000" value="200" class="slider" id="range-zoneexclu">
-            </div>
-            <div class="slidervalue-zoneexclu">
-              <span id="value-zoneexclu">200</span>
-            </div>
-          </div>
 
-          <div class="liste-bars" id="listeBars">
-
-          </div>
+        <div class="forms-limits">
+          <label for="limits-input">Limites (1-1000)</label>
+          <br>
+          <input type="number" id="limits-input" name="limits-input" min="1" max="1000">
         </div>
-        -->
 
         <div class="forms-geolocalisation">
           <p class="form-title-localisation"> Zone de recherche </p>
+          <!--
           <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" puis cliquez sur la carte pour placer un point.
           Pour replacer un point, cliquez à nouveau sur le bouton puis sur la carte.</p>
           <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
           <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Cliquez pour placer la zone de recherche</span><span>Cliquez maintenant sur la carte</span></button>
-          <p class="title5-explain"> Ensuite vous pouvez redimensionner la zone à l'aide du slider ci-dessous. </p>
+          <p class="title5-explain"> Redimensionnement </p>
 
           <div class="slidecontainer" id="slidercontainerr">
             <input type="range" min="1" max="10000" value="1000" class="slider" id="sliderCircleOnMap">
@@ -164,8 +148,14 @@
         
       </div>
 
+      
 
-      <div tabindex = "1" id="map" class="map"></div>
+      <div tabindex = "1" id="map" class="map">
+        <div id="searchAdress">
+          <input name="adress" id="adressValue">
+          <button class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
+        </div>
+      </div>
 
       <div id="popup" class="ol-popup">
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
@@ -174,7 +164,6 @@
 
   </div>
 
-  <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
 
 
   <div class="switch-button">
