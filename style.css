@@ -66,7 +66,6 @@ html {
 }
 
 .map {
-  margin-top: 2%;
   height: 650px;
   width: 70%;
   margin-right: 2%;
@@ -328,22 +327,23 @@ html {
   width: 100%;
 }
 
-#switchbutton {
-  margin-top: 1%;
-  margin-left: 1%;
-  display: none;
-}
-
 #searchResults {
   display: none;
-  margin: auto;
+  margin-bottom: -1.5%;
+  margin-top: 2%;
+  margin-left: 1.2%;
 }
 
-
-
-
-
-
+#switchbutton {
+  margin-left: 24%;
+  margin-bottom: -2%;
+  display: none;
+  border-radius: 50%;
+  border-width: 1px;
+  background-color: #FFFFFF;
+  font-size: large;
+  cursor: pointer;
+}
 
 .ol-popup {
   position: absolute;
@@ -524,16 +524,10 @@ html {
   width: 50%;
   margin-right: 1%;
   margin-left: 1%;
-  margin-top: 3%;
+
   height: 650px;
   overflow-y: scroll;
   overflow-x: hidden;
-}
-
-#searchResults {
-  margin-left: 1.2%;
-  margin-bottom: -5%;
-  margin-top: 3%;
 }
 
 .resulats-export {
@@ -748,13 +742,13 @@ body, html {
 
 /* Second image (Portfolio) */
 .bgimg-2 {
-  background-image: url("images/cafe.jpg");
+  background-image: url("images/bar3_flou.jpg");
   min-height: 400px;
 }
 
 /* Third image (Contact) */
 .bgimg-3 {
-  background-image: url("images/cafe.jpg");
+  background-image: url("images/bar3_flou.jpg");
   min-height: 400px;
 }
 

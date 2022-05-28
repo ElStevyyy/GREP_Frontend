@@ -62,9 +62,7 @@
 
   <div class="mapTitle" id="about">
 
-    <div id="miaImg">
-
-    </div>
+    <div id="miaImg"></div>
 
     <div id="recherche">
       <h1 class="miaFat" id="title-recherche">Où pourrais-je installer mon prochain bar ?</h1>
@@ -73,6 +71,8 @@
   </div>
 
   <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
+
+  <button id="switchbutton" role="button" onclick="replaceResultsByParams()"><span class="text"> &#8634;</span></button>
 
   <div class="map-container1">
 
@@ -122,7 +122,7 @@
           <!--
           <p class="title5-explain"> Cliquez sur le bouton "placer la zone de recherche" puis cliquez sur la carte pour placer un point.
           Pour replacer un point, cliquez à nouveau sur le bouton puis sur la carte.</p>
-          <!-- bouton qui déclenche la possiblite de placer un cercle sur la carte -->
+          bouton qui déclenche la possiblite de placer un cercle sur la carte -->
           <button class="button-57" role="button" onclick="clickOnMapON()"><span class="text">Cliquez pour placer la zone de recherche</span><span>Cliquez maintenant sur la carte</span></button>
           <p class="title5-explain"> Redimensionnement </p>
 
@@ -139,16 +139,11 @@
           <label for="onlyMails"> Uniquement avec emails</label><br>
 
         </div>
-
-        
-
       </div>
 
       <div class="entreprise-resultats miaReg" id="liste-resultats">
         
       </div>
-
-      
 
       <div tabindex = "1" id="map" class="map">
         <div id="searchAdress">
@@ -164,71 +159,19 @@
 
   </div>
 
-
-
-  <div class="switch-button">
-    <button id="switchbutton" role="button" onclick="replaceResultsByParams()"><span class="text">Je veux refaire une recherche</span></button>
-  </div>
-
   <div class="center-button">
     <button class="button-48" role="button" @click="envoieParametres()"><span class="text">Je veux voir les emplacements !</span></button>
   </div>
 
+  <div class="resulats-export">
+    <button class="button-48" id="export" role="button" onclick="jsonToCsv()"><span class="text">Exporter les résultats</span></button>
+  </div>
+
 </div>
-
-
-
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - B A N D E R O L E - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!--<div class="w3-row w3-center w3-dark-grey w3-padding-16">
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">Andi</span><br>
-    Le mirifique
-  </div>
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">Zabraf</span><br>
-    Le splendide
-  </div>
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">Tiago</span><br>
-    L'incroyable
-  </div>
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">Steven</span><br>
-    Le merveilleux
-  </div>
-</div>-->
 
 <!-- deuxieme image parralax -->
 <div class="bgimg-2 w3-display-container w3-opacity-min">
-  <div class="w3-display-middle">
-    <span class="w3-xxlarge w3-text-black w3-wide miaBold">RÉSULTATS</span>
-  </div>
-</div>
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- - - - - - - - - - - - - - - - R E S U L T A T S - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-<div id="resultsScroll"></div>
-<div class="resultats" id="portfolio">
-
-<div class="resultats-container">
-  <div class="map2-container1">
-    <div tabindex = "1" id="map2" class="map2"></div>
-  </div>
-</div>
-
-
-
-<div class="resulats-export">
-  <button class="button-48" id="export" role="button" onclick="jsonToCsv()"><span class="text">Exporter les résultats</span></button>
+  <div class="w3-display-middle"></div>
 </div>
 
 <!-- partie des images en full size-->
@@ -237,14 +180,6 @@
   <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
     <img id="img01" class="w3-image">
     <p id="caption" class="w3-opacity w3-large"></p>
-  </div>
-</div>
-
-<!-- troisieme image parralax contact -->
-<!--
-<div class="bgimg-3 w3-display-container w3-opacity-min">
-  <div class="w3-display-middle">
-     <span class="w3-xxlarge w3-text-black w3-wide">CONTACT</span>
   </div>
 </div>
 
@@ -257,16 +192,6 @@
 <footer class="w3-center w3-black w3-padding-64 w3-opacity footerImg">
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right miaReg"></i>Vers le haut</a></br></br>
   <a href="https://www.miaetnoa.ch" target="_blank" class="w3-button w3-light-grey miaReg"><i class="fa w3-margin-right"></i>www.miaetnoa.ch</a>
-  <!--
-  <div class="w3-xlarge w3-section">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-  </div>
-  -->
   <p class="miaReg">Steven Vaglio, Tiago Gerard, Andi Ramiqi, Raphaël Lopes</p>
 </footer>
 
@@ -275,6 +200,8 @@
 <script src="https://unpkg.com/vue@3"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="main.js"></script>
 
 </html>
