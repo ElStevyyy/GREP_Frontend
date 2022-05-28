@@ -208,10 +208,10 @@ function searchAdress(adress){
     }
   }).done(function(data) {
     console.log(data);
-    adressPositions.push(data['data'][0]['latitude'])
     adressPositions.push(data['data'][0]['longitude'])
+    adressPositions.push(data['data'][0]['latitude'])
     console.log(adressPositions);
-
+    zoomOnSearchedPlace(adressPositions);
   });
 }
 
@@ -478,9 +478,6 @@ function clearResultsMap() {
   console.log(listeLatLong);
 }
 
-
-
-
 // fonction qui recupere les informations des entites, cree les div et les ajoute
 function getInfoEntreprise(infoEntreprise) {
 
@@ -629,6 +626,7 @@ function getInfoEntreprise(infoEntreprise) {
   console.log(listeLatLong);
 
   replaceParamsByResults();
+  switchInfosWhenResults();
 }
 
 function replaceParamsByResults() {
@@ -638,14 +636,31 @@ function replaceParamsByResults() {
   divParam.style.display = "none";
   divResults.style.display = "block";
   
+  switchInfosWhenResults();
 }
 
-function replaceResultsByParans() {
+function replaceResultsByParams() {
   var divParam = document.getElementById("formsid");
   var divResults = document.getElementById("liste-resultats");
+  var search = document.getElementById("searchResults");
+  var remake = document.getElementById("switchbutton");
 
   divParam.style.display = "block";
   divResults.style.display = "none";
+  search.style.display = "none";
+  remake.style.display = "none";
+}
+
+function switchInfosWhenResults() {
+  var search = document.getElementById("searchResults");
+  if (search.style.display = "none") {
+    search.style.display = "block";
+  }
+
+  var remake = document.getElementById("switchbutton");
+  if (remake.style.display = "none") {
+    remake.style.display = "block";
+  }
 }
 
 //Bar de recherche pour les résultats
@@ -670,7 +685,27 @@ function searchEntreprises() {
   clearResultsMap();
   getInfoEntreprise(newInfoEntreprise);
   
+}
 
+// fonction qui va zoomer sur l'adresse recherchee par l'utilisateur
+function zoomOnSearchedPlace(placeCoords) {
+  var point = ol.proj.fromLonLat(placeCoords);
+  var pointOnMap = new ol.geom.Point(point);
+
+  var layerZoom = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      projection: 'EPSG:4326',
+      features: [new ol.Feature(pointOnMap)]
+    }),
+  });
+
+  layerZoom.set('name', "placeToZoom");
+  map.addLayer(layerZoom);
+
+  map.getView().fit(layerZoom.getSource().getExtent(), {
+    size: map.getSize(),
+    maxZoom: 17
+  });
 }
 
 // fonction qui place un point sur la carte en fonction des coordonnees de l'entite
@@ -695,7 +730,6 @@ function placePointsOnMap(entityCoords) {
   });
   layerPoint.set('name', name);
   map.addLayer(layerPoint);
-
 }
 
 var pointSurbrillance = null;
@@ -816,7 +850,6 @@ function deleteCircleOnMap() {
       map.removeLayer(layer);
     }
   });
-  // console.log("yousk2");
 }
 
 //  fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
@@ -830,13 +863,9 @@ function clickOnMapON() {
     if (allowToPlaceZone) {
 
       var coordsOnMap = ol.proj.transform(event.coordinate, 'EPSG:3857', 'EPSG:4326');
-      //console.log(coordsOnMap);
       var centerLongitudeLatitude2 = ol.proj.fromLonLat(coordsOnMap);
-      //console.log(centerLongitudeLatitude2);
       var radius = document.getElementById("sliderCircleOnMap").value;
       cercleOnMap = new ol.geom.Circle(centerLongitudeLatitude2, parseInt(radius));
-      //console.log(cercleOnMap);
-      //console.log(coords);
 
       var layer3 = new ol.layer.Vector({
         source: new ol.source.Vector({
