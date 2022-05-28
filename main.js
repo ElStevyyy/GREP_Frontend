@@ -191,10 +191,10 @@ const myVueComponent = {
 
 const myApp = Vue.createApp(myVueComponent).mount("#appVue")
 
-
 // Recherche d'une adresse précise pour la map
 var adressPositions = []
-function searchAdress(adress){
+
+function searchAdress(adress) {
   console.log(adress)
   $.ajax({
     url: 'http://api.positionstack.com/v1/forward',
@@ -207,11 +207,12 @@ function searchAdress(adress){
       limit: 1
     }
   }).done(function(data) {
+    adressPositions = []
     console.log(data);
     adressPositions.push(data['data'][0]['longitude'])
     adressPositions.push(data['data'][0]['latitude'])
     console.log(adressPositions);
-    zoomOnSearchedPlace(adressPositions);
+    zoomOnSearchedPlace(adressPositions, 17);
   });
 }
 
@@ -625,6 +626,7 @@ function getInfoEntreprise(infoEntreprise) {
   }
   console.log(listeLatLong);
 
+  zoomOnSearchedPlace(pointCoords, 15);
   replaceParamsByResults();
   switchInfosWhenResults();
 }
@@ -684,11 +686,17 @@ function searchEntreprises() {
   clearResultsListe();
   clearResultsMap();
   getInfoEntreprise(newInfoEntreprise);
-  
 }
 
 // fonction qui va zoomer sur l'adresse recherchee par l'utilisateur
-function zoomOnSearchedPlace(placeCoords) {
+function zoomOnSearchedPlace(placeCoords, zoom) {
+
+  map.getLayers().forEach(layer => {
+    if (layer && layer.get('name') === 'placeToZoom') {
+      map.removeLayer(layer);
+    }
+  });
+
   var point = ol.proj.fromLonLat(placeCoords);
   var pointOnMap = new ol.geom.Point(point);
 
@@ -704,7 +712,13 @@ function zoomOnSearchedPlace(placeCoords) {
 
   map.getView().fit(layerZoom.getSource().getExtent(), {
     size: map.getSize(),
-    maxZoom: 17
+    maxZoom: zoom
+  });
+
+  map.getLayers().forEach(layer => {
+    if (layer && layer.get('name') === 'placeToZoom') {
+      map.removeLayer(layer);
+    }
   });
 }
 

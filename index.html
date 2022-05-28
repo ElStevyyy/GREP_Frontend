@@ -72,7 +72,7 @@
 
   <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
 
-  <button id="switchbutton" role="button" onclick="replaceResultsByParams()"><span class="text"> &#8634;</span></button>
+  <button id="switchbutton" role="button" onclick="replaceResultsByParams()"><span class="text"> &#129144;</span></button>
 
   <div class="map-container1">
 
@@ -147,8 +147,10 @@
 
       <div tabindex = "1" id="map" class="map">
         <div id="searchAdress">
-          <input name="adress" id="adressValue">
-          <button class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
+
+          <input name="adress" id="adressValue" placeholder="Rechercher une adresse..." size="30">
+          <button id="adressSearch" class="button-10" role="button" onclick="searchAdress(document.getElementById('adressValue').value)"><span class="text">Rechercher Adresse</span></button>
+          
         </div>
       </div>
 
