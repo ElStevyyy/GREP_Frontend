@@ -443,12 +443,20 @@ function getSelectedTailleListe() {
 }
 
 function afficherListeBars() {
-
   for (var i = 0; i < listeBars.length; i++) {
     console.log(listeBars[i]);
   }
-
 }
+
+var inputSearch = document.getElementById("adressValue");
+
+inputSearch.addEventListener("keypress", function(event) {
+
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("adressSearch").click();
+  }
+});
 
 function checkLatLong(list, coord){
   var res = false;
