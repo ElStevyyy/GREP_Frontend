@@ -45,6 +45,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
+  <img id="logoMiaetnoa" src="miaetnoa\Logo_sans_slogan_mia_noa_gold-removebg-preview.png" alt="logo">
   <div class="w3-display-middle w3-center" style="white-space:nowrap;">
     <span class="w3-center w3-padding-large w3-xlarge w3-wide w3-animate-opacity miaFat" style="background-color: #96763b;" id="homepage-title"> CHERCHER MON EMPLACEMENT </span> </br></br>
     <a href="#mapScroll"><button class="button-74 w3-animate-opacity miaBold" role="button">C'est parti</button></a>
@@ -72,7 +73,7 @@
 
   <input id="searchResults" onkeyup="searchEntreprises()" type="text" name="recherche" placeholder="Filtrer les résultats...">
 
-  <button id="switchbutton" role="button" onclick="replaceResultsByParams()"><span class="text"> &#129144;</span></button>
+  <button id="switchbutton" role="button" onclick="replaceResultsByParams()"><span class="text">&#129144;</span></button>
 
   <div class="map-container1">
 
@@ -162,19 +163,14 @@
 
   </div>
 
+  <div class="resulats-export" id="exportDiv">
+    <button class="button-48" id="export" role="button" onclick="jsonToCsv()"><span class="text">Exporter les résultats</span></button>
+  </div>
+
   <div class="center-button">
     <button class="button-48" role="button" @click="envoieParametres()"><span class="text">Je veux voir les emplacements !</span></button>
   </div>
 
-  <div class="resulats-export">
-    <button class="button-48" id="export" role="button" onclick="jsonToCsv()"><span class="text">Exporter les résultats</span></button>
-  </div>
-
-</div>
-
-<!-- deuxieme image parralax -->
-<div class="bgimg-2 w3-display-container w3-opacity-min">
-  <div class="w3-display-middle"></div>
 </div>
 
 <!-- partie des images en full size-->

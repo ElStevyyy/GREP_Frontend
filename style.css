@@ -362,10 +362,17 @@ input[type="search"]:focus {
   outline: none;
 }
 
+#logoMiaetnoa {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 3%;
+  width: 18%;
+}
 
-
-
-
+#home {
+  text-align: center;
+}
 
 #adressValue {
   border-radius: 20px;
@@ -388,7 +395,7 @@ input[type="search"]:focus {
   margin-left: 1.2%;
   margin-bottom: -2%;
   display: none;
-  border-radius: 50%;
+  border-radius: 40%;
   border-width: 1px;
   background-color: #FFFFFF;
   font-size: large;
@@ -582,8 +589,8 @@ input[type="search"]:focus {
 
 .resulats-export {
   margin-top: 2%;
-  text-align: center;
-  margin-bottom: 5%;
+  margin-left: 7%;
+  display: none;
 }
 
 .entites {

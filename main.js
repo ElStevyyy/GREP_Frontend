@@ -212,7 +212,7 @@ function searchAdress(adress) {
     adressPositions.push(data['data'][0]['longitude'])
     adressPositions.push(data['data'][0]['latitude'])
     console.log(adressPositions);
-    zoomOnSearchedPlace(adressPositions, 17);
+    zoomOnSearchedPlace(adressPositions, 16);
   });
 }
 
@@ -642,9 +642,11 @@ function getInfoEntreprise(infoEntreprise) {
 function replaceParamsByResults() {
   var divParam = document.getElementById("formsid");
   var divResults = document.getElementById("liste-resultats");
+  var divExport = document.getElementById("exportDiv");
 
   divParam.style.display = "none";
   divResults.style.display = "block";
+  divExport.style.display = "block";
   
   switchInfosWhenResults();
 }
@@ -654,11 +656,13 @@ function replaceResultsByParams() {
   var divResults = document.getElementById("liste-resultats");
   var search = document.getElementById("searchResults");
   var remake = document.getElementById("switchbutton");
+  var divExport = document.getElementById("exportDiv");
 
   divParam.style.display = "block";
   divResults.style.display = "none";
   search.style.display = "none";
   remake.style.display = "none";
+  divExport.style.display = "none";
 }
 
 function switchInfosWhenResults() {
@@ -744,11 +748,10 @@ function placePointsOnMap(entityCoords) {
       features: [new ol.Feature(pointOnMap)]
     }),
     style: new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({color: 'red'})
-          })
+      image: new ol.style.Icon({
+        src: 'images/loca5.png',
       })
+  })
   });
   layerPoint.set('name', name);
   map.addLayer(layerPoint);
@@ -762,21 +765,31 @@ async function placeSurbrillancePointsOnMap(entityCoords,id, nom, npa, adresse, 
   var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
 
   if (pointSurbrillance != null) {
-    map.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 6,
-        fill: new ol.style.Fill({color: 'red'})
+    map.getLayers().forEach(layer => {
+      if (layer.get('name') === pointSurbrillance) {
+        layer.setStyle(new ol.style.Style({
+          image: new ol.style.Icon({
+            src: 'images/loca5.png',
+          })
       })
-    }));}});
+      );
+  }});
   }
 
   pointSurbrillance = entityCoords[0].toString() + "," + entityCoords[1].toString();
-  map.getLayers().forEach(layer => {if (layer.get('name') === pointSurbrillance) {layer.setStyle(new ol.style.Style({
-    image: new ol.style.Circle({
-      radius: 6,
-      fill: new ol.style.Fill({color: 'yellow'})
+
+  map.getLayers().forEach(layer => { 
+
+    if (layer.get('name') === pointSurbrillance) {
+
+    layer.setStyle(
+      new ol.style.Style({
+        image: new ol.style.Icon({
+          src: 'images/loca6.png',
+        })
     })
-  }));}});
+    );
+  }});
 
   map.getLayers().get(pointSurbrillance);
 
@@ -855,12 +868,12 @@ function placeBarOnMap(barCoords) {
       features: [new ol.Feature(barOnMap)]
     }),
     style: new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({color: 'black'})
+          image: new ol.style.Icon({
+            src: 'images/barcafe15.png',
           })
       })
   });
+
   layerBar.set('name', 'bar');
   map.addLayer(layerBar);
 }
