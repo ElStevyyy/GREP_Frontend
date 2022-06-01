@@ -1,3 +1,23 @@
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              GÉNÉRAL
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              POLICES
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
 @font-face {
   font-family: miaReg;
   src: url(miaetnoa/Nunito/NunitoPolice/Nunito-Regular.ttf);
@@ -16,14 +36,6 @@
 @font-face {
   font-family: miaLight;
   src: url(miaetnoa/Nunito/NunitoPolice/Nunito-Light.ttf);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-#navbar {
-  z-index: 100;
 }
 
 .miaReg {
@@ -58,30 +70,51 @@ html {
   font-family: miaLight;
 }
 
-.forms {
-  flex: 1;
-  width: 50%;
-  margin-right: 1%;
-  height: 650px;
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              NAVBAR
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
+#navbar {
+  z-index: 100;
 }
 
-.map {
-  height: 650px;
-  width: 70%;
-  margin-right: 2%;
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              ACCUEIL
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
+#homepage-title {
+  color: white;
 }
 
-#searchAdress {
-  position: absolute;
-  right: 3%;
-  z-index: 1;
-  margin-top: 0.5%;
+#logoMiaetnoa {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 3%;
+  width: 18%;
 }
 
-.map-container1 {
-  margin-top: 2%;
-  display: flex;
+#home {
+  text-align: center;
 }
+
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              PARAMETRES
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
+/* TITRE */
 
 .mapTitle {
   margin-top: 5%;
@@ -93,9 +126,18 @@ html {
   margin-left: -35%;
 }
 
-#homepage-title {
-  color: white;
+.form-title-localisation {
+  font-size: large;
+  font-family: miaBold;
 }
+
+.title5-explain {
+  font-size: large;
+  font-family: miaBold;
+  width: 62%;
+}
+
+/* IMAGES */
 
 #miaImg {
   width: 43%;
@@ -105,14 +147,86 @@ html {
   background-repeat: no-repeat;
 }
 
-#infoSelect {
-  font-size: x-small;
-  width: 62%;
+/* MAP */
+
+.map {
+  height: 650px;
+  width: 70%;
+  margin-right: 2%;
 }
 
-.bouton-suppression {
+.map-container1 {
+  margin-top: 2%;
+  display: flex;
+}
+
+#searchAdress {
+  position: absolute;
+  right: 3%;
+  z-index: 1;
+  margin-top: 0.5%;
+}
+
+#adressValue {
+  border: none;
+  margin: 0;
+  padding: 7px 8px;
+  font-size: 14px;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: inherit;
+}
+
+#adressValue::placeholder {
+  color: #bbb;
+}
+
+#adressSearch {
+  text-indent: -999px;
+  overflow: hidden;
+  width: 40px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+  cursor: pointer;
+}
+
+#adressSearch:hover {
+  opacity: 1;
+}
+
+#adressSearch:focus,
+input[type="search"]:focus {
+  box-shadow: 0 0 3px 0 #1183d6;
+  border-color: #1183d6;
+  outline: none;
+}
+
+#adressValue {
+  border-radius: 20px;
+}
+
+/* FORMULAIRE GENERAL */
+
+.forms {
+  flex: 1;
+  width: 50%;
+  margin-right: 1%;
+  height: 650px;
+}
+
+.forms-geolocalisation {
+  margin-top: 2%;
   margin-left: 10%;
-  margin-top: 5%;
+}
+
+/* FORMULAIRE NOGA */
+
+.form-title-noga {
+  font-size: large;
+  font-family: miaBold;
 }
 
 .forms-noga {
@@ -148,6 +262,18 @@ html {
   cursor: pointer;
 }
 
+#select-code-noga {
+  width: 62%;
+  font-family: miaLight;
+}
+
+/* FORMULAIRE NATURE JURIDIQUE */
+
+.form-title-naturejuridique {
+  font-size: large;
+  font-family: miaBold;
+}
+
 .natjurBucket {
   margin-top: 3%;
   width: 90%;
@@ -177,7 +303,16 @@ html {
   cursor: pointer;
 }
 
+#select-naturejuridique {
+  width: 62%;
+  font-family: miaLight;
+}
 
+.forms-naturejuridique {
+  margin-left: 10%;
+}
+
+/* FORMULAIRE TAILLE */
 
 .tailleBucket {
   margin-top: 3%;
@@ -208,18 +343,6 @@ html {
   cursor: pointer;
 }
 
-
-
-#select-code-noga {
-  width: 62%;
-  font-family: miaLight;
-}
-
-#select-naturejuridique {
-  width: 62%;
-  font-family: miaLight;
-}
-
 #select-taille {
   width: 62%;
   font-family: miaLight;
@@ -229,9 +352,12 @@ html {
   margin-left: 10%;
 }
 
-.forms-naturejuridique {
-  margin-left: 10%;
+.form-title-taille {
+  font-size: large;
+  font-family: miaBold;
 }
+
+/* FORMULAIRE LIMITES */
 
 .forms-limits {
   margin-left: 10%;
@@ -247,41 +373,7 @@ html {
   width: 62%;
 }
 
-.forms-geolocalisation {
-  margin-top: 2%;
-  margin-left: 10%;
-}
-
-.title5-explain {
-  font-size: large;
-  font-family: miaBold;
-  width: 62%;
-}
-
-.form-title-noga {
-  font-size: large;
-  font-family: miaBold;
-}
-
-.form-title-localisation {
-  font-size: large;
-  font-family: miaBold;
-}
-
-.form-title-taille {
-  font-size: large;
-  font-family: miaBold;
-}
-
-.form-title-naturejuridique {
-  font-size: large;
-  font-family: miaBold;
-}
-
-.form-title-zoneexclu {
-  font-size: large;
-  font-family: miaBold;
-}
+/* SLIDERS */
 
 #sliderCircleOnMap {
   width: 72%;
@@ -322,67 +414,54 @@ html {
   margin-left: 5%;
 }
 
-
-
-#adressValue {
-  border: none;
-  margin: 0;
-  padding: 7px 8px;
-  font-size: 14px;
-  color: inherit;
-  border: 1px solid transparent;
-  border-radius: inherit;
-}
-
-#adressValue::placeholder {
-  color: #bbb;
-}
-
-#adressSearch {
-  text-indent: -999px;
-  overflow: hidden;
-  width: 40px;
-  padding: 0;
-  margin: 0;
-  border: 1px solid transparent;
-  border-radius: inherit;
-  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
-  cursor: pointer;
-
-}
-
-#adressSearch:hover {
-  opacity: 1;
-}
-
-#adressSearch:focus,
-input[type="search"]:focus {
-  box-shadow: 0 0 3px 0 #1183d6;
-  border-color: #1183d6;
-  outline: none;
-}
-
-#logoMiaetnoa {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 3%;
-  width: 18%;
-}
-
-#home {
-  text-align: center;
-}
-
-#adressValue {
-  border-radius: 20px;
-}
-
-.labelBars {
-  font-size: 10px;
-  margin-right: 5%;
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
   width: 100%;
+  height: 25px; 
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
 }
+
+.slider:hover {
+  opacity: 1; 
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 25px; 
+  height: 25px; 
+  background: #96763b;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #96763b;
+  cursor: pointer;
+}
+
+/* BOUTONS */
+
+.center-button {
+  z-index: 10;
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              RESULTATS
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
 
 #searchResults {
   display: none;
@@ -443,121 +522,6 @@ input[type="search"]:focus {
 .ol-popup-closer:after {
   content: "✖";
 }
-
-
-
-
-
-
-
-
-
-/* The slider itself */
-.slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #96763b; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #96763b; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
-
-.button-57 {
-  width: 62%;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #96763b;
-  color: #18181a;
-  display: inline-block;
-  font-size: 15px;
-  font-family: miaLight;
-  line-height: 15px;
-  padding: 18px 18px 17px;
-  text-decoration: none;
-  cursor: pointer;
-  background: #fff;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.button-57 span:first-child {
-  position: relative;
-  transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
-  z-index: 10;
-}
-
-.button-57 span:last-child {
-  color: white;
-  display: block;
-  position: absolute;
-  bottom: 0;
-  transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
-  z-index: 100;
-  opacity: 0;
-  top: 50%;
-  left: 50%;
-  transform: translateY(225%) translateX(-50%);
-  height: 14px;
-  line-height: 13px;
-}
-
-.button-57:after {
-  content: "";
-  position: absolute;
-  bottom: -50%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #96763b;
-  transform-origin: bottom center;
-  transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
-  transform: skewY(9.3deg) scaleY(0);
-  z-index: 50;
-}
-
-.button-57:hover:after {
-  transform-origin: bottom center;
-  transform: skewY(9.3deg) scaleY(2);
-}
-
-.button-57:hover span:last-child {
-  transform: translateX(-50%) translateY(-100%);
-  opacity: 1;
-  transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
-}
-
-.button-57:focus {
-  background-color: #96763b;
-  color: white;
-}
-
 
 .resultats-title {
   text-align: center;
@@ -644,36 +608,83 @@ input[type="search"]:focus {
   margin-bottom: 5%;
 }
 
-.home-title {
-  margin: auto;
-  text-align: center;
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              BOUTONS
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
+.button-57 {
+  width: 62%;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #96763b;
+  color: #18181a;
+  display: inline-block;
+  font-size: 15px;
+  font-family: miaLight;
+  line-height: 15px;
+  padding: 18px 18px 17px;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
-.home-explication {
-  margin: auto;
-  text-align: center;
-  width: 50%;
-}
-
-.footerImg {
-  background-image: url(miaetnoa/responsability.jpg);
-  background-position: center;
-  background-size: cover;
-}
-
-.home-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.center-button {
+.button-57 span:first-child {
+  position: relative;
+  transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
   z-index: 10;
-  text-align: center;
-  margin-top: 5%;
-  margin-bottom: 5%;
 }
 
+.button-57 span:last-child {
+  color: white;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 100;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateY(225%) translateX(-50%);
+  height: 14px;
+  line-height: 13px;
+}
+
+.button-57:after {
+  content: "";
+  position: absolute;
+  bottom: -50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #96763b;
+  transform-origin: bottom center;
+  transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  transform: skewY(9.3deg) scaleY(0);
+  z-index: 50;
+}
+
+.button-57:hover:after {
+  transform-origin: bottom center;
+  transform: skewY(9.3deg) scaleY(2);
+}
+
+.button-57:hover span:last-child {
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 1;
+  transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
+}
+
+.button-57:focus {
+  background-color: #96763b;
+  color: white;
+}
 
 .button-48 {
   appearance: none;
@@ -735,7 +746,6 @@ input[type="search"]:focus {
   position: relative;
 }
 
-
 .button-74 {
   background-color: #fbeee0;
   border: 2px solid #422800;
@@ -771,8 +781,13 @@ input[type="search"]:focus {
   }
 }
 
-
-
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              IMAGES
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
 
 /* homepage parralax test */
 body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
@@ -823,4 +838,18 @@ body, html {
     background-attachment: scroll;
     min-height: 700px;
   }
+}
+
+/* 
+------------------------------------------------------------------
+------------------------------------------------------------------
+                              FOOTER
+------------------------------------------------------------------
+------------------------------------------------------------------
+*/
+
+.footerImg {
+  background-image: url(miaetnoa/responsability.jpg);
+  background-position: center;
+  background-size: cover;
 }

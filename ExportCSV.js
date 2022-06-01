@@ -1,12 +1,19 @@
+/* 
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Fichier Javascript permettant de transformer les données sous un format CSV et de les récupérer
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+*/
 
-
-// Export JSON to CSV
+// Export JSON to CSV - Permettre l'export des entités recherchées sous un format Excel convenable
 async function jsonToCsv() {
 	const button = document.getElementById('export')
 	button.disabled = true
 	var listeEntrepriseRemovedNull = infoEntreprise.filter(function(val) {
 		return val !== null;
 	});
+	//Définition des en-têtes pour chaque valeur  
 	if (listeEntrepriseRemovedNull.length != 0) {
 		//infoEntreprise.forEach(element => console.log(element));
 		console.log("export debut");
@@ -28,43 +35,17 @@ async function jsonToCsv() {
 			telPrincipal: "Numero de téléphone",
 			telSecondaire: "Numero de téléphone secondaire",
 			siteInternet: "Site internet de l'entreprise",
-			distanceCalculated: "Temps entre l'entreprise et le bar le plus proche",
 		};
 
 		var itemsFormatted = [];
 		for (var i = 0; i < infoEntreprise.length; i++) {
-			// recup tous les json dans une seule même liste et dans le bon format
-			/*
-			var telPrincipalFormatted = item.telPrincipal;
-			var telSecondaireFormatted = item.telSecondaire;
-			var raisonSocialFormatted = item.raisonSocial;
-			var natureJuridiqueFormatted = item.natureJuridique;
-			var tailleFormatted = item.taille;
-			var typeLocalFormatted = item.typeLocal;
-			var codeNogaFormatted = item.codeNoga;
-			*/
-
+			
+			//Sert à passer à l'entité suivante dans le cas ou celle-ci a été supprimé avec le logo corbeille
 			if (infoEntreprise[i] == null) {
 				continue;
 			}
 
-			/*
-			if (item.telPrincipal != null) {
-			  telPrincipalFormatted = "+" + item.telPrincipal.toString().substring(0, 2) + " " + item.telPrincipal.toString().substring(2, 4) + " " + item.telPrincipal.toString().substring(4, 7) + " " + item.telPrincipal.toString().substring(7, 9) + " " + item.telPrincipal.toString().substring(9, 11);
-			} else {
-			  telPrincipalFormatted = "Non renseigné";
-			}
-
-			if (item.telSecondaire != null) {
-			  telSecondaireFormatted = "+" + item.telSecondaire.toString().substring(0, 2) + " " + item.telSecondaire.toString().substring(2, 4) + " " + item.telSecondaire.toString().substring(4, 7) + " " + item.telSecondaire.toString().substring(7, 9) + " " + item.telSecondaire.toString().substring(9, 11);
-			} else {
-			  telSecondaireFormatted = "Non renseigné";
-			}
-			*/
-
-			if (infoEntreprise[i].distanceCalculated == undefined) {
-				await FindClosestBar(infoEntreprise[i]);
-			}
+			// Récupérer les valeurs de l'entité en cours et les placer dans la liste temporaire et formatée (on gère les ";" avec la fonction "replace")
 			itemsFormatted.push({
 				nom: String(infoEntreprise[i].nom).replace(/;/g, ''),
 				raisonSocial: String(infoEntreprise[i].raisonSocial).replace(/;/g, ''),
@@ -83,36 +64,20 @@ async function jsonToCsv() {
 				telPrincipal: infoEntreprise[i].telPrincipal,
 				telSecondaire: infoEntreprise[i].telSecondaire,
 				siteInternet: infoEntreprise[i].siteInternet,
-				distanceCalculated: infoEntreprise[i].distanceCalculated[0] + " Minutes de " + infoEntreprise[i].distanceCalculated[1]
 			});
 		};
 
-		var fileTitle = 'resultatsExport'; // or 'my-unique-title'
-		exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
+		// Nom du fichier exporté
+		var fileTitle = 'resultatsExport'; 
+		// appelle la fonction exportCSVFile() pour convertir les valeurs JSON et démarrer le téléchargement pour l'utilisateur
+		exportCSVFile(headers, itemsFormatted, fileTitle); 
 		button.disabled = false
 	} else {
 		alert("Aucune donnée à exporter");
 	}
 }
 
-function convertToCSV(objArray) {
-	var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-	var str = "\uFEFF";
-
-	for (var i = 0; i < array.length; i++) {
-		var line = '';
-		for (var index in array[i]) {
-			if (line != '') line += ';'
-
-			line += array[i][index];
-		}
-
-		str += line + '\r\n';
-	}
-
-	return str;
-}
-
+// Fonction permettant de convertir les valeurs JSON et lancer l'export
 function exportCSVFile(headers, items, fileTitle) {
 	if (headers) {
 		items.unshift(headers);
@@ -125,6 +90,7 @@ function exportCSVFile(headers, items, fileTitle) {
 
 	var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
 
+	//Lancement de l'export selon le naviguateur
 	var blob = new Blob([csv], {
 		type: 'text/csv;charset=utf-8;'
 	});
@@ -143,4 +109,23 @@ function exportCSVFile(headers, items, fileTitle) {
 			document.body.removeChild(link);
 		}
 	}
+}
+
+//Fonction permettant de récupérer la liste des entités et de convertir le tout sous un format CSV
+function convertToCSV(objArray) {
+	var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+	var str = "\uFEFF";
+
+	for (var i = 0; i < array.length; i++) {
+		var line = '';
+		for (var index in array[i]) {
+			if (line != '') line += ';'
+
+			line += array[i][index];
+		}
+
+		str += line + '\r\n';
+	}
+
+	return str;
 }

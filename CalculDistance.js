@@ -1,4 +1,13 @@
+/* 
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+Fichier Javascript permettant de procéder aux calculs de distances entre une entité et le bar le plus proche
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+*/
 
+
+//Fonction asynchrone permettant de trouver le bar le bar le plus proche et de calculer le trajet jusqu'à celui-ci grâce à l'API
 async function FindClosestBar(entity) {
 	var closer = [];
 	const promise = new Promise((resolve, reject) => {
@@ -8,7 +17,6 @@ async function FindClosestBar(entity) {
 			if (closer.length == 0) {
 				var distance = calculateDistance(entity.latitude, entity.longitude, bar.adress.latitude, bar.adress.longitude);
 				closer = [distance, bar.adress.adresse, bar.adress.latitude, bar.adress.longitude];
-				console.log(distance);
 			} else {
 				var distance = calculateDistance(entity.latitude, entity.longitude, bar.adress.latitude, bar.adress.longitude);
 				if (closer[0] > distance) {
@@ -16,6 +24,7 @@ async function FindClosestBar(entity) {
 				}
 			}
 		});
+		//Appel à l'API
 		$.ajax({
 			url: apiCalculerDistance,
 			data: {
@@ -23,8 +32,9 @@ async function FindClosestBar(entity) {
 				arriver: closer[2] + "," + closer[3],
 			}
 		}).done(function(data) {
-			//transorm the time in seconds to minutes
-			//round the time to 2 decimals
+			// Lorsque l'API a fini de calculer :
+			// Transforme le temps en format : minutes:secondes
+			//Arrondi le temps à 2 décimales
             var seconds = data.travelDuration.resourceSets[0].resources[0].travelDuration % 60;
             if(seconds < 10){
                 seconds = "0" + seconds;
@@ -38,7 +48,7 @@ async function FindClosestBar(entity) {
 	return promise;
 
 }
-//calculate the distance between two points
+//calcule la distance entre deux coordonnées géographiques (Entre l'entité et un bar)
 function calculateDistance(lat1, lon1, lat2, lon2) {
 	var R = 6371; // km
 	var dLat = (lat2 - lat1) * Math.PI / 180;

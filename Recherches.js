@@ -1,3 +1,13 @@
+/* 
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Fichier Javascript permettant de gérer les recherches d'entités ainsi que l'affichage des résultats
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+*/
+
+
+
 var listeCodeNoga = [];
 
 // function de creation du panier de code noga (mutiple selections)
@@ -225,15 +235,25 @@ function clearResultsMap() {
 	console.log(listeLatLong);
 }
 
-// fonction qui recupere les informations des entites, cree les div et les ajoute
-function getInfoEntreprise(infoEntreprise) {
+// fonction qui recupere les informations des entites pour créer les div et permettre la gestion de ces derniers
+function getInfoEntreprise(infoEntreprise, compare) {
 
 	deleteCircleOnMap();
-
-	//var infoToExtract = infoEntreprise;
-
+	
+	/**
+	 * Pour chaque entités :
+	 * DIV PARENT 	: Contient toute l'entité 
+	 * DIV 1 		: Nom de l'entreprise
+	 * DIV 2		: Branche de l'entreprise
+	 * DIV 3		: Taille de l'entreprise
+	 * DIV 4 		: Site web de l'entreprise
+	 * DIV 5		: Option permettant de supprimer l'entité de la liste
+	*/
+	
 	for (var i = 0; i < infoEntreprise.length; i++) {
-
+		if(infoEntreprise[i]==null){
+			continue;
+		}
 		var parent = document.createElement("div");
 		parent.classList.add("entites");
 		parent.setAttribute("id", i);
@@ -242,38 +262,8 @@ function getInfoEntreprise(infoEntreprise) {
 		div1.classList.add("div1");
 		div1.appendChild(document.createTextNode(infoEntreprise[i].nom));
 
-		var coordSurbrillance;
-
-		div1.addEventListener('click', (event) => {
-			coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
-			var nom = infoEntreprise[event.target.parentElement.id].nom;
-			var npa = infoEntreprise[event.target.parentElement.id].npa;
-			var adresse = infoEntreprise[event.target.parentElement.id].adresse;
-			var telPrincipal = parseInt(infoEntreprise[event.target.parentElement.id].telPrincipal);
-			var telSecondaire = parseInt(infoEntreprise[event.target.parentElement.id].telSecondaire);
-			var email = infoEntreprise[event.target.parentElement.id].email;
-
-			if (isNaN(telPrincipal)) {
-				telPrincipal = "Non renseigné";
-			} else {
-				telPrincipal = "+" + telPrincipal.toString().substring(0, 2) + " " + telPrincipal.toString().substring(2, 4) + " " + telPrincipal.toString().substring(4, 7) + " " + telPrincipal.toString().substring(7, 9) + " " + telPrincipal.toString().substring(9, 11);
-			}
-
-			if (isNaN(telSecondaire)) {
-				telSecondaire = "Non renseigné";
-			} else {
-				telSecondaire = "+" + telSecondaire.toString().substring(0, 2) + " " + telSecondaire.toString().substring(2, 4) + " " + telSecondaire.toString().substring(4, 7) + " " + telSecondaire.toString().substring(7, 9) + " " + telSecondaire.toString().substring(9, 11);
-			}
-
-			if (email == null) {
-				email = "Non renseigné";
-			}
-
-			//console.log("type of tel = " + typeof telPrincipal);
-			placeSurbrillancePointsOnMap(coordSurbrillance, event.target.parentElement.id, nom, npa, adresse, telPrincipal, telSecondaire, email);
-			//console.log(infoEntreprise[event.target.parentElement.id]);
-
-		});
+		//Fonction rajout infos popup sur la carte on click
+		infoMapsClick(div1, infoEntreprise);
 
 		var div2 = document.createElement("div");
 		div2.classList.add("div2");
@@ -307,68 +297,116 @@ function getInfoEntreprise(infoEntreprise) {
 		iconePoubelle.src = "images/poub.png"
 		div5.appendChild(iconePoubelle);
 
-		div5.addEventListener('click', function(event) {
-			this.parentNode.remove();
-			var id;
-
-			if (event.target.parentElement.id == "") {
-				id = event.target.parentElement.parentElement.id;
-			} else {
-				id = event.target.parentElement.id;
-			}
-
-			var entityCoords = infoEntreprise[id].longitude.toString() + "," + infoEntreprise[id].latitude.toString();
-			infoEntreprise[id] = null;
-
-			console.log(entityCoords);
-
-			if (listeLatLong.has(entityCoords)) {
-				if (listeLatLong.get(entityCoords) <= 1) {
-					console.log("suppression du point sur la carte");
-					listeLatLong.delete(entityCoords);
-					overlay.setPosition(undefined);
-
-					map.getLayers().getArray()
-						.filter(layer => layer.get('name') === entityCoords)
-						.forEach(layer => map.removeLayer(layer));
-
-					console.log(listeLatLong);
-				} else {
-					console.log("coordonnée - 1");
-					listeLatLong.set(entityCoords, listeLatLong.get(entityCoords) - 1);
-					console.log(listeLatLong);
-				}
-			} else {
-				console.log("yousk2");
-			}
-		})
-
+		//Fonction delete on click (logo corbeille)
+		deleteClick(div5, infoEntreprise, compare);
+	
+		// Ajout des div enfants dans la div parent
 		parent.appendChild(div1);
 		parent.appendChild(div2);
 		parent.appendChild(div3);
 		parent.appendChild(div4);
 		parent.appendChild(div5);
 
-		//parent.appendChild(document.createTextNode(infoEntreprise[i].nom));
 		document.getElementById("liste-resultats").appendChild(parent);
 
 		var pointCoords = [infoEntreprise[i].longitude, infoEntreprise[i].latitude]
 		var pointComparaison = infoEntreprise[i].longitude.toString() + "," + infoEntreprise[i].latitude.toString();
 
-
 		if (listeLatLong.has(pointComparaison)) {
-			//console.log("already in array listeLatLong");
 			listeLatLong.set(pointComparaison, listeLatLong.get(pointComparaison) + 1);
 		} else {
 			listeLatLong.set(pointComparaison, 1);
 			placePointsOnMap(pointCoords);
 		}
 	}
-	console.log(listeLatLong);
 
-	zoomOnSearchedPlace(pointCoords, 15);
+	//Fonctions permettant d'ajuster la map et l'affichage des entités lorsque la recherche prend fin
+	if(infoEntreprise.length>1){
+		zoomOnSearchedPlace(pointCoords, 15);
+	}
+	//zoomOnSearchedPlace(pointCoords, 15);
 	replaceParamsByResults();
 	switchInfosWhenResults();
+}
+
+//Fonction utilisé pour rajouter l'événement servant à afficher l'entitée sur la carte
+function infoMapsClick(div, infoEntreprise) {
+	div.addEventListener('click', (event) => {
+		console.log(div);
+		console.log(event.target);
+		var coordSurbrillance;
+		coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
+		var nom = infoEntreprise[event.target.parentElement.id].nom;
+		var npa = infoEntreprise[event.target.parentElement.id].npa;
+		var adresse = infoEntreprise[event.target.parentElement.id].adresse;
+		var telPrincipal = parseInt(infoEntreprise[event.target.parentElement.id].telPrincipal);
+		var telSecondaire = parseInt(infoEntreprise[event.target.parentElement.id].telSecondaire);
+		var email = infoEntreprise[event.target.parentElement.id].email;
+
+		if (isNaN(telPrincipal)) {
+			telPrincipal = "Non renseigné";
+		} else {
+			telPrincipal = "+" + telPrincipal.toString().substring(0, 2) + " " + telPrincipal.toString().substring(2, 4) + " " + telPrincipal.toString().substring(4, 7) + " " + telPrincipal.toString().substring(7, 9) + " " + telPrincipal.toString().substring(9, 11);
+		}
+
+		if (isNaN(telSecondaire)) {
+			telSecondaire = "Non renseigné";
+		} else {
+			telSecondaire = "+" + telSecondaire.toString().substring(0, 2) + " " + telSecondaire.toString().substring(2, 4) + " " + telSecondaire.toString().substring(4, 7) + " " + telSecondaire.toString().substring(7, 9) + " " + telSecondaire.toString().substring(9, 11);
+		}
+
+		if (email == null) {
+			email = "Non renseigné";
+		}
+
+		placeSurbrillancePointsOnMap(coordSurbrillance, event.target.parentElement.id, nom, npa, adresse, telPrincipal, telSecondaire, email);
+		
+	});
+}
+
+function deleteClick(div, newInfoEntreprise, compare) {
+	div.addEventListener('click', function(event) {
+		
+		this.parentNode.remove();
+		var id;
+
+		if (event.target.parentElement.id == "") {
+			id = event.target.parentElement.parentElement.id;
+		} else {
+			id = event.target.parentElement.id;
+		}
+
+		//idEtablissement de l'objet supprimée
+		console.log(newInfoEntreprise[id].idEtablissement);
+		//console.log(infoEntreprise[newInfoEntreprise[id]]);
+		if(compare){
+			var del;
+			for(var i = 0; i<infoEntreprise.length ; i++){
+				if(infoEntreprise[i] != null && infoEntreprise[i].idEtablissement==newInfoEntreprise[id].idEtablissement){
+					del = i;
+				}
+			}
+			infoEntreprise[del] = null;
+		}
+		var entityCoords = newInfoEntreprise[id].longitude.toString() + "," + newInfoEntreprise[id].latitude.toString();
+		
+		newInfoEntreprise[id] = null;
+		
+		if (listeLatLong.has(entityCoords)) {
+			if (listeLatLong.get(entityCoords) <= 1) {
+				listeLatLong.delete(entityCoords);
+				overlay.setPosition(undefined);
+				map.getLayers().getArray()
+					.filter(layer => layer.get('name') === entityCoords)
+					.forEach(layer => map.removeLayer(layer));
+			} else {
+				listeLatLong.set(entityCoords, listeLatLong.get(entityCoords) - 1);
+			}
+		} else {
+			console.log("yousk2");
+		}
+		console.log(infoEntreprise);
+	})
 }
 
 function replaceParamsByResults() {
@@ -413,21 +451,27 @@ function switchInfosWhenResults() {
 function searchEntreprises() {
 
 	var input = document.getElementById('searchResults').value
-	input = input.toLowerCase();
+	input = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 	if (!input) {
-		getInfoEntreprise(infoEntreprise);
+		//Comparer listes et effectuer changement si nécessaire
+		
+		getInfoEntreprise(infoEntreprise, false);
 	}
 	var newInfoEntreprise = []
 
 	for (i = 0; i < infoEntreprise.length; i++) {
+		if(infoEntreprise[i]==null){
+			continue;
+		}
 		var obj = infoEntreprise[i];
 
-
-		if (obj.nom.toLowerCase().includes(input)) {
+		//Formatter les valeurs des recherches ainsi que l'input pour gérer les accents et caractères spéciaux
+		if (obj.nom.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(input)) {
 			newInfoEntreprise.push(obj);
 		}
 	}
 	clearResultsListe();
 	clearResultsMap();
-	getInfoEntreprise(newInfoEntreprise);
+	console.log(newInfoEntreprise);
+	getInfoEntreprise(newInfoEntreprise, true);
 }

@@ -1,36 +1,48 @@
-// test GET avec VueJs3 et Axios
+/* 
+	------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
+	Fichier Javascript permettant de gérer les vues liées autour de la map ainsi que la naviguation du site
+	------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
+*/
 
+// variables constantes qui contiennent les liens des APIs utilisées
 const apiBars = "http://172.105.245.5/api/bars"
 const urlNoga = "http://172.105.245.5/api/nogas"
 const urlJuridique = "http://172.105.245.5/api/juridiques"
 const urlParams = "http://172.105.245.5/api/search"
 const apiTaille = "http://172.105.245.5/api/tailles"
 const apiCalculerDistance = "http://172.105.245.5/api/calculerDistance"
+
+// Variables globales
+
+var cercleOnMap;
+
+var allowToPlaceZone = true;
+
+// Contiendra les informations sous format de JSON de toutes les entités recherchées
 var infoEntreprise = [];
+
+// Contiendra la liste des bars chez miaetnoa
 var listeBars = [];
+
+// Contiendra la liste des coordonnées pour chaque point qui devra être présent sur la carte
 var listeLatLong = new Map();
+
+// Initialisation de la Vue
 
 const myVueComponent = {
 	data() {},
-
 	methods: {
 
-		// test avec une requete POST
-		testPost() {
-			axios({
-				method: 'post',
-				url: apiBars,
-				data: {
-					Latitude: 66.666,
-					Longitude: 77.777
-				},
-			});
-		},
-
-		// fonction d'envoi des parametres
+		/*
+			Cette fonction permet de récupérer tous les paramètres requis afin de les
+			envoyer au backend qui nous enverra une réponse contenant les résultats
+			de la recherche effectuée
+		*/
 		envoieParametres() {
 
-			// bons parametres, ne pas supprimer
+			// Récupération des différents paramètres
 
 			var taille = getSelectedTailleListe().join(",");
 			var limites = document.getElementById("limits-input").value;
@@ -44,29 +56,10 @@ const myVueComponent = {
 			var emailNotNull = document.getElementById("onlyMails");
 			var emailNotNullValue;
 
-			if (distinct.checked) {
-				distinctValue = "true";
-			}
+			if (distinct.checked) {distinctValue = "true";}
+			if (emailNotNull.checked) {emailNotNullValue = "true";}
 
-			if (emailNotNull.checked) {
-				emailNotNullValue = "true";
-			}
-
-			console.log(distinctValue);
-
-			//console.log(codenoga);
-
-			//var taille = "2";
-			/*
-			var zoneexclu = "200";
-			var codenoga = "9496";
-			var natjur = "4";
-			var longitude = 6.140833290040641;
-			var latitude = 46.2005701220817;
-			var radius = 6913.282075607314;
-			http://172.105.245.5/api/search?taille=&noga=&natureJuridique=&longitude=6.132008130874633&latitude=46.17154187792602&radius=691.6933934788481&limits=50
-			*/
-
+			// envoi des paramètres
 			axios.get(urlParams, {
 					params: {
 						taille: taille,
@@ -80,22 +73,21 @@ const myVueComponent = {
 						limit: limites
 					}
 				})
+				// récupération de la réponse du backend
 				.then((response) => {
-
 					if (response.data.length != 0) {
 						infoEntreprise = response.data;
 						clearResultsListe();
 						clearResultsMap();
 						console.log(infoEntreprise.length);
-						getInfoEntreprise(infoEntreprise);
-						// document.querySelector("#resultsScroll").scrollIntoView();
+						getInfoEntreprise(infoEntreprise, false);
 					} else {
 						alert("Aucun resultat trouvé avec ces paramètres...\nVeuillez modifier vos critères de recherche");
 					}
 				})
-
 		},
 
+		// Fonction qui récupère les tailles des entreprises stockées dans la base de données
 		getTaille() {
 			axios.get(apiTaille)
 				.then((response) => {
@@ -107,35 +99,13 @@ const myVueComponent = {
 					console.log("taille error" + error);
 				})
 		},
-
-		afficherListeBars() {
-
-			for (var i = 0; i < listeBars.length; i++) {
-				console.log(listeBars[i].adress.adresse);
-
-				var label = document.createElement("label");
-				label.classList.add("labelBars");
-				label.htmlFor = i;
-				label.appendChild(document.createTextNode(listeBars[i].adress.adresse));
-
-				var parent = document.getElementById("listeBars");
-				var child = document.createElement("INPUT");
-				child.setAttribute("type", "checkbox");
-				child.setAttribute("id", i);
-
-				parent.appendChild(label);
-				parent.appendChild(child);
-
-			}
-		}
 	},
 	mounted() {
 
-		// recuperation des bars avec une requete GET
+		// recuperation des bars dans la base de données afin de les afficher sur la carte
 		axios.get(apiBars)
 			.then((response) => {
 				for (var i = 0; i < response.data.length; i++) {
-					//console.log(response.data[i]);
 					var barCoords = [response.data[i].adress.longitude, response.data[i].adress.latitude]
 					listeBars.push(response.data[i]);
 					placeBarOnMap(barCoords);
@@ -148,7 +118,6 @@ const myVueComponent = {
 			// recupere les natures juridiques pour les mettre dans une liste deroulante
 			axios.get(urlJuridique)
 			.then((response) => {
-				//console.log(response);
 				naturejuridique = "";
 				for (var i = 1; i < response.data.length; i++) {
 					naturejuridique += "<option value=" + response.data[i].idJuridique + ">" + response.data[i].natureJuridique + "</option>"
@@ -163,7 +132,6 @@ const myVueComponent = {
 			// recupere les code noga pour les mettre dans une liste deroulante
 			axios.get(urlNoga)
 			.then((response) => {
-				//console.log(response);
 				noga = "";
 				for (var i = 0; i < response.data.length; i++) {
 					noga += "<option value=" + response.data[i].code + ">" + response.data[i].nom + "</option>"
@@ -215,14 +183,12 @@ function searchAdress(adress) {
 	});
 }
 
-// local variables
-var cercleOnMap;
-var allowToPlaceZone = true;
-
+// Gestion des popups sur la carte
 const container = document.getElementById('popup');
 const content = document.getElementById('popup-content');
 const closer = document.getElementById('popup-closer');
 
+// création de l'overlay
 const overlay = new ol.Overlay({
 	element: container,
 	autoPan: {
@@ -232,6 +198,7 @@ const overlay = new ol.Overlay({
 	},
 });
 
+// fonction qui définit la position du popup
 closer.onclick = function() {
 	overlay.setPosition(undefined);
 	closer.blur();
@@ -253,13 +220,10 @@ var map = new ol.Map({
 	})
 });
 
-
-
+// Fonction qui permet de faire défiler la page jusqu'à l'emplacement définit
 function scrollTo(hash) {
 	location.hash = "#" + hash;
 }
-
-
 
 // fonction qui va zoomer sur l'adresse recherchee par l'utilisateur
 function zoomOnSearchedPlace(placeCoords, zoom) {
@@ -355,7 +319,7 @@ async function placeSurbrillancePointsOnMap(entityCoords, id, nom, npa, adresse,
 
 	map.getLayers().get(pointSurbrillance);
 
-	if (infoEntreprise[id].distanceCalculated == undefined) {
+	if (infoEntreprise[id] != null && infoEntreprise[id].distanceCalculated == undefined) {
 		await FindClosestBar(infoEntreprise[id]);
 	}
 
@@ -363,14 +327,11 @@ async function placeSurbrillancePointsOnMap(entityCoords, id, nom, npa, adresse,
 	content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : " +
 		telPrincipal + "<br>" + "Tél. Second. : " + telSecondaire + "<br>" + "Email : " + email +
 		"<br> <br>" + "L'entité se trouve à " + infoEntreprise[id].distanceCalculated[0] +
-		" minutes de " + infoEntreprise[id].distanceCalculated[1] + " en voiture";
+		" minutes en voiture du bar placé " + infoEntreprise[id].distanceCalculated[1];
 
-	//Add to infoEntreprise the distance between the closest bar and the entity
-	//check if the entity is undifined
 }
 
-
-// fonction qui placent les bars existants sur la carte
+// fonction qui place les bars existants sur la carte
 function placeBarOnMap(barCoords) {
 
 	var centerLongitudeLatitudeBars = ol.proj.fromLonLat(barCoords);
@@ -401,7 +362,7 @@ function deleteCircleOnMap() {
 	});
 }
 
-//  fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
+// fonction pour placer un cercle sur la carte après avoir appuyer sur le bouton
 function clickOnMapON() {
 
 	deleteCircleOnMap();
@@ -504,12 +465,6 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2, unit) {
 		return dist;
 	}
 }
-
-/* parametre non pris en compte pour le moment
-var slider_zoneexclu = document.getElementById("range-zoneexclu");
-var value_zoneexclu = document.getElementById("value-zoneexclu");
-slider_zoneexclu.onchange = function() {value_zoneexclu.innerHTML = this.value;}
-*/
 
 // Modal Image Gallery
 function onClick(element) {
