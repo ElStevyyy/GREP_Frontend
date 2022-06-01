@@ -190,11 +190,7 @@ function getSelectedTailleListe() {
 	return listeTaille;
 }
 
-function afficherListeBars() {
-	for (var i = 0; i < listeBars.length; i++) {
-		console.log(listeBars[i]);
-	}
-}
+
 
 var inputSearch = document.getElementById("adressValue");
 
@@ -232,7 +228,6 @@ function clearResultsMap() {
 	});
 
 	listeLatLong = new Map();
-	console.log(listeLatLong);
 }
 
 // fonction qui recupere les informations des entites pour créer les div et permettre la gestion de ces derniers
@@ -332,8 +327,6 @@ function getInfoEntreprise(infoEntreprise, compare) {
 //Fonction utilisé pour rajouter l'événement servant à afficher l'entitée sur la carte
 function infoMapsClick(div, infoEntreprise) {
 	div.addEventListener('click', (event) => {
-		console.log(div);
-		console.log(event.target);
 		var coordSurbrillance;
 		coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
 		var nom = infoEntreprise[event.target.parentElement.id].nom;
@@ -358,7 +351,6 @@ function infoMapsClick(div, infoEntreprise) {
 		if (email == null) {
 			email = "Non renseigné";
 		}
-
 		placeSurbrillancePointsOnMap(coordSurbrillance, event.target.parentElement.id, nom, npa, adresse, telPrincipal, telSecondaire, email);
 		
 	});
@@ -376,9 +368,6 @@ function deleteClick(div, newInfoEntreprise, compare) {
 			id = event.target.parentElement.id;
 		}
 
-		//idEtablissement de l'objet supprimée
-		console.log(newInfoEntreprise[id].idEtablissement);
-		//console.log(infoEntreprise[newInfoEntreprise[id]]);
 		if(compare){
 			var del;
 			for(var i = 0; i<infoEntreprise.length ; i++){
@@ -405,7 +394,6 @@ function deleteClick(div, newInfoEntreprise, compare) {
 		} else {
 			console.log("yousk2");
 		}
-		console.log(infoEntreprise);
 	})
 }
 
@@ -454,9 +442,9 @@ function searchEntreprises() {
 	input = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 	if (!input) {
 		//Comparer listes et effectuer changement si nécessaire
-		
 		getInfoEntreprise(infoEntreprise, false);
 	}
+	else{
 	var newInfoEntreprise = []
 
 	for (i = 0; i < infoEntreprise.length; i++) {
@@ -472,6 +460,6 @@ function searchEntreprises() {
 	}
 	clearResultsListe();
 	clearResultsMap();
-	console.log(newInfoEntreprise);
 	getInfoEntreprise(newInfoEntreprise, true);
+	}
 }

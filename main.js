@@ -79,7 +79,6 @@ const myVueComponent = {
 						infoEntreprise = response.data;
 						clearResultsListe();
 						clearResultsMap();
-						console.log(infoEntreprise.length);
 						getInfoEntreprise(infoEntreprise, false);
 					} else {
 						alert("Aucun resultat trouvé avec ces paramètres...\nVeuillez modifier vos critères de recherche");
@@ -96,7 +95,7 @@ const myVueComponent = {
 					}
 				})
 				.catch((error) => {
-					console.log("taille error" + error);
+					console.error("taille error" + error);
 				})
 		},
 	},
@@ -112,7 +111,7 @@ const myVueComponent = {
 				}
 			})
 			.catch((error) => {
-				console.log("bars error" + error);
+				console.error("bars error" + error);
 			}),
 
 			// recupere les natures juridiques pour les mettre dans une liste deroulante
@@ -126,7 +125,7 @@ const myVueComponent = {
 				document.getElementById("select-naturejuridique").selectedIndex = "-1";
 			})
 			.catch((error) => {
-				console.log("erreur code noga" + error);
+				console.error("erreur code noga" + error);
 			}),
 
 			// recupere les code noga pour les mettre dans une liste deroulante
@@ -140,7 +139,7 @@ const myVueComponent = {
 				document.getElementById("select-code-noga").selectedIndex = "-1";
 			})
 			.catch((error) => {
-				console.log("erreur code noga" + error);
+				console.error("erreur code noga" + error);
 			}),
 
 			// recupere les tailles pour les mettre dans une liste deroulante
@@ -162,7 +161,7 @@ const myApp = Vue.createApp(myVueComponent).mount("#appVue")
 var adressPositions = []
 
 function searchAdress(adress) {
-	console.log(adress)
+	
 	$.ajax({
 		url: 'http://api.positionstack.com/v1/forward',
 		data: {
@@ -175,10 +174,9 @@ function searchAdress(adress) {
 		}
 	}).done(function(data) {
 		adressPositions = []
-		console.log(data);
 		adressPositions.push(data['data'][0]['longitude'])
 		adressPositions.push(data['data'][0]['latitude'])
-		console.log(adressPositions);
+
 		zoomOnSearchedPlace(adressPositions, 16);
 	});
 }
@@ -287,6 +285,7 @@ var pointSurbrillance = null;
 // function qui place un point d'une autre couleur sur la carte (surbrillance)
 async function placeSurbrillancePointsOnMap(entityCoords, id, nom, npa, adresse, telPrincipal, telSecondaire, email) {
 
+
 	var centerLongitudeLatitudePoint = ol.proj.fromLonLat(entityCoords);
 
 	if (pointSurbrillance != null) {
@@ -319,9 +318,10 @@ async function placeSurbrillancePointsOnMap(entityCoords, id, nom, npa, adresse,
 
 	map.getLayers().get(pointSurbrillance);
 
-	if (infoEntreprise[id] != null && infoEntreprise[id].distanceCalculated == undefined) {
+	if (infoEntreprise[id]!=null && infoEntreprise[id].distanceCalculated == undefined) {
 		await FindClosestBar(infoEntreprise[id]);
 	}
+
 
 	overlay.setPosition(centerLongitudeLatitudePoint);
 	content.innerHTML = "<b>" + nom + "</b>" + "<br>" + adresse + ", " + npa + "<br>" + "Tél. princip. : " +
@@ -418,7 +418,7 @@ function getLocaLat() {
 	var centerCircle = cercleOnMap.getCenter();
 	var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
 	var latitude = coordCenter[1];
-	//console.log(latitude);
+
 	return latitude;
 }
 
@@ -426,7 +426,7 @@ function getLocaLong() {
 	var centerCircle = cercleOnMap.getCenter();
 	var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
 	var longitude = coordCenter[0];
-	//console.log(longitude);
+
 	return longitude;
 }
 
@@ -436,7 +436,7 @@ function getRadiusInMeter() {
 	var coordCenter = ol.proj.transform(centerCircle, 'EPSG:3857', 'EPSG:4326');
 	var coordExte = ol.proj.transform(cercleOnMap.getLastCoordinate(), 'EPSG:3857', 'EPSG:4326');
 	var radius = getDistanceInMeters(coordCenter[1], coordCenter[0], coordExte[1], coordExte[0], "K")
-	//console.log(radius);
+
 	return radius;
 }
 
