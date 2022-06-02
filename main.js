@@ -30,7 +30,6 @@ var listeBars = [];
 var listeLatLong = new Map();
 
 // Initialisation de la Vue
-
 const myVueComponent = {
 	data() {},
 	methods: {

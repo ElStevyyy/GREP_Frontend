@@ -1,9 +1,9 @@
 /* 
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
-Fichier Javascript permettant de gérer les recherches d'entités ainsi que l'affichage des résultats
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
+	Fichier Javascript permettant de gérer les recherches d'entités ainsi que l'affichage des résultats
+	------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
 */
 
 
@@ -121,17 +121,17 @@ function getSelectedNatjur() {
 	parent.appendChild(natjurDelete);
 
 	document.getElementById("natjurBucket").appendChild(parent);
-
 	document.getElementById("select-naturejuridique").options[document.getElementById("select-naturejuridique").selectedIndex].disabled = true;
-
 }
 
+// Fonction qui récupère la liste des natures juridiques
 function getSelectedNatjurListe() {
 	return listeNatjur;
 }
 
 var listeTaille = [];
 
+// Fonction de gestion des différentes tailles d'entreprises (ajout et suppresion dans la div)
 function getSelectedTaille() {
 
 	var selectTaille = document.getElementById("select-taille");
@@ -181,11 +181,11 @@ function getSelectedTaille() {
 	parent.appendChild(tailleDelete);
 
 	document.getElementById("tailleBucket").appendChild(parent);
-
 	document.getElementById("select-taille").options[document.getElementById("select-taille").selectedIndex].disabled = true;
 
 }
 
+// Fonction qui récupère la liste des tailles
 function getSelectedTailleListe() {
 	return listeTaille;
 }
@@ -194,6 +194,7 @@ function getSelectedTailleListe() {
 
 var inputSearch = document.getElementById("adressValue");
 
+// EventListener sur l'input de filtrage des resultats
 inputSearch.addEventListener("keypress", function(event) {
 
 	if (event.key === "Enter") {
@@ -202,6 +203,7 @@ inputSearch.addEventListener("keypress", function(event) {
 	}
 });
 
+// Fonction qui verifie les latitudes et longitudes 
 function checkLatLong(list, coord) {
 	var res = false;
 	list.forEach(item => {
@@ -212,6 +214,7 @@ function checkLatLong(list, coord) {
 	return res;
 }
 
+// Fonction qui vide la liste de résultats
 function clearResultsListe() {
 	var node = document.getElementById("liste-resultats");
 	while (node.hasChildNodes()) {
@@ -219,14 +222,13 @@ function clearResultsListe() {
 	}
 }
 
+// Fonction qui vide la map de tous les résultats
 function clearResultsMap() {
-
 	listeLatLong.forEach(function(value, key) {
 		map.getLayers().getArray()
 			.filter(layer => layer.get('name') === key)
 			.forEach(layer => map.removeLayer(layer));
 	});
-
 	listeLatLong = new Map();
 }
 
@@ -356,6 +358,7 @@ function infoMapsClick(div, infoEntreprise) {
 	});
 }
 
+// Fonction qui permet la suppresion d'une entité
 function deleteClick(div, newInfoEntreprise, compare) {
 	div.addEventListener('click', function(event) {
 		
@@ -397,6 +400,7 @@ function deleteClick(div, newInfoEntreprise, compare) {
 	})
 }
 
+// Fonction de gestion du remplacement des paramètres par les résultats
 function replaceParamsByResults() {
 	var divParam = document.getElementById("formsid");
 	var divResults = document.getElementById("liste-resultats");
@@ -409,6 +413,7 @@ function replaceParamsByResults() {
 	switchInfosWhenResults();
 }
 
+// Fonction de gestion du remplacement des résultats par les paramètres
 function replaceResultsByParams() {
 	var divParam = document.getElementById("formsid");
 	var divResults = document.getElementById("liste-resultats");
@@ -423,6 +428,7 @@ function replaceResultsByParams() {
 	divExport.style.display = "none";
 }
 
+// Fonction qui intervertit certaines informations selon si les résultats sont affichés ou non
 function switchInfosWhenResults() {
 	var search = document.getElementById("searchResults");
 	if (search.style.display = "none") {
@@ -435,13 +441,13 @@ function switchInfosWhenResults() {
 	}
 }
 
-//Bar de recherche pour les résultats
+// Bar de recherche pour les résultats
 function searchEntreprises() {
 
 	var input = document.getElementById('searchResults').value
 	input = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 	if (!input) {
-		//Comparer listes et effectuer changement si nécessaire
+		// Comparer listes et effectuer changement si nécessaire
 		getInfoEntreprise(infoEntreprise, false);
 	}
 	else{
@@ -453,7 +459,7 @@ function searchEntreprises() {
 		}
 		var obj = infoEntreprise[i];
 
-		//Formatter les valeurs des recherches ainsi que l'input pour gérer les accents et caractères spéciaux
+		// Formatter les valeurs des recherches ainsi que l'input pour gérer les accents et caractères spéciaux
 		if (obj.nom.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(input)) {
 			newInfoEntreprise.push(obj);
 		}

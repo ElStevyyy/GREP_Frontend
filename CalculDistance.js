@@ -1,13 +1,13 @@
 /* 
-----------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------
-Fichier Javascript permettant de procéder aux calculs de distances entre une entité et le bar le plus proche
-----------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------
+	----------------------------------------------------------------------------------------------------------------
+	----------------------------------------------------------------------------------------------------------------
+	Fichier Javascript permettant de procéder aux calculs de distances entre une entité et le bar le plus proche
+	----------------------------------------------------------------------------------------------------------------
+	----------------------------------------------------------------------------------------------------------------
 */
 
 
-//Fonction asynchrone permettant de trouver le bar le bar le plus proche et de calculer le trajet jusqu'à celui-ci grâce à l'API
+// Fonction asynchrone permettant de trouver le bar le bar le plus proche et de calculer le trajet jusqu'à celui-ci grâce à l'API
 async function FindClosestBar(entity) {
 	var closer = [];
 	const promise = new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ async function FindClosestBar(entity) {
 				}
 			}
 		});
-		//Appel à l'API
+		// Appel à l'API
 		$.ajax({
 			url: apiCalculerDistance,
 			data: {
@@ -34,7 +34,7 @@ async function FindClosestBar(entity) {
 		}).done(function(data) {
 			// Lorsque l'API a fini de calculer :
 			// Transforme le temps en format : minutes:secondes
-			//Arrondi le temps à 2 décimales
+			// Arrondi le temps à 2 décimales
             var seconds = data.travelDuration.resourceSets[0].resources[0].travelDuration % 60;
             if(seconds < 10){
                 seconds = "0" + seconds;

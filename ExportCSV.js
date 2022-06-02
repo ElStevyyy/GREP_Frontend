@@ -1,9 +1,9 @@
 /* 
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
-Fichier Javascript permettant de transformer les données sous un format CSV et de les récupérer
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
+	Fichier Javascript permettant de transformer les données sous un format CSV et de les récupérer
+	------------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------------
 */
 
 // Export JSON to CSV - Permettre l'export des entités recherchées sous un format Excel convenable
@@ -13,9 +13,9 @@ async function jsonToCsv() {
 	var listeEntrepriseRemovedNull = infoEntreprise.filter(function(val) {
 		return val !== null;
 	});
-	//Définition des en-têtes pour chaque valeur  
+	// Définition des en-têtes pour chaque valeur  
 	if (listeEntrepriseRemovedNull.length != 0) {
-		//console.log("export debut");
+		// console.log("export debut");
 		var headers = {
 			nom: "Nom de l'entreprise",
 			raisonSocial: "Raison social",
@@ -39,7 +39,7 @@ async function jsonToCsv() {
 		var itemsFormatted = [];
 		for (var i = 0; i < infoEntreprise.length; i++) {
 			
-			//Sert à passer à l'entité suivante dans le cas ou celle-ci a été supprimé avec le logo corbeille
+			// Sert à passer à l'entité suivante dans le cas ou celle-ci a été supprimé avec le logo corbeille
 			if (infoEntreprise[i] == null) {
 				continue;
 			}
@@ -89,7 +89,7 @@ function exportCSVFile(headers, items, fileTitle) {
 
 	var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
 
-	//Lancement de l'export selon le naviguateur
+	// Lancement de l'export selon le naviguateur
 	var blob = new Blob([csv], {
 		type: 'text/csv;charset=utf-8;'
 	});
@@ -110,7 +110,7 @@ function exportCSVFile(headers, items, fileTitle) {
 	}
 }
 
-//Fonction permettant de récupérer la liste des entités et de convertir le tout sous un format CSV
+// Fonction permettant de récupérer la liste des entités et de convertir le tout sous un format CSV
 function convertToCSV(objArray) {
 	var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 	var str = "\uFEFF";
