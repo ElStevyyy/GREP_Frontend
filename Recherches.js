@@ -386,9 +386,12 @@ function deleteClick(div, newInfoEntreprise, compare) {
         if (compare) {
 
             for (var i = 0; i < newInfoEntreprise.length; i++) {
-                if (newInfoEntreprise[i].id == id) {
-                    entityCoords = newInfoEntreprise[i].longitude.toString() + "," + newInfoEntreprise[i].latitude.toString();
-                    infoEntreprise[newInfoEntreprise[i].id] = null;
+                    if(newInfoEntreprise[i] != null){
+                    
+                    if (newInfoEntreprise[i].id == id) {
+                        entityCoords = newInfoEntreprise[i].longitude.toString() + "," + newInfoEntreprise[i].latitude.toString();
+                        infoEntreprise[newInfoEntreprise[i].id] = null;
+                    }
                 }
             }
 
