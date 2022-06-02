@@ -19,7 +19,6 @@ function getSelectedNoga() {
     var substring = selectedText.substring(0, 34);
 
     listeCodeNoga.push(selectedValue);
-    console.log(listeCodeNoga.join(","));
 
     var parent = document.createElement("div");
     parent.classList.add("noga-parent");
@@ -50,7 +49,6 @@ function getSelectedNoga() {
                 collection[i].removeAttribute('disabled')
                 document.getElementById("select-code-noga").selectedIndex = "-1";
                 listeCodeNoga.splice(listeCodeNoga.indexOf(id), 1);
-                console.log(listeCodeNoga.join(","));
             }
         }
     })
@@ -80,7 +78,6 @@ function getSelectedNatjur() {
 	var substring = selectedText.substring(0, 34);
 
 	listeNatjur.push(selectedValue);
-	console.log(listeNatjur.join(","));
 
 	var parent = document.createElement("div");
 	parent.classList.add("natjur-parent");
@@ -140,7 +137,6 @@ function getSelectedTaille() {
 	var substring = selectedText.substring(0, 34);
 
 	listeTaille.push(selectedValue);
-	console.log(listeTaille.join(","));
 
 	var parent = document.createElement("div");
 	parent.classList.add("taille-parent");
@@ -172,7 +168,6 @@ function getSelectedTaille() {
 				collection[i].removeAttribute('disabled')
 				document.getElementById("select-taille").selectedIndex = "-1";
 				listeTaille.splice(listeTaille.indexOf(id), 1);
-				console.log(listeTaille.join(","));
 			}
 		}
 	})
@@ -335,9 +330,6 @@ function getInfoEntreprise(infoEntrepriseLocal, compare) {
 function infoMapsClick(div, infoEntreprise) {
     div.addEventListener('click', (event) => {
         var coordSurbrillance;
-        console.log(event.target.parentElement.id);
-        console.log(infoEntreprise);
-        console.log(infoEntreprise[event.target.parentElement.id])
         coordSurbrillance = [infoEntreprise[event.target.parentElement.id].longitude, infoEntreprise[event.target.parentElement.id].latitude];
         var nom = infoEntreprise[event.target.parentElement.id].nom;
         var npa = infoEntreprise[event.target.parentElement.id].npa;
@@ -411,7 +403,6 @@ function deleteClick(div, newInfoEntreprise, compare) {
                 listeLatLong.set(entityCoords, listeLatLong.get(entityCoords) - 1);
             }
         } else {
-            console.log("yousk2");
         }
     })
 }
