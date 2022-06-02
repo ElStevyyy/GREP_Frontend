@@ -87,19 +87,6 @@ const myVueComponent = {
                     })
             }
         },
-
-        // Fonction qui récupère les tailles des entreprises stockées dans la base de données
-        getTaille() {
-            axios.get(apiTaille)
-                .then((response) => {
-                    for (var i = 0; i < response.data.length; i++) {
-                        console.log(response.data[i]);
-                    }
-                })
-                .catch((error) => {
-                    console.error("taille error" + error);
-                })
-        },
     },
     mounted() {
 

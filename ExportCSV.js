@@ -15,7 +15,6 @@ async function jsonToCsv() {
 	});
 	// Définition des en-têtes pour chaque valeur  
 	if (listeEntrepriseRemovedNull.length != 0) {
-		// console.log("export debut");
 		var headers = {
 			nom: "Nom de l'entreprise",
 			raisonSocial: "Raison social",

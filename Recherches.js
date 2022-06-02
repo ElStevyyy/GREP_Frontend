@@ -109,7 +109,6 @@ function getSelectedNatjur() {
 				collection[i].removeAttribute('disabled')
 				document.getElementById("select-naturejuridique").selectedIndex = "-1";
 				listeNatjur.splice(listeNatjur.indexOf(id), 1);
-				console.log(listeNatjur.join(","));
 			}
 		}
 	})
